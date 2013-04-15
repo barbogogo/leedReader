@@ -39,8 +39,16 @@ public class WebviewActivity extends Activity
 			content = "Toutes les données n'ont pus être téléchargées.";
        }
        
-	   String customHtml = "<html><body><h1>"+id+" - "+title+"</h1><article>"+content+"</article></body></html>";
-	   webView.loadData(customHtml, "text/html", "UTF-8");
+	   String customBody = "<h1>"+id+" - "+title+"</h1><article>"+content+"</article>";
+	   
+	   String content = 
+		       "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"+
+		       "<html><head>"+
+		       "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />"+
+		       "<head><body>";
+		content += customBody + "</body></html>";
+
+		webView.loadData(content, "text/html; charset=utf-8", "UTF-8");
 	}
 	
 	@Override
