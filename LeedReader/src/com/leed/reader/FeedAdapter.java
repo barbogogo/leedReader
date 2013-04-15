@@ -213,6 +213,9 @@ public class FeedAdapter extends ArrayAdapter<String>
 		objetbunble.putString("id", article.getId());
 		objetbunble.putString("title", article.getTitle());
 		objetbunble.putString("content", article.getContent());
+		objetbunble.putString("date", article.getDate());
+		objetbunble.putString("author", article.getAuthor());
+		objetbunble.putString("urlArticle", article.getUrlArticle());
     	
 		Intent intent = new Intent(context, WebviewActivity.class);
 		

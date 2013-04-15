@@ -6,6 +6,9 @@ public class Article {
 	private String title;
 	private String content;
 	private int isRead;
+	private String date;
+	private String author;
+	private String urlArticle;
 	
 	Article(String pId)
 	{
@@ -51,5 +54,35 @@ public class Article {
 	public void setUnRead()
 	{
 		isRead = 0;
+	}
+	
+	public void setDate(String pDate)
+	{
+		date = pDate;
+	}
+	
+	public String getDate()
+	{
+		return date;
+	}
+	
+	public void setAuthor(String pAuthor)
+	{
+		author = pAuthor;
+	}
+	
+	public String getAuthor()
+	{
+		return author;
+	}
+	
+	public void setUrlArticle(String pUrlArticle)
+	{
+		urlArticle = pUrlArticle;
+	}
+	
+	public String getUrlArticle()
+	{
+		return urlArticle;
 	}
 }

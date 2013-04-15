@@ -192,7 +192,7 @@ public class MainActivity extends Activity
 	                		{ // Only if there is no articles loaded
 	                			jsonObject = new JSONObject(result);
 	                			
-	                			JSONArray  articlesItems = new JSONArray (jsonObject.getString("articles"));
+	                			JSONArray  articlesItems = new JSONArray(jsonObject.getString("articles"));
 		                        
 		                        for (int i = 0; i < articlesItems.length(); i++) 
 		                        {
@@ -200,6 +200,9 @@ public class MainActivity extends Activity
 		                            
 		                            Article article = new Article(postalCodesItem.getString("id"));
 		                            article.setTitle(postalCodesItem.getString("title"));
+		                            article.setDate(postalCodesItem.getString("date"));
+		                            article.setAuthor(postalCodesItem.getString("author"));
+		                            article.setUrlArticle(postalCodesItem.getString("urlArticle"));
 		                            
 		                            folders.get(posFolder).getFlux(posFeed).addArticle(article);
 		                        }
