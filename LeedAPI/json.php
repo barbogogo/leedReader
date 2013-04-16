@@ -40,7 +40,11 @@ switch($_REQUEST['option'])
         
         foreach($events as $event)
         {
-            $tab[$iTab] = array("id" => $event->getId(), "title" => $event->getTitle()); //, "content" => $event->getContent());
+            $tab[$iTab] = array("id" => $event->getId(), 
+                                "title" => $event->getTitle(), 
+                                "date" => $event->getPubdate("d/m/Y h:i"), 
+                                "urlArticle" => $event->getLink(), 
+                                "author" => $event->getCreator() );
             
             $iTab ++;
         }
