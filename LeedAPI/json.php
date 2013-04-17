@@ -19,8 +19,10 @@ switch($_REQUEST['option'])
         $target = "*";
     
         $event = $eventManager->loadAllOnlyColumn($target,array('id' => $_REQUEST['idArticle']));
-    
-        echo "{\"content\":", json_encode($event[0]->getContent(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE), "}\n";
+        
+        $content = str_replace("%", "%25", $event[0]->getContent());
+        
+        echo "{\"content\":", json_encode($content, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE), "}\n";
     
         // On met comme lu le event
         $event[0]->change(array('unread'=>'0'),array('id'=>$event[0]->getId()));
