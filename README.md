@@ -13,6 +13,6 @@ Installation
 ============
 
 1. Il faut dans un premier temps [installer leed](https://github.com/ldleman/Leed#installation) sur son serveur.
-2. Mettre le fichier [leedAPI/json.php](https://github.com/barbogogo/leedReader/blob/master/LeedAPI/json.php) à la racine du site leed.
+2. MInstaller l'API [Leed-API](http://projets.barbogogo.fr/wiki/Leed-API).
 3. Installer l'application Android avec le fichier apk téléchargeable sur le site du projet [leedReader](http://projets.barbogogo.fr/wiki/LeedReader) ou en compilant l'application
 4. Configurer l'application en entrant le lien vers l'agrégateur leed (ex.: http://www.example.com/leed)
