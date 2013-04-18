@@ -1,28 +1,25 @@
 <LinearLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:layout_alignParentBottom="true"
     android:layout_alignParentLeft="true"
     android:layout_alignParentRight="true"
     android:layout_alignParentTop="true"
     android:orientation="vertical" >
 
-    <Button
-        android:layout_width="match_parent"
+    <ImageButton
+        android:layout_width="54dp"
         android:layout_height="wrap_content"
-        android:text="Get Information" 
-        android:onClick="btnGetInformation" />
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" />
+        android:contentDescription="@string/main_menu_home"
+        android:onClick="btnGetInformation"
+        android:src="@drawable/home"
+        android:background="@null" />
 
     <ListView
        android:id="@+id/ListViewId"
        android:layout_width="fill_parent"
-       android:layout_height="wrap_content"
-       android:layout_weight="1"/>
+       android:layout_height="fill_parent"
+       android:layout_weight="1" />
 
 </LinearLayout>
