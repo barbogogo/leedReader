@@ -210,7 +210,7 @@ public class MainActivity extends Activity
 	                		
 	                		updateFeed();
 	                	break;
-	                		
+                		
 	                	case cFolder:
 	                	default:
 	                		jsonObject = new JSONObject(result);
@@ -261,8 +261,7 @@ public class MainActivity extends Activity
         
         Toast.makeText(this, "bienvenue",Toast.LENGTH_LONG).show();
         
-        typeRequest = cFolder;
-        new ReadWeatherJSONFeedTask().execute(leedURL+"/json.php");
+        updateData();
     }
  
     public boolean onCreateOptionsMenu(Menu menu) 
