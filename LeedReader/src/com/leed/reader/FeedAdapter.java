@@ -40,8 +40,6 @@ public class FeedAdapter extends ArrayAdapter<String>
 	
 	private String leedURL;
 	
-	private View pRowView;
-	
 	private ProgressBar progressBar;
  
 	public FeedAdapter(Context context, Flux feed, String pLeedURL)
@@ -64,7 +62,7 @@ public class FeedAdapter extends ArrayAdapter<String>
 		LayoutInflater inflater = (LayoutInflater) context
 			.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
  
-		pRowView = inflater.inflate(R.layout.activity_feed, parent, false);
+		View pRowView = inflater.inflate(R.layout.activity_feed, parent, false);
 		TextView titleView = (TextView) pRowView.findViewById(R.id.articleTitle);
 		TextView favoriteView = (TextView) pRowView.findViewById(R.id.favorite);
 		TextView noReadView = (TextView) pRowView.findViewById(R.id.readNoRead);
@@ -100,6 +98,11 @@ public class FeedAdapter extends ArrayAdapter<String>
 						
 						pPosition = position;
 						
+						Article article = articles.get(pPosition);
+						article.setRead();
+						
+						notifyDataSetChanged();
+						
 						new ReadWeatherJSONFeedTask().execute(leedURL+"/json.php?option=article&idArticle=" + articles.get(position).getId());
 					}
 				});
@@ -117,6 +120,8 @@ public class FeedAdapter extends ArrayAdapter<String>
 						pPosition = position;
 						
 						Article article = articles.get(pPosition);
+						
+						notifyDataSetChanged();
 						
 						if(article.getIsRead() == 0)
 						{
@@ -184,7 +189,7 @@ public class FeedAdapter extends ArrayAdapter<String>
         	switch(aPosition)
         	{
         		case pNoReadPosition:
-        			((MainActivity) context).updateFeed();        			
+        			progressBar.setVisibility(ProgressBar.INVISIBLE);
         		break;
         	
 	        	case pTitlePosition:
@@ -233,8 +238,6 @@ public class FeedAdapter extends ArrayAdapter<String>
 		intent.putExtras(objetbunble);
 		
 		context.startActivity(intent);
-		
-		((MainActivity) context).updateFeed();
 
 		progressBar.setVisibility(ProgressBar.INVISIBLE);
 		
