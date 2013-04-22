@@ -30,6 +30,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -38,6 +39,7 @@ public class MainActivity extends Activity
 {
 	private ListView listView;
 	private WebView webView;
+	private ProgressBar progressBar;
 	
 	private int typeRequest = 0;
 	private static final int cFolder = 0;
@@ -75,6 +77,8 @@ public class MainActivity extends Activity
 	private String leedURL = "";
 	
 	private int errorServer;
+
+	private boolean settingFlag;
 	
     public String readJSONFeed(String URL) 
     {
@@ -252,14 +256,18 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        ReadSettings(this);
-        
         listView = (ListView)findViewById(R.id.ListViewId);
         webView  = (WebView) findViewById(R.id.webView1);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar1);
         
         posNavigation = cpGlobal;
+        settingFlag = false;
+        
+        progressBar.setVisibility(ProgressBar.VISIBLE);
         
         Toast.makeText(this, "bienvenue",Toast.LENGTH_LONG).show();
+        
+        ReadSettings(this);
         
         updateData();
     }
@@ -315,6 +323,7 @@ public class MainActivity extends Activity
     
     public void btnGetInformation(View view)
     {
+    	progressBar.setVisibility(ProgressBar.VISIBLE);
     	
     	ReadSettings(this);
     	
@@ -329,6 +338,8 @@ public class MainActivity extends Activity
     
     public void updateGlobalFolder()
     {
+    	progressBar.setVisibility(ProgressBar.INVISIBLE);
+    	
     	MobileArrayAdapter adapter = new MobileArrayAdapter(this, items, folders);
         listView.setAdapter(adapter);
         
@@ -338,6 +349,8 @@ public class MainActivity extends Activity
 	            @Override
 	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 	            {
+	            	progressBar.setVisibility(ProgressBar.VISIBLE);
+	            	
 	            	posFolder = position;
 
 	            	posNavigation = cpFolder;
@@ -353,6 +366,8 @@ public class MainActivity extends Activity
     
     public void updateFolder()
     {
+    	progressBar.setVisibility(ProgressBar.INVISIBLE);
+    	
     	FolderAdapter adapter = new FolderAdapter(this, folders.get(posFolder));
         listView.setAdapter(adapter);
         
@@ -366,6 +381,8 @@ public class MainActivity extends Activity
     	            	
     	            	posNavigation = cpFeed;
     	            	
+    	            	progressBar.setVisibility(ProgressBar.VISIBLE);
+    	            	
     	            	typeRequest = cFeed;
     	                new ReadWeatherJSONFeedTask().execute(leedURL+"/json.php?option=flux&feedId=" + folders.get(posFolder).getFlux(position).getId());
     	            }
@@ -375,6 +392,8 @@ public class MainActivity extends Activity
     
     public void updateFeed()
     {
+    	progressBar.setVisibility(ProgressBar.INVISIBLE);
+    	
     	FeedAdapter adapter = new FeedAdapter(this, folders.get(posFolder).getFlux(posFeed), leedURL);
         listView.setAdapter(adapter);
         
@@ -401,6 +420,8 @@ public class MainActivity extends Activity
 		intent.putExtras(objetbunble);
 		
 		startActivity(intent);
+		
+		settingFlag = true;
     }
     
     public String ReadSettings(Context context)
@@ -449,4 +470,20 @@ public class MainActivity extends Activity
     {
     	settings();
     }
+
+    @Override
+    public void onResume()
+    {
+    	// Permet de mettre à jour les données suite à la modification de l'URL
+    	if(settingFlag == true)
+    	{
+    		progressBar.setVisibility(ProgressBar.VISIBLE);
+    		
+    		ReadSettings(this);
+	    	updateData();
+	    	settingFlag = false;
+    	}
+    	super.onResume();
+    }
+    
 }

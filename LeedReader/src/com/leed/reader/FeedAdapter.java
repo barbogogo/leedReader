@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class FeedAdapter extends ArrayAdapter<String> 
@@ -40,6 +41,8 @@ public class FeedAdapter extends ArrayAdapter<String>
 	private String leedURL;
 	
 	private View pRowView;
+	
+	private ProgressBar progressBar;
  
 	public FeedAdapter(Context context, Flux feed, String pLeedURL)
 	{
@@ -48,6 +51,10 @@ public class FeedAdapter extends ArrayAdapter<String>
 		articles = feed.getArticles();
 		
 		this.context = context;
+		
+		progressBar = (ProgressBar) ((MainActivity)context).findViewById(R.id.progressBar1);
+		progressBar.setVisibility(ProgressBar.INVISIBLE);
+		
 		leedURL = pLeedURL;
 	}
  
@@ -87,6 +94,8 @@ public class FeedAdapter extends ArrayAdapter<String>
 					@Override
 					public void onClick(View v) 
 					{
+						progressBar.setVisibility(ProgressBar.VISIBLE);
+						
 						aPosition = pTitlePosition;
 						
 						pPosition = position;
@@ -101,6 +110,8 @@ public class FeedAdapter extends ArrayAdapter<String>
 					@Override
 					public void onClick(View v) 
 					{
+						progressBar.setVisibility(ProgressBar.VISIBLE);
+						
 						aPosition = pNoReadPosition;
 						
 						pPosition = position;
@@ -225,5 +236,7 @@ public class FeedAdapter extends ArrayAdapter<String>
 		
 		((MainActivity) context).updateFeed();
 
+		progressBar.setVisibility(ProgressBar.INVISIBLE);
+		
     }	
 }

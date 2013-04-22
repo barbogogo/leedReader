@@ -75,4 +75,12 @@ public class SettingsActivity extends Activity
 		} 
 	}
 	
+	@Override
+	public void finish()
+	{
+		
+		
+		super.finish();
+		
+	}
 }
