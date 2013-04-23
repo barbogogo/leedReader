@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,6 +46,7 @@ public class MainActivity extends Activity
 	private static final int cFolder = 0;
 	private static final int cFeed = 1;
 	private static final int cArticle = 2;
+	private static final int cInit = 3;
 	
 	private ArrayList<String> items = new ArrayList<String>();
 	private ArrayList<String> nbNoRead = new ArrayList<String>();
@@ -73,12 +75,18 @@ public class MainActivity extends Activity
 	private ArrayList<String> folderItems = new ArrayList<String>();
 	
 	private final String fileName = "settings.dat";
+	public static final String PREFS_NAME = "MyPrefsFile";
 	
 	private String leedURL = "";
+	private String leedURLParam = "";
+	private String login;
+	private String password;
 	
 	private int errorServer;
 
 	private boolean settingFlag;
+	
+	public Context context;
 	
     public String readJSONFeed(String URL) 
     {
@@ -137,6 +145,7 @@ public class MainActivity extends Activity
             	case cFeed:
             	break;
             		
+            	case cInit:
             	case cFolder:
             	default:
 		    		items.clear();
@@ -152,6 +161,8 @@ public class MainActivity extends Activity
         {
     		int activateRequest = 1;
     		
+    		String url = urls[0]+"&login="+login+"&password="+password;
+    		
     		switch(typeRequest)
             {
             	case cArticle:
@@ -164,13 +175,14 @@ public class MainActivity extends Activity
             			activateRequest = 0;
             		}
             	break;
-            		
+            	
+            	case cInit:
             	default:
             		activateRequest = 1;
             }
     		
     		if(activateRequest == 1)
-    			return readJSONFeed(urls[0]);
+    			return readJSONFeed(url);
     		else
     			return "{noData}";
     		
@@ -187,8 +199,23 @@ public class MainActivity extends Activity
             	
 	                switch(typeRequest)
 	                {
-	                	case cArticle:
-	                        
+	                	case cInit:
+	                		JSONObject json = new JSONObject(result);
+	                	    JSONObject json2 = json.getJSONObject("error");
+	                	    int idError = json2.getInt("id");
+	                	    String msgError = json2.getString("message");
+	                	    
+	                	    if(idError == 0)
+	                	    {
+	                	    	updateData();
+	                	    }
+	                	    else
+	                	    {
+	                	    	Toast.makeText(context, msgError, Toast.LENGTH_LONG).show();
+	                	    	progressBar.setVisibility(ProgressBar.INVISIBLE);
+	                	    	erreurServeur();
+	                	    }
+	                		
 	                	break;
 	                
 	                	case cFeed:
@@ -265,11 +292,14 @@ public class MainActivity extends Activity
         
         progressBar.setVisibility(ProgressBar.VISIBLE);
         
+        context = this;
+        
         Toast.makeText(this, "bienvenue",Toast.LENGTH_LONG).show();
         
-        ReadSettings(this);
+//        ReadSettings(this);
+        readURL();
         
-        updateData();
+        init();
     }
  
     public boolean onCreateOptionsMenu(Menu menu) 
@@ -325,15 +355,23 @@ public class MainActivity extends Activity
     {
     	progressBar.setVisibility(ProgressBar.VISIBLE);
     	
-    	ReadSettings(this);
+//    	ReadSettings(this);
+    	readURL();
     	
     	updateData();
+    }
+    
+    public void init()
+    {
+    	// Permet de tester la connexion
+    	typeRequest = cInit;
+        new ReadWeatherJSONFeedTask().execute(leedURL+"/json.php?a=a");
     }
     
     public void updateData()
     {
     	typeRequest = cFolder;
-        new ReadWeatherJSONFeedTask().execute(leedURL+"/json.php");
+        new ReadWeatherJSONFeedTask().execute(leedURL+"/json.php?option=getFolders");
     }
     
     public void updateGlobalFolder()
@@ -412,7 +450,8 @@ public class MainActivity extends Activity
     public void settings()
     {
 		Bundle objetbunble = new Bundle();
-		objetbunble.putString("url", leedURL);
+		objetbunble.putString("url", leedURLParam);
+		objetbunble.putString("login", login);
 		objetbunble.putInt("errorServer", errorServer);
 
 		Intent intent = new Intent(this, SettingsActivity.class);
@@ -466,6 +505,17 @@ public class MainActivity extends Activity
     	return data; 
     }
     
+    public void readURL()
+    {
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		String silent = settings.getString("url", "");
+		leedURLParam = silent;
+		leedURL = silent+"/plugins/api";
+		
+		login = settings.getString("login", "");
+		password = settings.getString("password", "");
+    }
+    
     public void erreurServeur()
     {
     	settings();
@@ -479,8 +529,9 @@ public class MainActivity extends Activity
     	{
     		progressBar.setVisibility(ProgressBar.VISIBLE);
     		
-    		ReadSettings(this);
-	    	updateData();
+//    		ReadSettings(this);
+    		readURL();
+	    	init();
 	    	settingFlag = false;
     	}
     	super.onResume();

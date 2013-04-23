@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ public class SettingsActivity extends Activity
 {
 
 	final String fileName = "settings.dat";
+	public static final String PREFS_NAME = "MyPrefsFile";
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
@@ -21,11 +23,14 @@ public class SettingsActivity extends Activity
 		   setContentView(R.layout.settings);
 		   
 		   String url = this.getIntent().getStringExtra("url");
+		   String login = this.getIntent().getStringExtra("login");
 		   int errorServer = this.getIntent().getIntExtra("errorServer", 1);
 		   
-		   TextView datatext = (TextView) findViewById(R.id.adresseServeurEdit);
-			
-		   datatext.setText(url);
+		   TextView dataText = (TextView) findViewById(R.id.adresseServeurEdit);
+		   dataText.setText(url);
+		   
+		   TextView loginText = (TextView) findViewById(R.id.loginServerEdit);
+		   loginText.setText(login);
 		   
 		   if(errorServer == 1)
 			   Toast.makeText(this, "URL non valide, merci de la changer",Toast.LENGTH_SHORT).show();
@@ -33,11 +38,20 @@ public class SettingsActivity extends Activity
 	
 	public void btnSaveData(View view)
 	{
-		TextView datatext = (TextView) findViewById(R.id.adresseServeurEdit);
+		TextView dataText = (TextView) findViewById(R.id.adresseServeurEdit);
 		
-		String sData = datatext.getText()+"";
+		String sData = dataText.getText()+"";
 		
-		saveData(sData);
+		saveURL(sData);
+		
+		TextView loginText = (TextView) findViewById(R.id.loginServerEdit);
+		TextView passwordText = (TextView) findViewById(R.id.passwordServerEdit);
+		
+		String lData = loginText.getText()+"";
+		String pData = passwordText.getText()+"";
+		
+		if(pData.length() > 0)
+			saveLoginPasswd(lData, pData);
 	}
 	
 	public void saveData(String data)
@@ -75,12 +89,34 @@ public class SettingsActivity extends Activity
 		} 
 	}
 	
+	public void saveURL(String data)
+	{
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		SharedPreferences.Editor editor = settings.edit();
+		
+		editor.putString("url", data);
+		
+		editor.commit();
+		
+		this.finish();
+	}
+	
+	public void saveLoginPasswd(String login, String password)
+	{
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		SharedPreferences.Editor editor = settings.edit();
+		
+		editor.putString("login", login);
+		editor.putString("password", password);
+		
+		editor.commit();
+		
+		this.finish();
+	}
+	
 	@Override
 	public void finish()
 	{
-		
-		
 		super.finish();
-		
 	}
 }
