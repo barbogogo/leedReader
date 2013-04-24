@@ -41,8 +41,10 @@ public class FeedAdapter extends ArrayAdapter<String>
 	private String leedURL;
 	
 	private ProgressBar progressBar;
- 
-	public FeedAdapter(Context context, Flux feed, String pLeedURL)
+
+	private String login, password;
+	
+	public FeedAdapter(Context context, Flux feed, String pLeedURL, String pLogin, String pPassword)
 	{
 		super(context, R.layout.activity_main, feed.getArticlesTitle());
 		
@@ -54,6 +56,8 @@ public class FeedAdapter extends ArrayAdapter<String>
 		progressBar.setVisibility(ProgressBar.INVISIBLE);
 		
 		leedURL = pLeedURL;
+		login = pLogin;
+		password = pPassword;
 	}
  
 	@Override
@@ -180,7 +184,7 @@ public class FeedAdapter extends ArrayAdapter<String>
     	@Override
 		protected String doInBackground(String... urls) 
         {
-    		return readJSONFeed(urls[0]);
+    		return readJSONFeed(urls[0]+"&login="+login+"&password="+password);
         }
  
         @Override

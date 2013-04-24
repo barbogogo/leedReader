@@ -432,7 +432,7 @@ public class MainActivity extends Activity
     {
     	progressBar.setVisibility(ProgressBar.INVISIBLE);
     	
-    	FeedAdapter adapter = new FeedAdapter(this, folders.get(posFolder).getFlux(posFeed), leedURL);
+    	FeedAdapter adapter = new FeedAdapter(this, folders.get(posFolder).getFlux(posFeed), leedURL, login, password);
         listView.setAdapter(adapter);
         
         listView.setOnItemClickListener(
