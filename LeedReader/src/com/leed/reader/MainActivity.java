@@ -6,7 +6,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.util.ArrayList;
  
 import org.apache.http.HttpEntity;
@@ -161,7 +163,21 @@ public class MainActivity extends Activity
         {
     		int activateRequest = 1;
     		
-    		String url = urls[0]+"&login="+login+"&password="+password;
+    		URLEncoder urlEncoder;
+    		String loginEncoded;
+    		String passwordEncoded;
+    		try 
+    		{
+        		loginEncoded = URLEncoder.encode(login, "UTF-8");
+        		passwordEncoded = URLEncoder.encode(password, "UTF-8");
+        	} 
+    		catch (UnsupportedEncodingException e) 
+    		{
+    			loginEncoded="";
+    			passwordEncoded="";
+	    	}
+    		
+    		String url = urls[0]+"&login="+loginEncoded+"&password="+passwordEncoded;
     		
     		switch(typeRequest)
             {

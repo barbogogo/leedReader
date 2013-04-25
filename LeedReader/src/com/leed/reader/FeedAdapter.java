@@ -3,6 +3,8 @@ package com.leed.reader;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import org.apache.http.HttpEntity;
@@ -184,7 +186,24 @@ public class FeedAdapter extends ArrayAdapter<String>
     	@Override
 		protected String doInBackground(String... urls) 
         {
-    		return readJSONFeed(urls[0]+"&login="+login+"&password="+password);
+    		
+    		URLEncoder urlEncoder;
+    		String loginEncoded;
+    		String passwordEncoded;
+    		try 
+    		{
+        		loginEncoded = URLEncoder.encode(login, "UTF-8");
+        		passwordEncoded = URLEncoder.encode(password, "UTF-8");
+        	} 
+    		catch (UnsupportedEncodingException e) 
+    		{
+    			loginEncoded="";
+    			passwordEncoded="";
+	    	}
+    		
+    		String url = urls[0]+"&login="+loginEncoded+"&password="+passwordEncoded;
+    		
+    		return readJSONFeed(url);
         }
  
         @Override
