@@ -24,16 +24,12 @@ public class SettingsActivity extends Activity
 		   
 		   String url = this.getIntent().getStringExtra("url");
 		   String login = this.getIntent().getStringExtra("login");
-		   int errorServer = this.getIntent().getIntExtra("errorServer", 1);
 		   
 		   TextView dataText = (TextView) findViewById(R.id.adresseServeurEdit);
 		   dataText.setText(url);
 		   
 		   TextView loginText = (TextView) findViewById(R.id.loginServerEdit);
 		   loginText.setText(login);
-		   
-		   if(errorServer == 1)
-			   Toast.makeText(this, "URL non valide, merci de la changer",Toast.LENGTH_SHORT).show();
 	}
 	
 	public void btnSaveData(View view)
@@ -52,6 +48,8 @@ public class SettingsActivity extends Activity
 		
 		if(pData.length() > 0)
 			saveLoginPasswd(lData, pData);
+		
+		this.finish();
 	}
 	
 	public void saveData(String data)
@@ -97,8 +95,6 @@ public class SettingsActivity extends Activity
 		editor.putString("url", data);
 		
 		editor.commit();
-		
-		this.finish();
 	}
 	
 	public void saveLoginPasswd(String login, String password)
@@ -110,8 +106,6 @@ public class SettingsActivity extends Activity
 		editor.putString("password", password);
 		
 		editor.commit();
-		
-		this.finish();
 	}
 	
 	@Override

@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
  
 public class MobileArrayAdapter extends ArrayAdapter<String> {
-	private final Context context;
-	private final ArrayList<String> values;
+	private final Context pContext;
+	private final ArrayList<String> pValues;
 	private final ArrayList<String> pNbNoRead;
 	private final ArrayList<Folder> pFolders;
  
@@ -23,13 +23,13 @@ public class MobileArrayAdapter extends ArrayAdapter<String> {
 		pFolders = folders;
 		pNbNoRead = nbNoRead();
 		
-		this.context = context;
-		this.values = values;
+		pContext = context;
+		pValues = values;
 	}
  
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		LayoutInflater inflater = (LayoutInflater) context
+		LayoutInflater inflater = (LayoutInflater) pContext
 			.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
  
 		View rowView = inflater.inflate(R.layout.linear_layout, parent, false);
@@ -37,7 +37,7 @@ public class MobileArrayAdapter extends ArrayAdapter<String> {
 		TextView nbNoRead = (TextView) rowView.findViewById(R.id.nbNoRead);
 		ImageView imageView = (ImageView) rowView.findViewById(R.id.logo);
 		
-		textView.setText(values.get(position));
+		textView.setText(pValues.get(position));
 		nbNoRead.setText(pNbNoRead.get(position));
  
 		imageView.setImageResource(R.drawable.folder);

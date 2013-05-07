@@ -1,26 +1,10 @@
 package com.leed.reader;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,42 +14,37 @@ import android.widget.TextView;
 
 public class FeedAdapter extends ArrayAdapter<String> 
 {
-	private final Context context;
+	private static Context mainContext;
 	
-	private final ArrayList<Article> articles;
+	private static ArrayList<Article> articles;
 	
-	int pPosition;
-	
-	int aPosition = 0;
+	private static int pPosition;
+
 	final int pTitlePosition = 0;
 	final int pNoReadPosition = 1;
 	
-	private String leedURL;
+	private static ProgressBar progressBar;
 	
-	private ProgressBar progressBar;
-
-	private String login, password;
+	private APIConnection connection;
 	
-	public FeedAdapter(Context context, Flux feed, String pLeedURL, String pLogin, String pPassword)
+	public FeedAdapter(Context context, Flux feed)
 	{
 		super(context, R.layout.activity_main, feed.getArticlesTitle());
 		
 		articles = feed.getArticles();
 		
-		this.context = context;
+		mainContext = context;
 		
 		progressBar = (ProgressBar) ((MainActivity)context).findViewById(R.id.progressBar1);
 		progressBar.setVisibility(ProgressBar.INVISIBLE);
 		
-		leedURL = pLeedURL;
-		login = pLogin;
-		password = pPassword;
+		connection = ((MainActivity)context).getConnection();
 	}
  
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) 
 	{
-		LayoutInflater inflater = (LayoutInflater) context
+		LayoutInflater inflater = (LayoutInflater) mainContext
 			.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
  
 		View pRowView = inflater.inflate(R.layout.activity_feed, parent, false);
@@ -100,8 +79,6 @@ public class FeedAdapter extends ArrayAdapter<String>
 					{
 						progressBar.setVisibility(ProgressBar.VISIBLE);
 						
-						aPosition = pTitlePosition;
-						
 						pPosition = position;
 						
 						Article article = articles.get(pPosition);
@@ -109,7 +86,7 @@ public class FeedAdapter extends ArrayAdapter<String>
 						
 						notifyDataSetChanged();
 						
-						new ReadWeatherJSONFeedTask().execute(leedURL+"/json.php?option=article&idArticle=" + articles.get(position).getId());
+						connection.getArticle(articles.get(position).getId());
 					}
 				});
 		
@@ -121,8 +98,6 @@ public class FeedAdapter extends ArrayAdapter<String>
 					{
 						progressBar.setVisibility(ProgressBar.VISIBLE);
 						
-						aPosition = pNoReadPosition;
-						
 						pPosition = position;
 						
 						Article article = articles.get(pPosition);
@@ -132,12 +107,12 @@ public class FeedAdapter extends ArrayAdapter<String>
 						if(article.getIsRead() == 0)
 						{
 							article.setRead();
-							new ReadWeatherJSONFeedTask().execute(leedURL+"/json.php?option=setRead&idArticle=" + articles.get(position).getId());
+							connection.setReadArticle(article.getId());
 						}
 						else
 						{
 							article.setUnRead();
-							new ReadWeatherJSONFeedTask().execute(leedURL+"/json.php?option=setUnRead&idArticle=" + articles.get(position).getId());
+							connection.setUnReadArticle(article.getId());
 						}
 					}
 				});
@@ -145,107 +120,12 @@ public class FeedAdapter extends ArrayAdapter<String>
 		return pRowView;
 	}
 	
-	 public String readJSONFeed(String URL) 
-	    {
-	        StringBuilder stringBuilder = new StringBuilder();
-	        HttpClient httpClient = new DefaultHttpClient();
-	        HttpGet httpGet = new HttpGet(URL);
-	        try
-	        {
-	            HttpResponse response = httpClient.execute(httpGet);
-	            StatusLine statusLine = response.getStatusLine();
-	            int statusCode = statusLine.getStatusCode();
-	            if (statusCode == 200) 
-	            {
-	                HttpEntity entity = response.getEntity();
-	                InputStream inputStream = entity.getContent();
-	                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-	                String line;
-	                while ((line = reader.readLine()) != null) 
-	                {
-	                    stringBuilder.append(line);
-	                }
-	                inputStream.close();
-	            } 
-	            else 
-	            {
-	                Log.d("JSON", "Failed to download file");
-	            }
-	        } 
-	        catch (Exception e)
-	        {
-	            Log.d("readJSONFeed", e.getLocalizedMessage());
-	        }
-	        
-	        return stringBuilder.toString();
-	    }
-	
-	private class ReadWeatherJSONFeedTask extends AsyncTask <String, Void, String> 
-    {    	
-    	// String... permit to define a String array
-    	@Override
-		protected String doInBackground(String... urls) 
-        {
-    		
-    		URLEncoder urlEncoder;
-    		String loginEncoded;
-    		String passwordEncoded;
-    		try 
-    		{
-        		loginEncoded = URLEncoder.encode(login, "UTF-8");
-        		passwordEncoded = URLEncoder.encode(password, "UTF-8");
-        	} 
-    		catch (UnsupportedEncodingException e) 
-    		{
-    			loginEncoded="";
-    			passwordEncoded="";
-	    	}
-    		
-    		String url = urls[0]+"&login="+loginEncoded+"&password="+passwordEncoded;
-    		
-    		return readJSONFeed(url);
-        }
- 
-        @Override
-		protected void onPostExecute(String result) 
-        {
-        	switch(aPosition)
-        	{
-        		case pNoReadPosition:
-        			progressBar.setVisibility(ProgressBar.INVISIBLE);
-        		break;
-        	
-	        	case pTitlePosition:
-	        	default:
-	        	
-		            try
-		            {             
-		            	JSONObject jsonObject;
-		            	
-		                jsonObject = new JSONObject(result);
-		        		
-		        		String content = jsonObject.getString("content");
-		        		
-		        		Article article = articles.get(pPosition);
-		                article.setContent(content);
-		        		
-		                updateArticle();
-		
-		            } 
-		            catch (Exception e)
-		            {
-		                Log.d("ReadWeatherJSONFeedTask", e.getLocalizedMessage());
-		            }
-		            
-		        break;
-        	}
-        }
-    }
-	
-	public void updateArticle()
+	public static void updateArticle(String content)
     {
 		Article article = articles.get(pPosition);
 	    
+        article.setContent(content);
+		
     	article.setRead();
     	
 		Bundle objetbunble = new Bundle();
@@ -256,13 +136,17 @@ public class FeedAdapter extends ArrayAdapter<String>
 		objetbunble.putString("author", article.getAuthor());
 		objetbunble.putString("urlArticle", article.getUrlArticle());
     	
-		Intent intent = new Intent(context, WebviewActivity.class);
+		Intent intent = new Intent(mainContext, WebviewActivity.class);
 		
 		intent.putExtras(objetbunble);
 		
-		context.startActivity(intent);
+		mainContext.startActivity(intent);
 
 		progressBar.setVisibility(ProgressBar.INVISIBLE);
-		
-    }	
+    }
+	
+	public static void stateChanged()
+	{
+		progressBar.setVisibility(ProgressBar.INVISIBLE);
+	}
 }

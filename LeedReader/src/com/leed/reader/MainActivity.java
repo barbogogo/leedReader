@@ -1,37 +1,16 @@
 package com.leed.reader;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URLEncoder;
 import java.util.ArrayList;
- 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONObject;
  
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -41,29 +20,9 @@ import android.widget.AdapterView.OnItemClickListener;
 public class MainActivity extends Activity 
 {
 	private ListView listView;
-	private WebView webView;
 	private ProgressBar progressBar;
 	
-	private int typeRequest = 0;
-	private static final int cFolder = 0;
-	private static final int cFeed = 1;
-	private static final int cArticle = 2;
-	private static final int cInit = 3;
-	
-	private ArrayList<String> items = new ArrayList<String>();
-	private ArrayList<String> nbNoRead = new ArrayList<String>();
-	private ArrayList<String> idItems = new ArrayList<String>();
-	
-	/**
-	 * Folder list
-	 */
-	private ArrayList<Folder> folders = new ArrayList<Folder>();
-	/**
-	 * used folder position
-	 */
-	private int posFolder  = 0;
-	private int posFeed    = 0;
-	private int posArticle = 0;
+	private int posFolder = 0;
 	
 	/**
 	 * Navigation automate
@@ -74,224 +33,20 @@ public class MainActivity extends Activity
 	private static final int cpFeed = 2;
 	private static final int cpArticle = 3;
 	
-	private ArrayList<String> folderItems = new ArrayList<String>();
+	private ArrayList<Folder> pFolders = new ArrayList<Folder>();
 	
-	private final String fileName = "settings.dat";
 	public static final String PREFS_NAME = "MyPrefsFile";
 	
 	private String leedURL = "";
 	private String leedURLParam = "";
 	private String login;
 	private String password;
-	
-	private int errorServer;
 
 	private boolean settingFlag;
 	
 	public Context context;
 	
-    public String readJSONFeed(String URL) 
-    {
-        StringBuilder stringBuilder = new StringBuilder();
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet(URL);
-        
-        URI pUri = httpGet.getURI();
-        String host = pUri.getHost();
-        
-        errorServer = 1;
-        
-        if(host != null)
-        {
-	        try
-	        {
-	            HttpResponse response = httpClient.execute(httpGet);
-	            StatusLine statusLine = response.getStatusLine();
-	            int statusCode = statusLine.getStatusCode();
-	            if (statusCode == 200) 
-	            {
-	                HttpEntity entity = response.getEntity();
-	                InputStream inputStream = entity.getContent();
-	                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-	                String line;
-	                while ((line = reader.readLine()) != null) 
-	                {
-	                    stringBuilder.append(line);
-	                }
-	                inputStream.close();
-	                
-	                errorServer = 0;
-	            }
-	        }
-	        catch (IOException e)
-	        {
-	        	
-	        }
-        }
-        
-        return stringBuilder.toString();
-    }
- 
-    private class ReadWeatherJSONFeedTask extends AsyncTask <String, Void, String> 
-    {
-    	
-    	protected void onPreExecute() 
-        {
-    		// At the beginning we erase all data in items
-    		
-    		switch(typeRequest)
-            {
-            	case cArticle:
-            	break;
-            	
-            	case cFeed:
-            	break;
-            		
-            	case cInit:
-            	case cFolder:
-            	default:
-		    		items.clear();
-		    		nbNoRead.clear();
-		    		idItems.clear();
-		    		folders.clear();
-	    		break;
-            }
-        }
-    	
-    	// String... permit to define a String array
-    	protected String doInBackground(String... urls) 
-        {
-    		int activateRequest = 1;
-    		
-    		URLEncoder urlEncoder;
-    		String loginEncoded;
-    		String passwordEncoded;
-    		try 
-    		{
-        		loginEncoded = URLEncoder.encode(login, "UTF-8");
-        		passwordEncoded = URLEncoder.encode(password, "UTF-8");
-        	} 
-    		catch (UnsupportedEncodingException e) 
-    		{
-    			loginEncoded="";
-    			passwordEncoded="";
-	    	}
-    		
-    		String url = urls[0]+"&login="+loginEncoded+"&password="+passwordEncoded;
-    		
-    		switch(typeRequest)
-            {
-            	case cArticle:
-            		activateRequest = 1;
-            	break;
-            	
-            	case cFeed:
-            		if(folders.get(posFolder).getFlux(posFeed).getNbArticles() > 0)
-            		{ // If articles loaded, no request
-            			activateRequest = 0;
-            		}
-            	break;
-            	
-            	case cInit:
-            	default:
-            		activateRequest = 1;
-            }
-    		
-    		if(activateRequest == 1)
-    			return readJSONFeed(url);
-    		else
-    			return "{noData}";
-    		
-        }
- 
-        protected void onPostExecute(String result) 
-        {
-            try
-            {             
-            	JSONObject jsonObject;
-            	
-            	if(errorServer == 0)
-        		{
-            	
-	                switch(typeRequest)
-	                {
-	                	case cInit:
-	                		JSONObject json = new JSONObject(result);
-	                	    JSONObject json2 = json.getJSONObject("error");
-	                	    int idError = json2.getInt("id");
-	                	    String msgError = json2.getString("message");
-	                	    
-	                	    if(idError == 0)
-	                	    {
-	                	    	updateData();
-	                	    }
-	                	    else
-	                	    {
-	                	    	Toast.makeText(context, msgError, Toast.LENGTH_LONG).show();
-	                	    	progressBar.setVisibility(ProgressBar.INVISIBLE);
-	                	    	erreurServeur();
-	                	    }
-	                		
-	                	break;
-	                
-	                	case cFeed:
-	                		if(folders.get(posFolder).getFlux(posFeed).getNbArticles() == 0)
-	                		{ // Only if there is no articles loaded
-	                			jsonObject = new JSONObject(result);
-	                			
-	                			JSONArray  articlesItems = new JSONArray(jsonObject.getString("articles"));
-		                        
-		                        for (int i = 0; i < articlesItems.length(); i++) 
-		                        {
-		                            JSONObject postalCodesItem = articlesItems.getJSONObject(i);
-		                            
-		                            Article article = new Article(postalCodesItem.getString("id"));
-		                            article.setTitle(postalCodesItem.getString("title"));
-		                            article.setDate(postalCodesItem.getString("date"));
-		                            article.setAuthor(postalCodesItem.getString("author"));
-		                            article.setUrlArticle(postalCodesItem.getString("urlArticle"));
-		                            
-		                            folders.get(posFolder).getFlux(posFeed).addArticle(article);
-		                        }
-	                		}
-	                		
-	                		updateFeed();
-	                	break;
-                		
-	                	case cFolder:
-	                	default:
-	                		jsonObject = new JSONObject(result);
-	                		
-	                		JSONArray  foldersItems = new JSONArray (jsonObject.getString("folders"));
-	                        
-	                        //---print out the content of the json feed---
-	                        for (int i = 0; i < foldersItems.length(); i++) 
-	                        {
-	                            JSONObject postalCodesItem = foldersItems.getJSONObject(i);
-	                            
-	                            items.add(postalCodesItem.getString("titre"));
-	                            idItems.add(postalCodesItem.getString("id"));
-	                            
-	                            folders.add(new Folder(postalCodesItem.toString()));
-	                        }
-	                        
-	                        updateGlobalFolder();
-	
-	                	break;
-		                }
-	        		}
-                	
-            		else
-            		{
-            			erreurServeur();
-            		}
-            } 
-            catch (Exception e)
-            {
-                Log.d("ReadWeatherJSONFeedTask", e.getLocalizedMessage());
-            }
-        }
-    }
+	private APIConnection connection;
  
     @Override
     public void onCreate(Bundle savedInstanceState) 
@@ -300,7 +55,6 @@ public class MainActivity extends Activity
         setContentView(R.layout.activity_main);
         
         listView = (ListView)findViewById(R.id.ListViewId);
-        webView  = (WebView) findViewById(R.id.webView1);
         progressBar = (ProgressBar) findViewById(R.id.progressBar1);
         
         posNavigation = cpGlobal;
@@ -312,8 +66,9 @@ public class MainActivity extends Activity
         
         Toast.makeText(this, "bienvenue",Toast.LENGTH_LONG).show();
         
-//        ReadSettings(this);
-        readURL();
+        connection = new APIConnection(context);
+        
+        getParameters();
         
         init();
     }
@@ -353,12 +108,12 @@ public class MainActivity extends Activity
     		
 	    	case cpFolder:
 	    		posNavigation = cpGlobal;
-	    		updateGlobalFolder();
+	    		getCategories();
     		break;
     		
 	    	case cpFeed:
 	    		posNavigation = cpFolder;
-	    		updateFolder();
+	    		updateFeed(pFolders);
 	    	break;
 	    		
 	    	case cpArticle:
@@ -371,31 +126,30 @@ public class MainActivity extends Activity
     {
     	progressBar.setVisibility(ProgressBar.VISIBLE);
     	
-//    	ReadSettings(this);
-    	readURL();
+    	getParameters();
     	
-    	updateData();
+    	getCategories();
     }
     
     public void init()
     {
-    	// Permet de tester la connexion
-    	typeRequest = cInit;
-        new ReadWeatherJSONFeedTask().execute(leedURL+"/json.php?a=a");
+    	// connection test
+        connection.init();
     }
     
-    public void updateData()
+    public void getCategories()
     {
-    	typeRequest = cFolder;
-        new ReadWeatherJSONFeedTask().execute(leedURL+"/json.php?option=getFolders");
+        connection.getCategories();
     }
     
-    public void updateGlobalFolder()
+    public void updateCategories(ArrayList<String> items, final ArrayList<Folder> folders)
     {
     	progressBar.setVisibility(ProgressBar.INVISIBLE);
     	
     	MobileArrayAdapter adapter = new MobileArrayAdapter(this, items, folders);
         listView.setAdapter(adapter);
+        
+        pFolders = folders;
         
         listView.setOnItemClickListener(
     		new OnItemClickListener() 
@@ -409,46 +163,50 @@ public class MainActivity extends Activity
 
 	            	posNavigation = cpFolder;
 	            	
-	            	folderItems.clear();
-	            	folderItems.addAll(folders.get(posFolder).getTitleFeeds());
-
-	            	updateFolder();
+	            	updateFeed(folders);
 	            }
     		}
         );
     }
     
-    public void updateFolder()
+    public void updateFeed(final ArrayList<Folder> folders)
     {
     	progressBar.setVisibility(ProgressBar.INVISIBLE);
     	
-    	FolderAdapter adapter = new FolderAdapter(this, folders.get(posFolder));
-        listView.setAdapter(adapter);
-        
-        listView.setOnItemClickListener(
-        		new OnItemClickListener()
-        		{
-    	            @Override
-    	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
-    	            {    
-    	            	posFeed = position;
-    	            	
-    	            	posNavigation = cpFeed;
-    	            	
-    	            	progressBar.setVisibility(ProgressBar.VISIBLE);
-    	            	
-    	            	typeRequest = cFeed;
-    	                new ReadWeatherJSONFeedTask().execute(leedURL+"/json.php?option=flux&feedId=" + folders.get(posFolder).getFlux(position).getId());
-    	            }
-        		}
-            );
+    	if(folders.size() == 0)
+    	{
+    		getCategories();
+    	}
+    	else
+    	{
+	    	FolderAdapter adapter = new FolderAdapter(this, folders.get(posFolder));
+	        listView.setAdapter(adapter);
+	        
+	        listView.setOnItemClickListener(
+	        		new OnItemClickListener()
+	        		{
+	    	            @Override
+	    	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
+	    	            {        	            	
+	    	            	posNavigation = cpFeed;
+	    	            	
+	    	            	progressBar.setVisibility(ProgressBar.VISIBLE);
+	    	            	
+	    	            	String idFeed = folders.get(posFolder).getFlux(position).getId();
+	    	            	
+	    	            	if(folders.get(posFolder).getFlux(position).getNbArticles() == 0)
+	    	            		connection.getFeed(idFeed);
+	    	            }
+	        		}
+	            );
+    	}
     }
     
-    public void updateFeed()
+    public void updateFeed(Flux feed)
     {
     	progressBar.setVisibility(ProgressBar.INVISIBLE);
     	
-    	FeedAdapter adapter = new FeedAdapter(this, folders.get(posFolder).getFlux(posFeed), leedURL, login, password);
+    	FeedAdapter adapter = new FeedAdapter(this, feed);
         listView.setAdapter(adapter);
         
         listView.setOnItemClickListener(
@@ -457,10 +215,17 @@ public class MainActivity extends Activity
     	            @Override
     	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
     	            {   
-    	            	// Lorsque l'on clique, on ne fait rien
+    	            	// do nothing
     	            }
         		}
         		);
+    }
+    
+    public void erreurServeur(String msg)
+    {
+    	Toast.makeText(this, msg,Toast.LENGTH_LONG).show();
+
+    	settings();
     }
     
     public void settings()
@@ -468,7 +233,6 @@ public class MainActivity extends Activity
 		Bundle objetbunble = new Bundle();
 		objetbunble.putString("url", leedURLParam);
 		objetbunble.putString("login", login);
-		objetbunble.putInt("errorServer", errorServer);
 
 		Intent intent = new Intent(this, SettingsActivity.class);
 		
@@ -479,49 +243,7 @@ public class MainActivity extends Activity
 		settingFlag = true;
     }
     
-    public String ReadSettings(Context context)
-    { 
-    	FileInputStream fIn = null; 
- 
-    	String data = ""; 
-
-    	File file = context.getFileStreamPath(fileName);
-    	
-    	try
-    	{
-    		if(file.exists())
-    		{
-	    	    fIn = context.openFileInput(fileName);
-	    	    
-				byte[] input = new byte[fIn.available()];
-				while (fIn.read(input) != -1) {}
-				data += new String(input);
-	    	    
-	    	    leedURL = data;
-    		}
-    	} 
-    	catch (Exception e)
-    	{
-    		Log.d("debug", e.getMessage());
-    	}
-    	finally
-    	{
-    	    try
-    	    { 
-    	    	if(file.exists())
-        		{
-    	    		fIn.close();
-        		}
-    	    } 
-    	    catch (IOException e) 
-    	    { 
-    	    	Log.d("debug", e.getMessage());
-    	    } 
-    	}
-    	return data; 
-    }
-    
-    public void readURL()
+    public void getParameters()
     {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		String silent = settings.getString("url", "");
@@ -530,27 +252,28 @@ public class MainActivity extends Activity
 		
 		login = settings.getString("login", "");
 		password = settings.getString("password", "");
-    }
-    
-    public void erreurServeur()
-    {
-    	settings();
+		
+		connection.SetDataConnection(leedURL, login, password);
     }
 
+    public APIConnection getConnection()
+    {
+    	return connection;
+    }
+    
     @Override
     public void onResume()
     {
-    	// Permet de mettre à jour les données suite à la modification de l'URL
+    	// update data when parameters modification
     	if(settingFlag == true)
     	{
     		progressBar.setVisibility(ProgressBar.VISIBLE);
     		
-//    		ReadSettings(this);
-    		readURL();
+    		getParameters();
 	    	init();
 	    	settingFlag = false;
     	}
     	super.onResume();
     }
-    
+ 
 }
