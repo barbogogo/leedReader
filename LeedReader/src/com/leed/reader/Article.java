@@ -6,6 +6,7 @@ public class Article {
 	private String title;
 	private String content;
 	private int isRead;
+	private int isFav;
 	private String date;
 	private String author;
 	private String urlArticle;
@@ -54,6 +55,21 @@ public class Article {
 	public void setUnRead()
 	{
 		isRead = 0;
+	}
+	
+	public int getIsFav()
+	{
+		return isFav;
+	}
+	
+	public void setFav()
+	{
+		isFav = 1;
+	}
+	
+	public void setUnFav()
+	{
+		isFav = 0;
 	}
 	
 	public void setDate(String pDate)

@@ -53,6 +53,7 @@ public class FeedAdapter extends ArrayAdapter<String>
 		TextView noReadView = (TextView) pRowView.findViewById(R.id.readNoRead);
 		
 		int isRead = articles.get(position).getIsRead();
+		int isFav  = articles.get(position).getIsFav();
 		
 		titleView.setText(articles.get(position).getTitle());
 		
@@ -69,7 +70,17 @@ public class FeedAdapter extends ArrayAdapter<String>
 			noReadView.setText("noLu");
 		}
 		
+		if(isFav == 1)
+		{
+			favoriteView.setText("fav");
+		}
+		else
+		{
+			favoriteView.setText("noFav");
+		}
+		
 		noReadView.setTextSize(10);
+		favoriteView.setTextSize(10);
 		
 		titleView.setOnClickListener(
 				new View.OnClickListener() 
@@ -113,6 +124,33 @@ public class FeedAdapter extends ArrayAdapter<String>
 						{
 							article.setUnRead();
 							connection.setUnReadArticle(article.getId());
+						}
+					}
+				});
+		
+		favoriteView.setOnClickListener(
+				new View.OnClickListener() 
+				{
+					@Override
+					public void onClick(View v) 
+					{
+						progressBar.setVisibility(ProgressBar.VISIBLE);
+						
+						pPosition = position;
+						
+						Article article = articles.get(pPosition);
+						
+						notifyDataSetChanged();
+						
+						if(article.getIsFav() == 0)
+						{
+							article.setFav();
+							connection.setFavArticle(article.getId());
+						}
+						else
+						{
+							article.setUnFav();
+							connection.setUnFavArticle(article.getId());
 						}
 					}
 				});

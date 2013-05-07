@@ -43,6 +43,7 @@ public class APIConnection
 	private static final int cArticle = 2;
 	private static final int cInit = 3;
 	private static final int cRead = 4;
+	private static final int cFav = 5;
 	
 	public APIConnection(Context lContext)
 	{
@@ -90,6 +91,18 @@ public class APIConnection
 	{
 		typeRequest = cRead;
 		new ServerConnection().execute(leedURL+"/json.php?option=setUnRead&idArticle=" + idArticle);
+	}
+	
+	public void setFavArticle(String idArticle)
+	{
+		typeRequest = cFav;
+		new ServerConnection().execute(leedURL+"/json.php?option=setFavorite&idArticle=" + idArticle);
+	}
+	
+	public void setUnFavArticle(String idArticle)
+	{
+		typeRequest = cFav;
+		new ServerConnection().execute(leedURL+"/json.php?option=unsetFavorite&idArticle=" + idArticle);
 	}
 	
 	public String readJSONFeed(String URL) 
@@ -144,9 +157,9 @@ public class APIConnection
     		switch(typeRequest)
             {
             	case cArticle:
-            	break;
-            	
             	case cFeed:
+            	case cRead:
+            	case cFav:
             	break;
             		
             	case cInit:
@@ -243,6 +256,7 @@ public class APIConnection
 	                	break;
 	                	
 	                	case cRead:
+	                	case cFav:
 	                		stateChanged();
 	                	break;
 	                	
