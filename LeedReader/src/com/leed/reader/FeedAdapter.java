@@ -3,6 +3,7 @@ package com.leed.reader;
 import java.util.ArrayList;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -72,6 +73,7 @@ public class FeedAdapter extends ArrayAdapter<String>
 		
 		if(isFav == 1)
 		{
+			favoriteView.setTextColor(Color.parseColor("#0000FF"));
 			favoriteView.setText("fav");
 		}
 		else
@@ -144,12 +146,12 @@ public class FeedAdapter extends ArrayAdapter<String>
 						
 						if(article.getIsFav() == 0)
 						{
-							article.setFav();
+							article.setFav(1);
 							connection.setFavArticle(article.getId());
 						}
 						else
 						{
-							article.setUnFav();
+							article.setFav(0);
 							connection.setUnFavArticle(article.getId());
 						}
 					}

@@ -238,6 +238,7 @@ public class APIConnection
 	                            article.setDate(postalCodesItem.getString("date"));
 	                            article.setAuthor(postalCodesItem.getString("author"));
 	                            article.setUrlArticle(postalCodesItem.getString("urlArticle"));
+	                            article.setFav(postalCodesItem.getInt("favorite"));
 	                            
 	                            feed.addArticle(article);
 	                        }

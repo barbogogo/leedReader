@@ -62,14 +62,9 @@ public class Article {
 		return isFav;
 	}
 	
-	public void setFav()
+	public void setFav(int lFav)
 	{
-		isFav = 1;
-	}
-	
-	public void setUnFav()
-	{
-		isFav = 0;
+		isFav = lFav;
 	}
 	
 	public void setDate(String pDate)
