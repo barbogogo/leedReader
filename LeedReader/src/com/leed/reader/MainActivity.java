@@ -113,7 +113,7 @@ public class MainActivity extends Activity
     		
 	    	case cpFeed:
 	    		posNavigation = cpFolder;
-	    		updateFeed(pFolders);
+	    		updateCategory(pFolders);
 	    	break;
 	    		
 	    	case cpArticle:
@@ -163,13 +163,13 @@ public class MainActivity extends Activity
 
 	            	posNavigation = cpFolder;
 	            	
-	            	updateFeed(folders);
+	            	updateCategory(folders);
 	            }
     		}
         );
     }
     
-    public void updateFeed(final ArrayList<Folder> folders)
+    public void updateCategory(final ArrayList<Folder> folders)
     {
     	progressBar.setVisibility(ProgressBar.INVISIBLE);
     	

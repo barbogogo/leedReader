@@ -305,11 +305,6 @@ public class APIConnection
 		((MainActivity)mainContext).updateCategories(items, folders);
 	}
 	
-	private void updateCategories(ArrayList<Folder> folders)
-	{
-		((MainActivity)mainContext).updateFeed(folders);
-	}
-	
 	private void updateFeed(Flux feed)
 	{
 		((MainActivity)mainContext).updateFeed(feed);
