@@ -29,6 +29,7 @@ public class APIConnection
 	private String password;
 	
 	private Context mainContext;
+	private DataManagement dataContext;
 	
 	private int errorServer;
 	
@@ -45,9 +46,10 @@ public class APIConnection
 	private static final int cRead = 4;
 	private static final int cFav = 5;
 	
-	public APIConnection(Context lContext)
+	public APIConnection(Context lContext, DataManagement lDataContext)
 	{
 		mainContext = lContext;
+		dataContext = lDataContext;
 	}
 	
 	public void SetDataConnection(String lUrl, String lLogin, String lPassword)
@@ -69,10 +71,10 @@ public class APIConnection
 		new ServerConnection().execute(leedURL+"/json.php?option=getFolders");
 	}
 	
-	public void getFeed(String idFeed)
+	public void getFeed(Flux feed, String nbMaxArticle, int connectionType)
 	{
 		typeRequest = cFeed;
-		new ServerConnection().execute(leedURL+"/json.php?option=flux&feedId="+idFeed);
+		new ServerConnection().execute(leedURL+"/json.php?option=flux&feedId="+feed.getId()+"&nbMaxArticle="+nbMaxArticle+"&connectionType="+connectionType);
 	}
 	
 	public void getArticle(String idArticle)
@@ -140,7 +142,7 @@ public class APIConnection
 	        }
 	        catch (IOException e)
 	        {
-	        	
+	        	Log.w("LeedReaderConnection", e.getLocalizedMessage());
 	        }
         }
         
@@ -197,7 +199,7 @@ public class APIConnection
         protected void onPostExecute(String result) 
         {
             try
-            {             
+            {
             	JSONObject jsonObject;
             	
             	if(errorServer == 0)
@@ -223,7 +225,8 @@ public class APIConnection
 	                	break;
 	                
 	                	case cFeed:
-	                		Flux feed = new Flux("");
+	                		
+	                		Flux feed = new Flux();
 	                		
                 			jsonObject = new JSONObject(result);
                 			
@@ -239,6 +242,8 @@ public class APIConnection
 	                            article.setAuthor(postalCodesItem.getString("author"));
 	                            article.setUrlArticle(postalCodesItem.getString("urlArticle"));
 	                            article.setFav(postalCodesItem.getInt("favorite"));
+	                            article.setContent(postalCodesItem.getString("content"));
+	                            article.setIdFeed(postalCodesItem.getString("idFeed"));
 	                            
 	                            feed.addArticle(article);
 	                        }
@@ -272,13 +277,10 @@ public class APIConnection
 	                        {
 	                            JSONObject postalCodesItem = foldersItems.getJSONObject(i);
 	                            
-	                            items.add(postalCodesItem.getString("titre"));
-	                            idItems.add(postalCodesItem.getString("id"));
-	                            
 	                            folders.add(new Folder(postalCodesItem.toString()));
 	                        }
 	                        
-	                        updateData(items, folders);
+	                        updateData(folders);
 	
 	                	break;
 	                }
@@ -290,7 +292,7 @@ public class APIConnection
             } 
             catch (Exception e)
             {
-                Log.d("ReadWeatherJSONFeedTask", e.getLocalizedMessage());
+                Log.w("LeedReaderGetData", e.getLocalizedMessage());
             }
         }
     }
@@ -300,19 +302,19 @@ public class APIConnection
     	((MainActivity)mainContext).erreurServeur(msg);
     }
 	
-	private void updateData(ArrayList<String> items, final ArrayList<Folder> folders)
-	{
-		((MainActivity)mainContext).updateCategories(items, folders);
+	private void updateData(final ArrayList<Folder> folders)
+	{		
+		((DataManagement)dataContext).updateCategories(folders);
 	}
 	
 	private void updateFeed(Flux feed)
 	{
-		((MainActivity)mainContext).updateFeed(feed);
+		((DataManagement)dataContext).updateFeed(feed);
 	}
 	
 	private void updateArticle(String content)
 	{
-		FeedAdapter.updateArticle(content);
+		((DataManagement)dataContext).updateArticle(content);
 	}
 	
 	private void stateChanged()

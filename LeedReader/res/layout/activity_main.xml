@@ -18,8 +18,17 @@
             android:layout_gravity="left"
             android:background="@null"
             android:contentDescription="@string/main_menu_home"
-            android:onClick="btnGetInformation"
+            android:onClick="btnGetData"
             android:src="@drawable/home" />
+        
+        <Button 
+            android:id="@+id/offLineButton"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_gravity="left"
+            android:background="@null"
+            android:text="offLine"
+            android:onClick="btnGetOffLineData" />
 
         <ImageView
             android:id="@+id/imageView1"

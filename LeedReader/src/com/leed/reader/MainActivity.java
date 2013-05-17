@@ -1,16 +1,16 @@
 package com.leed.reader;
 
 import java.util.ArrayList;
- 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -33,21 +33,18 @@ public class MainActivity extends Activity
 	private static final int cpFeed = 2;
 	private static final int cpArticle = 3;
 	
-	private ArrayList<Folder> pFolders = new ArrayList<Folder>();
-	
-	public static final String PREFS_NAME = "MyPrefsFile";
-	
-	private String leedURL = "";
-	private String leedURLParam = "";
-	private String login;
-	private String password;
-
 	private boolean settingFlag;
+	
+	private DataManagement dataManagement;
+	
+	private Button offLineButton;
+	
+	private static final int cOnLine  = 0;
+	private static final int cGetData = 1;
+	private static final int cOffLine = 2;
 	
 	public Context context;
 	
-	private APIConnection connection;
- 
     @Override
     public void onCreate(Bundle savedInstanceState) 
     {
@@ -55,6 +52,7 @@ public class MainActivity extends Activity
         setContentView(R.layout.activity_main);
         
         listView = (ListView)findViewById(R.id.ListViewId);
+        offLineButton = (Button)findViewById(R.id.offLineButton);
         progressBar = (ProgressBar) findViewById(R.id.progressBar1);
         
         posNavigation = cpGlobal;
@@ -66,11 +64,9 @@ public class MainActivity extends Activity
         
         Toast.makeText(this, "bienvenue",Toast.LENGTH_LONG).show();
         
-        connection = new APIConnection(context);
+        dataManagement = new DataManagement(context);
         
-        getParameters();
-        
-        init();
+		init();
     }
  
     public boolean onCreateOptionsMenu(Menu menu) 
@@ -87,6 +83,10 @@ public class MainActivity extends Activity
 	    	case R.id.quitter:
 	    		finish();
     		break;
+    		
+	    	case R.id.allRead:
+	    		Toast.makeText(this, "Fonction non disponible pour le moment", Toast.LENGTH_LONG).show();
+	    	break;
     		
 	    	case R.id.settings:
 	    		settings();
@@ -113,7 +113,7 @@ public class MainActivity extends Activity
     		
 	    	case cpFeed:
 	    		posNavigation = cpFolder;
-	    		updateCategory(pFolders);
+	    		updateCategory(dataManagement.getFolders().get(posFolder));
 	    	break;
 	    		
 	    	case cpArticle:
@@ -122,84 +122,126 @@ public class MainActivity extends Activity
     	}
     }
     
-    public void btnGetInformation(View view)
+    public void btnGetData(View view)
     {
     	progressBar.setVisibility(ProgressBar.VISIBLE);
     	
-    	getParameters();
+    	listView.removeAllViewsInLayout();
+    	
+    	dataManagement.getParameters();
     	
     	getCategories();
     }
     
+    public void btnGetOffLineData(View view) throws InterruptedException
+    {
+    	progressBar.setVisibility(ProgressBar.VISIBLE);
+
+    	listView.removeAllViewsInLayout();
+    		
+    	dataManagement.changeConnectionMode();
+    	
+	   	init();
+    }
+    	
+	public void setOffLineButton(int connectionType)
+    {
+		switch(connectionType)
+		{
+			case cOnLine:
+				offLineButton.setText("On\nLine");
+				offLineButton.setTextColor(Color.parseColor("#00FF00"));
+			break;
+			case cGetData:
+				offLineButton.setText("Get\nData");
+				offLineButton.setTextColor(Color.parseColor("#FF0000"));
+			break;
+			case cOffLine:
+				offLineButton.setText("Off\nLine");
+				offLineButton.setTextColor(Color.parseColor("#000000"));
+			break;
+		}
+    }
+    
     public void init()
     {
-    	// connection test
-        connection.init();
+    	dataManagement.init();
+    }
+    
+    public void endGetData()
+    {
+    	progressBar.setVisibility(ProgressBar.INVISIBLE);
+    	
+    	Toast.makeText(this, "Téléchargement terminé",Toast.LENGTH_LONG).show();
+    	init();
     }
     
     public void getCategories()
     {
-        connection.getCategories();
+    	dataManagement.getCategories();
     }
     
-    public void updateCategories(ArrayList<String> items, final ArrayList<Folder> folders)
+    public void updateCategories(final ArrayList<Folder> folders)
     {
     	progressBar.setVisibility(ProgressBar.INVISIBLE);
     	
-    	MobileArrayAdapter adapter = new MobileArrayAdapter(this, items, folders);
-        listView.setAdapter(adapter);
-        
-        pFolders = folders;
-        
-        listView.setOnItemClickListener(
-    		new OnItemClickListener() 
-    		{
-	            @Override
-	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
-	            {
-	            	progressBar.setVisibility(ProgressBar.VISIBLE);
-	            	
-	            	posFolder = position;
-
-	            	posNavigation = cpFolder;
-	            	
-	            	updateCategory(folders);
-	            }
-    		}
-        );
-    }
-    
-    public void updateCategory(final ArrayList<Folder> folders)
-    {
-    	progressBar.setVisibility(ProgressBar.INVISIBLE);
-    	
-    	if(folders.size() == 0)
+    	ArrayList<String> items = new ArrayList<String>();
+		
+    	if(folders.size() > 0)
     	{
-    		getCategories();
-    	}
-    	else
-    	{
-	    	FolderAdapter adapter = new FolderAdapter(this, folders.get(posFolder));
+			for(int i = 0 ; i < folders.size() ; i ++)
+			{
+				items.add(folders.get(i).getTitle());
+			}
+	    	
+	    	MobileArrayAdapter adapter = new MobileArrayAdapter(this, items, folders);
 	        listView.setAdapter(adapter);
 	        
 	        listView.setOnItemClickListener(
-	        		new OnItemClickListener()
-	        		{
-	    	            @Override
-	    	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
-	    	            {        	            	
-	    	            	posNavigation = cpFeed;
-	    	            	
-	    	            	progressBar.setVisibility(ProgressBar.VISIBLE);
-	    	            	
-	    	            	String idFeed = folders.get(posFolder).getFlux(position).getId();
-	    	            	
-	    	            	if(folders.get(posFolder).getFlux(position).getNbArticles() == 0)
-	    	            		connection.getFeed(idFeed);
-	    	            }
-	        		}
-	            );
+	    		new OnItemClickListener() 
+	    		{
+		            @Override
+		            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
+		            {
+		            	progressBar.setVisibility(ProgressBar.VISIBLE);
+		            	
+		            	posFolder = position;
+	
+		            	posNavigation = cpFolder;
+		            	
+		            	updateCategory(folders.get(position));
+		            }
+	    		}
+	        );
     	}
+    	else
+    	{
+    		Toast.makeText(context, "Pas de Catégories", Toast.LENGTH_LONG).show();
+    	}
+    }
+    
+    public void updateCategory(final Folder folder)
+    {
+    	progressBar.setVisibility(ProgressBar.INVISIBLE);
+
+    	FolderAdapter adapter = new FolderAdapter(this, folder);
+        listView.setAdapter(adapter);
+        
+        listView.setOnItemClickListener(
+        		new OnItemClickListener()
+        		{
+    	            @Override
+    	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
+    	            {        	            	
+    	            	posNavigation = cpFeed;
+    	            	
+    	            	progressBar.setVisibility(ProgressBar.VISIBLE);
+    	            	
+    	            	if(folder.getFeed(position).getNbArticles() == 0)
+    	            		dataManagement.getFeed(folder.getFeed(position));
+    	            }
+        		}
+            );
     }
     
     public void updateFeed(Flux feed)
@@ -225,14 +267,17 @@ public class MainActivity extends Activity
     {
     	Toast.makeText(this, msg,Toast.LENGTH_LONG).show();
 
-    	settings();
+    	if(settingFlag == false)
+    	{
+    	  	settings();
+    	}
     }
     
     public void settings()
     {
 		Bundle objetbunble = new Bundle();
-		objetbunble.putString("url", leedURLParam);
-		objetbunble.putString("login", login);
+		objetbunble.putString("url", dataManagement.getUrl());
+		objetbunble.putString("login", dataManagement.getLogin());
 
 		Intent intent = new Intent(this, SettingsActivity.class);
 		
@@ -242,23 +287,10 @@ public class MainActivity extends Activity
 		
 		settingFlag = true;
     }
-    
-    public void getParameters()
-    {
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		String silent = settings.getString("url", "");
-		leedURLParam = silent;
-		leedURL = silent+"/plugins/api";
-		
-		login = settings.getString("login", "");
-		password = settings.getString("password", "");
-		
-		connection.SetDataConnection(leedURL, login, password);
-    }
 
     public APIConnection getConnection()
     {
-    	return connection;
+    	return dataManagement.getConnection();
     }
     
     @Override
@@ -269,11 +301,13 @@ public class MainActivity extends Activity
     	{
     		progressBar.setVisibility(ProgressBar.VISIBLE);
     		
-    		getParameters();
-	    	init();
+    		listView.removeAllViewsInLayout();
+    		
+    		dataManagement.getParameters();
+			init();
 	    	settingFlag = false;
     	}
     	super.onResume();
     }
- 
+    
 }

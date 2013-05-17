@@ -10,6 +10,7 @@ public class Article {
 	private String date;
 	private String author;
 	private String urlArticle;
+	private String idFeed;
 	
 	Article(String pId)
 	{
@@ -95,5 +96,15 @@ public class Article {
 	public String getUrlArticle()
 	{
 		return urlArticle;
+	}
+	
+	public void setIdFeed(String lIdFeed)
+	{
+		idFeed = lIdFeed;
+	}
+	
+	public String getIdFeed()
+	{
+		return idFeed;
 	}
 }

@@ -11,5 +11,5 @@
     
     <item android:id="@+id/quitter" 
 	     android:title="@string/action_quit" />
-
+    
 </menu>

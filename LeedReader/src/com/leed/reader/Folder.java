@@ -13,7 +13,7 @@ public class Folder {
 	
 	private ArrayList<Flux> flux = new ArrayList<Flux>();
 	
-	Folder(String jquery)
+	public Folder(String jquery)
 	{
 		try
         {
@@ -28,7 +28,7 @@ public class Folder {
 			    Object cle = iterator.next();
 			    String val = fluxItems.getString(String.valueOf(cle));
 			    System.out.println("cle=" + cle + ", valeur=" + val);
-			    flux.add(new Flux(val));
+			    flux.add(new Flux(val, idFolder));
 			  }
             
         }
@@ -36,6 +36,16 @@ public class Folder {
         {
             Log.d("ReadWeatherJSONFeedTask", e.getLocalizedMessage());
         }
+	}
+	
+	public Folder()
+	{
+		
+	}
+	
+	public void setTitle(String lTitle)
+	{
+		titleFolder = lTitle;
 	}
 	
 	public String getTitle()
@@ -61,7 +71,12 @@ public class Folder {
 		return listTitle;
 	}
 	
-	public Flux getFlux(int posFlux)
+	public void addFeed(Flux lFeed)
+	{
+		flux.add(lFeed);
+	}
+	
+	public Flux getFeed(int posFlux)
 	{
 		return flux.get(posFlux);
 	}
@@ -71,6 +86,11 @@ public class Folder {
 		return flux;
 	}
 	
+	public void setId(String lId)
+	{
+		idFolder = lId;
+	}
+	
 	public String getId()
 	{
 		return idFolder;
@@ -78,7 +98,6 @@ public class Folder {
 	
 	public int getNbNoRead()
 	{
-		
 		int lNbNoRead = 0;
 		
 		if(flux.size() > 0)

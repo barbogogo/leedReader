@@ -10,10 +10,11 @@ public class Flux {
 	private String nameFlux;
 	private String urlFlux;
 	private int    nbNoRead;
+	private String idCategory;
 	
 	private ArrayList<Article> articles = new ArrayList<Article>();
 	
-	Flux(String jquery)
+	public Flux(String jquery, String lIdFolder)
 	{
 		try
         {
@@ -23,6 +24,8 @@ public class Flux {
 			nameFlux = jsonObject.getString("name");
 			urlFlux = jsonObject.getString("url");
 			nbNoRead = jsonObject.getInt("nbNoRead");
+			
+			idCategory = lIdFolder;
         }
 		catch (Exception e)
         {
@@ -30,14 +33,41 @@ public class Flux {
         }
 	}
 	
+	public Flux(){}
+	
+	public void setId(String lId)
+	{
+		idFlux = lId;
+	}
+	
 	public String getId()
 	{
 		return idFlux;
 	}
+	
+	public void setIdCategory(String lIdCategory)
+	{
+		idCategory = lIdCategory;
+	}
+	
+	public String getIdCategory()
+	{
+		return idCategory;
+	}
 
+	public void setUrl(String lUrl)
+	{
+		urlFlux = lUrl;
+	}
+	
 	public String getUrl()
 	{
 		return urlFlux;
+	}
+	
+	public void setName(String lName)
+	{
+		nameFlux = lName;
 	}
 	
 	public String getName()

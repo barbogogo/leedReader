@@ -26,7 +26,7 @@ public class FeedAdapter extends ArrayAdapter<String>
 	
 	private static ProgressBar progressBar;
 	
-	private APIConnection connection;
+	private DataManagement dataManagement;
 	
 	public FeedAdapter(Context context, Flux feed)
 	{
@@ -39,7 +39,7 @@ public class FeedAdapter extends ArrayAdapter<String>
 		progressBar = (ProgressBar) ((MainActivity)context).findViewById(R.id.progressBar1);
 		progressBar.setVisibility(ProgressBar.INVISIBLE);
 		
-		connection = ((MainActivity)context).getConnection();
+		dataManagement = new DataManagement(context);
 	}
  
 	@Override
@@ -99,7 +99,7 @@ public class FeedAdapter extends ArrayAdapter<String>
 						
 						notifyDataSetChanged();
 						
-						connection.getArticle(articles.get(position).getId());
+						dataManagement.getArticle(articles.get(position).getId());
 					}
 				});
 		
@@ -120,12 +120,12 @@ public class FeedAdapter extends ArrayAdapter<String>
 						if(article.getIsRead() == 0)
 						{
 							article.setRead();
-							connection.setReadArticle(article.getId());
+//							dataManagement.setReadArticle(article.getId());
 						}
 						else
 						{
 							article.setUnRead();
-							connection.setUnReadArticle(article.getId());
+//							dataManagement.setUnReadArticle(article.getId());
 						}
 					}
 				});
@@ -147,12 +147,12 @@ public class FeedAdapter extends ArrayAdapter<String>
 						if(article.getIsFav() == 0)
 						{
 							article.setFav(1);
-							connection.setFavArticle(article.getId());
+//							dataManagement.setFavArticle(article.getId());
 						}
 						else
 						{
 							article.setFav(0);
-							connection.setUnFavArticle(article.getId());
+//							dataManagement.setUnFavArticle(article.getId());
 						}
 					}
 				});

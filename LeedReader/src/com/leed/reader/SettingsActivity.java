@@ -1,14 +1,10 @@
 package com.leed.reader;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class SettingsActivity extends Activity 
 {
@@ -50,41 +46,6 @@ public class SettingsActivity extends Activity
 			saveLoginPasswd(lData, pData);
 		
 		this.finish();
-	}
-	
-	public void saveData(String data)
-	{
-		
-		FileOutputStream fOut = null; 
-		OutputStreamWriter osw = null; 
-		
-		try
-		{
-			fOut = this.openFileOutput(fileName,MODE_PRIVATE);       
-			osw = new OutputStreamWriter(fOut); 
-			osw.write(data);
-			osw.flush(); 
-			
-			Toast.makeText(this, "URL "+data+" enregistrée.",Toast.LENGTH_SHORT).show();
-			
-			this.finish();
-		} 
-		catch (Exception e) 
-		{
-			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-		} 
-		finally 
-		{ 
-			try 
-			{ 
-				osw.close();
-				fOut.close();
-			}
-			catch (IOException e)
-			{
-				Toast.makeText(this, e.getMessage(),Toast.LENGTH_LONG).show();
-			} 
-		} 
 	}
 	
 	public void saveURL(String data)
