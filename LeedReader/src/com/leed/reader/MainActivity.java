@@ -237,7 +237,7 @@ public class MainActivity extends Activity
     	            	
     	            	progressBar.setVisibility(ProgressBar.VISIBLE);
     	            	
-    	            	if(folder.getFeed(position).getNbArticles() == 0)
+//    	            	if(folder.getFeed(position).getNbArticles() == 0)
     	            		dataManagement.getFeed(folder.getFeed(position));
     	            }
         		}
@@ -263,11 +263,11 @@ public class MainActivity extends Activity
         		);
     }
     
-    public void erreurServeur(String msg)
+    public void erreurServeur(String msg, boolean showSetting)
     {
     	Toast.makeText(this, msg,Toast.LENGTH_LONG).show();
 
-    	if(settingFlag == false)
+    	if(settingFlag == false && showSetting == true)
     	{
     	  	settings();
     	}

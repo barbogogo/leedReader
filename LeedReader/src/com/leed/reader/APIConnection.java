@@ -143,6 +143,7 @@ public class APIConnection
 	        catch (IOException e)
 	        {
 	        	Log.w("LeedReaderConnection", e.getLocalizedMessage());
+	        	erreurServeur(e.getLocalizedMessage(), false);
 	        }
         }
         
@@ -219,7 +220,7 @@ public class APIConnection
 	                	    }
 	                	    else
 	                	    {
-	                	    	erreurServeur(msgError);
+	                	    	erreurServeur(msgError, true);
 	                	    }
 	                		
 	                	break;
@@ -232,19 +233,23 @@ public class APIConnection
                 			
                 			JSONArray  articlesItems = new JSONArray(jsonObject.getString("articles"));
 	                        
-	                        for (int i = 0; i < articlesItems.length(); i++) 
+	                        for (int i = 0; i < articlesItems.length(); i++)
 	                        {
 	                            JSONObject postalCodesItem = articlesItems.getJSONObject(i);
 	                            
 	                            Article article = new Article(postalCodesItem.getString("id"));
-	                            article.setTitle(postalCodesItem.getString("title"));
-	                            article.setDate(postalCodesItem.getString("date"));
-	                            article.setAuthor(postalCodesItem.getString("author"));
-	                            article.setUrlArticle(postalCodesItem.getString("urlArticle"));
-	                            article.setFav(postalCodesItem.getInt("favorite"));
-	                            article.setContent(postalCodesItem.getString("content"));
-	                            article.setIdFeed(postalCodesItem.getString("idFeed"));
 	                            
+	                            if(postalCodesItem.getInt("id") > 0)
+	                            {
+	                            	article.setTitle(postalCodesItem.getString("title"));
+		                            article.setDate(postalCodesItem.getString("date"));
+		                            article.setAuthor(postalCodesItem.getString("author"));
+		                            article.setUrlArticle(postalCodesItem.getString("urlArticle"));
+		                            article.setFav(postalCodesItem.getInt("favorite"));
+		                            article.setContent(postalCodesItem.getString("content"));
+		                            article.setIdFeed(postalCodesItem.getString("idFeed"));
+	                            }
+
 	                            feed.addArticle(article);
 	                        }
 	                		
@@ -287,19 +292,20 @@ public class APIConnection
         		}
         		else
         		{
-        			erreurServeur("URL non valide, merci de la changer");
+        			erreurServeur("URL non valide, merci de la changer", true);
         		}
             } 
             catch (Exception e)
             {
                 Log.w("LeedReaderGetData", e.getLocalizedMessage());
+                erreurServeur(e.getLocalizedMessage(), false);
             }
         }
     }
 	
-	private void erreurServeur(String msg)
+	public void erreurServeur(String msg, boolean showSetting)
     {
-    	((MainActivity)mainContext).erreurServeur(msg);
+    	((MainActivity)mainContext).erreurServeur(msg, showSetting);
     }
 	
 	private void updateData(final ArrayList<Folder> folders)

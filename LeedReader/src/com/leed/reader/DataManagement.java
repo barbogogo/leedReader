@@ -145,6 +145,8 @@ public class DataManagement
 	{
 		ArrayList<Folder> folders = new ArrayList<Folder>();
 		
+		folders = offLineData.getAllFolders();
+		
 		return folders;
 	}
 	
@@ -161,12 +163,12 @@ public class DataManagement
 				setOffLineButton(cGetData);
 			break;
 			case cGetData:
+				setOffLineButton(cOnLine);
 			break;
 			case cOffLine:
 				setOffLineButton(cOnLine);
 			break;
 		}
-		
 	}
 	
 	public void updateCategories(ArrayList<Folder> folders)
@@ -176,7 +178,7 @@ public class DataManagement
 			case cGetData:
 				
 				pFeeds = new ArrayList<Flux>();
-				iterateurFeed = 1;
+				iterateurFeed = 0;
 				
 				for(int i = 0 ; i < folders.size() ; i++)
 				{
@@ -192,8 +194,6 @@ public class DataManagement
 						
 						pFeeds.add(folders.get(i).getFlux().get(j));
 					}
-					
-					
 				}
 				
 				connection.getFeed(folders.get(0).getFlux().get(0), NB_ELEMENT_OFFLINE, connectionType);
@@ -219,13 +219,14 @@ public class DataManagement
 					Log.i("GetData", "GetArticle "+feed.getArticles().get(i).getId() +" - Feed "+feed.getArticles().get(i).getIdFeed());
 				}
 				
-				Log.i("SuiviFeed", iterateurFeed +"/"+ pFeeds.size());
+				Log.i("SuiviFeed", iterateurFeed+1 +"/"+ pFeeds.size());
 				
 				iterateurFeed ++;
-				connection.getFeed(pFeeds.get(iterateurFeed), NB_ELEMENT_OFFLINE, connectionType);
 				
 				if(iterateurFeed == pFeeds.size())
 					endGetData();
+				else
+					connection.getFeed(pFeeds.get(iterateurFeed), NB_ELEMENT_OFFLINE, connectionType);
 
 			break;
 			case cOnLine:

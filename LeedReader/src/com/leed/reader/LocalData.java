@@ -131,11 +131,22 @@ public class LocalData
 	}
 
 	private Flux cursorToFeed(Cursor cursor) 
-	{
-		Flux feed = new Flux();
+	{		
+		Flux feed = getArticlesByFeed(cursor.getString(0));
 		feed.setId(cursor.getString(0));
 		feed.setName(cursor.getString(1));
 		feed.setIdCategory(cursor.getString(2));
+		
+		int pNbNoRead = 0;
+		
+		for(int i = 0 ; i < feed.getArticles().size() ; i++)
+		{
+			if(feed.getArticle(i).getIsRead() == 0)
+				pNbNoRead ++;
+		}
+		
+		feed.setNbNoRead(pNbNoRead);
+		
 		return feed;
 	}
 	

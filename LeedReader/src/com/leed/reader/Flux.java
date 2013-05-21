@@ -119,4 +119,10 @@ public class Flux {
 		
 		return pNbNoRead;
 	}
+	
+	public void setNbNoRead(int pNbNoRead)
+	{
+		nbNoRead = pNbNoRead;
+	}
+	
 }
