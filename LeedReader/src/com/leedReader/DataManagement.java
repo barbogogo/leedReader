@@ -1,9 +1,11 @@
-package com.leed.reader;
+package com.leedReader;
 
 import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 public class DataManagement 
@@ -252,5 +254,5 @@ public class DataManagement
 		connectionType = lConnectionType;
 		saveConnectionType(lConnectionType);
 		((MainActivity)pContext).setOffLineButton(lConnectionType);
-	}	
+	}
 }

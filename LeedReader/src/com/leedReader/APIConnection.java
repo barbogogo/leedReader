@@ -1,4 +1,4 @@
-package com.leed.reader;
+package com.leedReader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,6 +19,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -155,6 +157,10 @@ public class APIConnection
     	
     	protected void onPreExecute() 
         {
+    		// we check if a network is available, if not error message    		
+    		if(!isNetworkAvailable())
+    			erreurServeur("Pas de connexion internet", false);
+    		
     		// At the beginning we erase all data in items
     		
     		switch(typeRequest)
@@ -326,5 +332,13 @@ public class APIConnection
 	private void stateChanged()
 	{
 		FeedAdapter.stateChanged();
+	}
+	
+	private boolean isNetworkAvailable() 
+	{
+	    ConnectivityManager connectivityManager = 
+	    		(ConnectivityManager)((MainActivity)mainContext).getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 }
