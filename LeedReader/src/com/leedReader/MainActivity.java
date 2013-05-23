@@ -8,8 +8,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -26,6 +25,8 @@ public class MainActivity extends Activity
 {
 	private ListView listView;
 	private ProgressBar progressBar;
+	private ProgressBar progressBarGetData;
+	private TextView textGetData;
 	
 	private int posFolder = 0;
 	
@@ -59,6 +60,11 @@ public class MainActivity extends Activity
         listView = (ListView)findViewById(R.id.ListViewId);
         offLineButton = (Button)findViewById(R.id.offLineButton);
         progressBar = (ProgressBar) findViewById(R.id.progressBar1);
+        progressBarGetData = (ProgressBar) findViewById(R.id.progressBarGetData);
+        textGetData = (TextView) findViewById(R.id.textGetData);
+        
+        progressBarGetData.setVisibility(View.GONE);
+        textGetData.setVisibility(View.GONE);
         
         posNavigation = cpGlobal;
         settingFlag = false;
@@ -175,6 +181,11 @@ public class MainActivity extends Activity
     
     public void endGetData()
     {
+    	progressBarGetData.setVisibility(View.GONE);
+        textGetData.setVisibility(View.GONE);
+        
+        listView.setVisibility(View.VISIBLE);
+    	
     	progressBar.setVisibility(ProgressBar.INVISIBLE);
     	
     	Toast.makeText(this, "Téléchargement terminé",Toast.LENGTH_LONG).show();
@@ -313,5 +324,34 @@ public class MainActivity extends Activity
 	    	settingFlag = false;
     	}
     	super.onResume();
-    }    
+    }
+    
+    public void initGetData()
+    {
+      progressBarGetData.setVisibility(View.VISIBLE);
+      textGetData.setVisibility(View.VISIBLE);
+      
+      listView.setVisibility(View.GONE);
+      
+      textGetData.setText("Initialisation...");
+    }
+    
+    public void addTextGetData(String pText)
+    {
+    	String text = (String) textGetData.getText();
+    	
+    	textGetData.setText(pText+"\n"+text);
+    }
+    
+    public void setBarGetData(int value, int max)
+    {
+    	int maxValue = progressBarGetData.getMax();
+    	
+    	int progress = 0;
+    	
+    	if(max > 0)
+    		progress = (value * maxValue) / max;
+    	
+    	progressBarGetData.setProgress(progress);
+    }
 }

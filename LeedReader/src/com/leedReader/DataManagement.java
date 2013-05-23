@@ -90,6 +90,7 @@ public class DataManagement
 				connection.init();
 			break;
 			case cGetData:
+				((MainActivity)pContext).initGetData();
 				offLineData.init();
 				connection.init();
 			break;
@@ -222,6 +223,9 @@ public class DataManagement
 				}
 				
 				Log.i("SuiviFeed", iterateurFeed+1 +"/"+ pFeeds.size());
+				
+				((MainActivity)pContext).addTextGetData("("+(iterateurFeed+1) +"/"+ pFeeds.size()+") "+ pFeeds.get(iterateurFeed).getName());
+				((MainActivity)pContext).setBarGetData(iterateurFeed+1, pFeeds.size());
 				
 				iterateurFeed ++;
 				
