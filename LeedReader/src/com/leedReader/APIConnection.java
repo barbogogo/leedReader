@@ -33,7 +33,10 @@ public class APIConnection
 	private Context mainContext;
 	private DataManagement dataContext;
 	
-	private int errorServer;
+	private int serverError;
+	private static final int cNoError = 0;
+	private static final int cNetworkError = 1;
+	private static final int cServerError = 2;
 	
 	private ArrayList<String> items = new ArrayList<String>();
 	private ArrayList<String> nbNoRead = new ArrayList<String>();
@@ -118,7 +121,7 @@ public class APIConnection
         URI pUri = httpGet.getURI();
         String host = pUri.getHost();
         
-        errorServer = 1;
+        serverError = cServerError;
         
         if(host != null)
         {
@@ -139,7 +142,7 @@ public class APIConnection
 	                }
 	                inputStream.close();
 	                
-	                errorServer = 0;
+	                serverError = cNoError;
 	            }
 	        }
 	        catch (IOException e)
@@ -159,7 +162,9 @@ public class APIConnection
         {
     		// we check if a network is available, if not error message    		
     		if(!isNetworkAvailable())
-    			erreurServeur("Pas de connexion internet", false);
+    		{
+    			serverError = cNetworkError;
+    		}
     		
     		// At the beginning we erase all data in items
     		
@@ -209,9 +214,8 @@ public class APIConnection
             {
             	JSONObject jsonObject;
             	
-            	if(errorServer == 0)
+            	if(serverError == cNoError)
         		{
-            	
 	                switch(typeRequest)
 	                {
 	                	case cInit:
@@ -298,9 +302,17 @@ public class APIConnection
         		}
         		else
         		{
-        			erreurServeur("URL non valide, merci de la changer", true);
+        			switch(serverError)
+                    {		
+                    	case cNetworkError:
+                    		erreurServeur("Pas de connexion internet", false);
+                    	break;
+                    	case cServerError:
+                    		erreurServeur("URL non valide, merci de la changer", true);
+        	    		break;
+                    }
         		}
-            } 
+            }
             catch (Exception e)
             {
                 Log.w("LeedReaderGetData", e.getLocalizedMessage());
