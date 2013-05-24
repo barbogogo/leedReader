@@ -107,17 +107,19 @@ public class Flux {
 		return titres;
 	}
 	
-	public int getNbNoRead()
+	public void addReadArticle()
 	{
-		int pNbNoRead = nbNoRead;
-		
-		for(int i=0 ; i < articles.size() ; i++)
-		{
-			if(articles.get(i).getIsRead() == 1)
-				pNbNoRead --;
-		}
-		
-		return pNbNoRead;
+		nbNoRead --;
+	}
+	
+	public void addUnReadArticle()
+	{
+		nbNoRead ++;
+	}
+	
+	public int getNbNoRead()
+	{		
+		return nbNoRead;
 	}
 	
 	public void setNbNoRead(int pNbNoRead)

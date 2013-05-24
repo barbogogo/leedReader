@@ -28,8 +28,6 @@ public class MainActivity extends Activity
 	private ProgressBar progressBarGetData;
 	private TextView textGetData;
 	
-	private int posFolder = 0;
-	
 	/**
 	 * Navigation automate
 	 */
@@ -48,8 +46,11 @@ public class MainActivity extends Activity
 	private static final int cOnLine  = 0;
 	private static final int cGetData = 1;
 	private static final int cOffLine = 2;
+	private static final int cSendData = 3;
 	
 	public Context context;
+	
+	private Folder pActualFeed;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) 
@@ -124,7 +125,7 @@ public class MainActivity extends Activity
     		
 	    	case cpFeed:
 	    		posNavigation = cpFolder;
-	    		updateCategory(dataManagement.getFolders().get(posFolder));
+	    		updateCategory(pActualFeed);
 	    	break;
 	    		
 	    	case cpArticle:
@@ -149,7 +150,7 @@ public class MainActivity extends Activity
     	progressBar.setVisibility(ProgressBar.VISIBLE);
 
     	listView.removeAllViewsInLayout();
-    		
+    	
     	dataManagement.changeConnectionMode();
     	
 	   	init();
@@ -170,6 +171,10 @@ public class MainActivity extends Activity
 			case cOffLine:
 				offLineButton.setText("Off\nLine");
 				offLineButton.setTextColor(Color.parseColor("#000000"));
+			break;
+			case cSendData:
+				offLineButton.setText("Send\nData");
+				offLineButton.setTextColor(Color.parseColor("#FF0000"));
 			break;
 		}
     }
@@ -220,10 +225,10 @@ public class MainActivity extends Activity
 		            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 		            {
 		            	progressBar.setVisibility(ProgressBar.VISIBLE);
-		            	
-		            	posFolder = position;
 	
 		            	posNavigation = cpFolder;
+		            	
+		            	pActualFeed = folders.get(position);
 		            	
 		            	updateCategory(folders.get(position));
 		            }
@@ -253,8 +258,7 @@ public class MainActivity extends Activity
     	            	
     	            	progressBar.setVisibility(ProgressBar.VISIBLE);
     	            	
-//    	            	if(folder.getFeed(position).getNbArticles() == 0)
-    	            		dataManagement.getFeed(folder.getFeed(position));
+    	            	dataManagement.getFeed(folder.getFeed(position));
     	            }
         		}
             );
@@ -283,6 +287,8 @@ public class MainActivity extends Activity
     {
     	Toast.makeText(this, msg,Toast.LENGTH_LONG).show();
 
+    	progressBar.setVisibility(ProgressBar.INVISIBLE);
+    	
     	if(settingFlag == false && showSetting == true)
     	{
     	  	settings();

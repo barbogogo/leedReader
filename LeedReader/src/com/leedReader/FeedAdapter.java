@@ -98,7 +98,9 @@ public class FeedAdapter extends ArrayAdapter<String>
 						pPosition = position;
 						
 						Article article = articles.get(pPosition);
+						
 						article.setRead();
+						dataManagement.setReadArticle(article);
 						
 						notifyDataSetChanged();
 						
@@ -118,18 +120,18 @@ public class FeedAdapter extends ArrayAdapter<String>
 						
 						Article article = articles.get(pPosition);
 						
-						notifyDataSetChanged();
-						
 						if(article.getIsRead() == 0)
 						{
 							article.setRead();
-//							dataManagement.setReadArticle(article.getId());
+							dataManagement.setReadArticle(article);
 						}
 						else
 						{
 							article.setUnRead();
-//							dataManagement.setUnReadArticle(article.getId());
+							dataManagement.setUnReadArticle(article);
 						}
+						
+						notifyDataSetChanged();
 					}
 				});
 		
@@ -150,12 +152,12 @@ public class FeedAdapter extends ArrayAdapter<String>
 						if(article.getIsFav() == 0)
 						{
 							article.setFav(1);
-//							dataManagement.setFavArticle(article.getId());
+							dataManagement.setFavArticle(article);
 						}
 						else
 						{
 							article.setFav(0);
-//							dataManagement.setUnFavArticle(article.getId());
+							dataManagement.setUnFavArticle(article);
 						}
 					}
 				});
@@ -168,8 +170,6 @@ public class FeedAdapter extends ArrayAdapter<String>
 		Article article = articles.get(pPosition);
 	    
         article.setContent(content);
-		
-    	article.setRead();
     	
 		Bundle objetbunble = new Bundle();
 		objetbunble.putString("id", article.getId());

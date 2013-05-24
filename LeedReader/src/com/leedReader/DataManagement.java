@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.util.Log;
 
 public class DataManagement 
@@ -17,6 +15,7 @@ public class DataManagement
 	private static final int cOnLine  = 0;
 	private static final int cGetData = 1;
 	private static final int cOffLine = 2;
+	private static final int cSendData = 3;
 	
 	private static final String NB_ELEMENT_OFFLINE = "10";
 	private static final String NB_ELEMENT_ONLINE = "50";
@@ -97,6 +96,10 @@ public class DataManagement
 			case cOffLine:
 				updateCategories(offLineData.getAllFolders());
 			break;
+			case cSendData:
+				((MainActivity)pContext).initGetData();
+				sendData();
+			break;
 		}
 	}
 	public void getCategories()
@@ -144,15 +147,6 @@ public class DataManagement
 		}
 	}
 	
-	public ArrayList<Folder> getFolders()
-	{
-		ArrayList<Folder> folders = new ArrayList<Folder>();
-		
-		folders = offLineData.getAllFolders();
-		
-		return folders;
-	}
-	
 	public APIConnection getConnection()
     {
     	return connection;
@@ -166,9 +160,12 @@ public class DataManagement
 				setOffLineButton(cGetData);
 			break;
 			case cGetData:
-				setOffLineButton(cOnLine);
+//				setOffLineButton(cOnLine);
 			break;
 			case cOffLine:
+				setOffLineButton(cSendData);
+			break;
+			case cSendData:
 				setOffLineButton(cOnLine);
 			break;
 		}
@@ -258,5 +255,83 @@ public class DataManagement
 		connectionType = lConnectionType;
 		saveConnectionType(lConnectionType);
 		((MainActivity)pContext).setOffLineButton(lConnectionType);
+	}
+	
+	public void sendData()
+	{
+		ArrayList<Article> articles = new ArrayList<Article>();
+		
+		articles = offLineData.getAllArticles();
+		
+		for(int i = 0 ; i < articles.size() ; i ++)
+		{
+			((MainActivity)pContext).addTextGetData(String.valueOf(i));
+			
+			if(Integer.parseInt(articles.get(i).getId()) == 3226)
+			{
+				connection.setReadArticle(articles.get(i).getId());
+			}
+			
+			if(articles.get(i).getIsRead() == 1)
+			{
+				connection.setReadArticle(articles.get(i).getId());
+			}
+		}
+		for(int i = 0 ; i < articles.size() ; i ++)
+		{
+			((MainActivity)pContext).addTextGetData(String.valueOf(i));
+			if(articles.get(i).getIsFav() == 1)
+			{
+				connection.setFavArticle(articles.get(i).getId());
+			}
+		}
+		setOffLineButton(cOnLine);
+		((MainActivity)pContext).endGetData();
+	}
+	
+	public void setReadArticle(Article article)
+	{		
+		if(connectionType == cOnLine)
+		{
+			connection.setReadArticle(article.getId());
+		}
+		if(connectionType == cOffLine)
+		{
+			offLineData.setReadArticle(article);
+		}
+	}
+	public void setUnReadArticle(Article article)
+	{		
+		if(connectionType == cOnLine)
+		{
+			connection.setUnReadArticle(article.getId());
+		}
+		if(connectionType == cOffLine)
+		{
+			offLineData.setUnReadArticle(article);
+		}
+	}
+	
+	public void setFavArticle(Article article)
+	{		
+		if(connectionType == cOnLine)
+		{
+			connection.setFavArticle(article.getId());
+		}
+		if(connectionType == cOffLine)
+		{
+			offLineData.setFavArticle(article);
+		}
+	}
+	public void setUnFavArticle(Article article)
+	{		
+		if(connectionType == cOnLine)
+		{
+			connection.setUnFavArticle(article.getId());
+		}
+		if(connectionType == cOffLine)
+		{
+			offLineData.setUnFavArticle(article);
+		}
 	}
 }

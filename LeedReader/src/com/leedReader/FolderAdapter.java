@@ -12,13 +12,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class FolderAdapter extends ArrayAdapter<String> {
+public class FolderAdapter extends ArrayAdapter<String> 
+{
 	private final Context context;
 	
 	private final ArrayList<Flux> feeds;
  
-	public FolderAdapter(Context context, Folder folder) {
-		
+	public FolderAdapter(Context context, Folder folder) 
+	{
 		super(context, R.layout.activity_main, folder.getTitleFeeds());
 		
 		ArrayList<Flux> feeds = folder.getFlux();
@@ -28,7 +29,8 @@ public class FolderAdapter extends ArrayAdapter<String> {
 	}
  
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(int position, View convertView, ViewGroup parent) 
+	{
 		LayoutInflater inflater = (LayoutInflater) context
 			.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
  

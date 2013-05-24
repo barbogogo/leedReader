@@ -47,15 +47,17 @@ public class Article {
 	{
 		return isRead;
 	}
-	
+	public void setIsRead(int pRead)
+	{
+		isRead = pRead;
+	}
 	public void setRead()
 	{
-		isRead = 1;
+		setIsRead(1);
 	}
-	
 	public void setUnRead()
 	{
-		isRead = 0;
+		setIsRead(0);
 	}
 	
 	public int getIsFav()

@@ -141,7 +141,7 @@ public class LocalData
 		
 		for(int i = 0 ; i < feed.getArticles().size() ; i++)
 		{
-			if(feed.getArticle(i).getIsRead() == 0)
+//			if(feed.getArticle(i).getIsRead() == 0)
 				pNbNoRead ++;
 		}
 		
@@ -179,7 +179,9 @@ public class LocalData
 				MySQLiteHelper.ARTI_COL_AUTHOR,
 				MySQLiteHelper.ARTI_COL_DATE,
 				MySQLiteHelper.ARTI_COL_URL,
-				MySQLiteHelper.ARTI_COL_CONTENT};
+				MySQLiteHelper.ARTI_COL_CONTENT,
+				MySQLiteHelper.ARTI_COL_ISREAD,
+				MySQLiteHelper.ARTI_COL_ISFAV};
 		
 		String[] args = { idFeed };
 		
@@ -211,7 +213,40 @@ public class LocalData
 		article.setDate(cursor.getString(3));
 		article.setUrlArticle(cursor.getString(4));
 		article.setContent(cursor.getString(5));
+		article.setIsRead(cursor.getInt(6));
+		article.setFav(cursor.getInt(7));
 		return article;
+	}
+	
+	public ArrayList<Article> getAllArticles()
+	{
+		ArrayList<Article> articles = new ArrayList<Article>();
+		
+		String[] extractColumns = { 
+				MySQLiteHelper.ARTI_COL_ID,
+				MySQLiteHelper.ARTI_COL_TITLE,
+				MySQLiteHelper.ARTI_COL_AUTHOR,
+				MySQLiteHelper.ARTI_COL_DATE,
+				MySQLiteHelper.ARTI_COL_URL,
+				MySQLiteHelper.ARTI_COL_CONTENT,
+				MySQLiteHelper.ARTI_COL_ISREAD,
+				MySQLiteHelper.ARTI_COL_ISFAV};
+		
+		Cursor cursor = database.query(
+							MySQLiteHelper.ARTI_TABLE,
+							extractColumns, 
+							null, null, null, null, null);
+		
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast())
+		{
+			Article article = cursorToArticle(cursor);
+			articles.add(article);
+			cursor.moveToNext();
+		}
+		// Make sure to close the cursor
+		cursor.close();
+		return articles;
 	}
 	
 	public Article getArticle(String idArticle)
@@ -222,7 +257,9 @@ public class LocalData
 				MySQLiteHelper.ARTI_COL_AUTHOR,
 				MySQLiteHelper.ARTI_COL_DATE,
 				MySQLiteHelper.ARTI_COL_URL,
-				MySQLiteHelper.ARTI_COL_CONTENT};
+				MySQLiteHelper.ARTI_COL_CONTENT,
+				MySQLiteHelper.ARTI_COL_ISREAD,
+				MySQLiteHelper.ARTI_COL_ISFAV};
 		
 		String[] args = { idArticle };
 		
@@ -241,5 +278,34 @@ public class LocalData
 		cursor.close();
 		return article;
 	}
+
+	public void setReadArticle(Article article)
+	{
+		String strFilter = "id=" + article.getId();
+		ContentValues args = new ContentValues();
+		args.put(MySQLiteHelper.ARTI_COL_ISREAD, 1);
+		database.update(MySQLiteHelper.ARTI_TABLE, args, strFilter, null);
+	}
+	public void setUnReadArticle(Article article)
+	{
+		String strFilter = "id=" + article.getId();
+		ContentValues args = new ContentValues();
+		args.put(MySQLiteHelper.ARTI_COL_ISREAD, 0);
+		database.update(MySQLiteHelper.ARTI_TABLE, args, strFilter, null);
+	}
 	
+	public void setFavArticle(Article article)
+	{
+		String strFilter = "id=" + article.getId();
+		ContentValues args = new ContentValues();
+		args.put(MySQLiteHelper.ARTI_COL_ISFAV, 1);
+		database.update(MySQLiteHelper.ARTI_TABLE, args, strFilter, null);
+	}
+	public void setUnFavArticle(Article article)
+	{
+		String strFilter = "id=" + article.getId();
+		ContentValues args = new ContentValues();
+		args.put(MySQLiteHelper.ARTI_COL_ISFAV, 0);
+		database.update(MySQLiteHelper.ARTI_TABLE, args, strFilter, null);
+	}
 }

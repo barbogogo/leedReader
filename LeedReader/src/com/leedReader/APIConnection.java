@@ -121,9 +121,7 @@ public class APIConnection
         URI pUri = httpGet.getURI();
         String host = pUri.getHost();
         
-        serverError = cServerError;
-        
-        if(host != null)
+        if(host != null && serverError != cNetworkError)
         {
 	        try
 	        {
@@ -327,7 +325,7 @@ public class APIConnection
     }
 	
 	private void updateData(final ArrayList<Folder> folders)
-	{		
+	{
 		((DataManagement)dataContext).updateCategories(folders);
 	}
 	
