@@ -23,7 +23,11 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build.VERSION;
 import android.util.Log;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageInfo;
+
 
 public class APIConnection 
 {
@@ -49,12 +53,21 @@ public class APIConnection
 	private static final int cFav = 5;
 
 	private DefaultHttpClient httpClient;
+	private String            userAgent;
 	
 	public APIConnection(Context lContext)
 	{
 		mainContext = lContext;
 		// create connection object
 		httpClient = new DefaultHttpClient();
+
+		String version = "unknown";
+		try {
+			version = lContext.getPackageManager().getPackageInfo(lContext.getPackageName(), 0).versionName;
+		} catch(PackageManager.NameNotFoundException e) {
+		}
+
+		userAgent  = "Android-" + VERSION.RELEASE + "/LeedReader-" + version;
 	}
 	
 	public void SetDataConnection(String lUrl, String lLogin, String lPassword) throws java.net.URISyntaxException, java.security.NoSuchAlgorithmException
@@ -124,6 +137,7 @@ public class APIConnection
     {
         StringBuilder stringBuilder = new StringBuilder();
         HttpGet httpGet = new HttpGet(URL);
+		httpGet.setHeader("User-Agent", this.userAgent);
         
         URI pUri = httpGet.getURI();
         String host = pUri.getHost();
