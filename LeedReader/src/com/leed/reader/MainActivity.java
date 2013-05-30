@@ -125,7 +125,7 @@ public class MainActivity extends Activity
     public void btnGetInformation(View view)
     {
     	progressBar.setVisibility(ProgressBar.VISIBLE);
-    	
+
     	getParameters();
     	
     	getCategories();
@@ -252,8 +252,10 @@ public class MainActivity extends Activity
 		
 		login = settings.getString("login", "");
 		password = settings.getString("password", "");
-		
-		connection.SetDataConnection(leedURL, login, password);
+
+		try {
+			connection.SetDataConnection(leedURL, login, password);
+		} catch (Exception e) {}
     }
 
     public APIConnection getConnection()

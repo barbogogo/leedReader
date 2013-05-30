@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.security.MessageDigest;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -15,12 +16,18 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build.VERSION;
 import android.util.Log;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageInfo;
+
 
 public class APIConnection 
 {
@@ -44,23 +51,44 @@ public class APIConnection
 	private static final int cInit = 3;
 	private static final int cRead = 4;
 	private static final int cFav = 5;
+
+	private DefaultHttpClient httpClient;
+	private String            userAgent;
 	
 	public APIConnection(Context lContext)
 	{
 		mainContext = lContext;
+		// create connection object
+		httpClient = new DefaultHttpClient();
+
+		String version = "unknown";
+		try {
+			version = lContext.getPackageManager().getPackageInfo(lContext.getPackageName(), 0).versionName;
+		} catch(PackageManager.NameNotFoundException e) {
+		}
+
+		userAgent  = "Android-" + VERSION.RELEASE + "/LeedReader-" + version;
 	}
 	
-	public void SetDataConnection(String lUrl, String lLogin, String lPassword)
+	public void SetDataConnection(String lUrl, String lLogin, String lPassword) throws java.net.URISyntaxException, java.security.NoSuchAlgorithmException
 	{
 		leedURL  = lUrl;
 		login    = lLogin;
 		password = lPassword;
+
+		URI uri = new URI(lUrl);
+		String SHA1Pwd = Utils.hex(MessageDigest.getInstance("SHA1").digest(lPassword.getBytes()));
+
+		httpClient.getCredentialsProvider().setCredentials(
+			new AuthScope(uri.getHost(), uri.getPort()),
+			new UsernamePasswordCredentials(lLogin, SHA1Pwd)
+		);
 	}
-	
+
 	public void init()
 	{
 		typeRequest = cInit;
-		new ServerConnection().execute(leedURL+"/json.php?option=init");
+		new ServerConnection().execute(leedURL+"/login.php");
 	}
 	
 	public void getCategories()
@@ -108,8 +136,8 @@ public class APIConnection
 	public String readJSONFeed(String URL) 
     {
         StringBuilder stringBuilder = new StringBuilder();
-        HttpClient httpClient = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(URL);
+		httpGet.setHeader("User-Agent", this.userAgent);
         
         URI pUri = httpGet.getURI();
         String host = pUri.getHost();
@@ -176,22 +204,7 @@ public class APIConnection
     	// String... permit to define a String array
     	protected String doInBackground(String... urls) 
         {
-    		String loginEncoded;
-    		String passwordEncoded;
-    		try
-    		{
-        		loginEncoded = URLEncoder.encode(login, "UTF-8");
-        		passwordEncoded = URLEncoder.encode(password, "UTF-8");
-        	} 
-    		catch (UnsupportedEncodingException e) 
-    		{
-    			loginEncoded="";
-    			passwordEncoded="";
-	    	}
-    		
-    		String url = urls[0]+"&login="+loginEncoded+"&password="+passwordEncoded;
-    		
-    		return readJSONFeed(url);
+            return readJSONFeed(urls[0]);
         }
  
         protected void onPostExecute(String result) 
@@ -206,18 +219,13 @@ public class APIConnection
 	                switch(typeRequest)
 	                {
 	                	case cInit:
-	                		JSONObject json = new JSONObject(result);
-	                	    JSONObject json2 = json.getJSONObject("error");
-	                	    int idError = json2.getInt("id");
-	                	    String msgError = json2.getString("message");
-	                	    
-	                	    if(idError == 0)
+                            if(errorServer == 0)
 	                	    {
 	                	    	getCategories();
 	                	    }
 	                	    else
 	                	    {
-	                	    	erreurServeur(msgError);
+                                erreurServeur("login failed");
 	                	    }
 	                		
 	                	break;
