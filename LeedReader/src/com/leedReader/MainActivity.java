@@ -217,28 +217,35 @@ public class MainActivity extends Activity
 	    	
 	    	MobileArrayAdapter adapter = new MobileArrayAdapter(this, items, folders);
 	        listView.setAdapter(adapter);
-	        
-	        listView.setOnItemClickListener(
+    	}
+    	else
+    	{	
+    		Toast.makeText(context, "Pas de Catégories", Toast.LENGTH_LONG).show();
+    	}
+    	
+    	listView.setOnItemClickListener(
 	    		new OnItemClickListener() 
 	    		{
 		            @Override
 		            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 		            {
-		            	progressBar.setVisibility(ProgressBar.VISIBLE);
-	
 		            	posNavigation = cpFolder;
 		            	
 		            	pActualFeed = folders.get(position);
 		            	
-		            	updateCategory(folders.get(position));
+		            	if(pActualFeed.getFlux().size() > 0)
+		            	{
+			            	progressBar.setVisibility(ProgressBar.VISIBLE);
+		
+			            	updateCategory(folders.get(position));
+		            	}
+		            	else
+		            	{
+		            		Toast.makeText(context, "Pas de flux dans cette catégorie", Toast.LENGTH_LONG).show();
+		            	}
 		            }
 	    		}
 	        );
-    	}
-    	else
-    	{
-    		Toast.makeText(context, "Pas de Catégories", Toast.LENGTH_LONG).show();
-    	}
     }
     
     public void updateCategory(final Folder folder)
