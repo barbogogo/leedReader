@@ -2,8 +2,6 @@ package com.leed.reader;
 
 import java.util.ArrayList;
 
-import com.leed.reader.R;
-
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;

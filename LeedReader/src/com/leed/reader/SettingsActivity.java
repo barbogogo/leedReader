@@ -1,7 +1,5 @@
 package com.leed.reader;
 
-import com.leed.reader.R;
-
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;

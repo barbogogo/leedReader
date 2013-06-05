@@ -2,8 +2,6 @@ package com.leed.reader;
 
 import java.util.ArrayList;
 
-import com.leed.reader.R;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
