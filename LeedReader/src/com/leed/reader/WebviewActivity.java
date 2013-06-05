@@ -1,4 +1,4 @@
-package com.leedReader;
+package com.leed.reader;
 
 import com.leed.reader.R;
 

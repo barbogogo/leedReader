@@ -1,4 +1,4 @@
-package com.leedReader;
+package com.leed.reader;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

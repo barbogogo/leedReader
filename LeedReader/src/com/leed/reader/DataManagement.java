@@ -1,4 +1,4 @@
-package com.leedReader;
+package com.leed.reader;
 
 import java.util.ArrayList;
 
@@ -293,7 +293,7 @@ public class DataManagement
 	{		
 		if(connectionType == cOnLine)
 		{
-			connection.setReadArticle(article.getId());
+//			connection.setReadArticle(article.getId());
 		}
 		if(connectionType == cOffLine)
 		{

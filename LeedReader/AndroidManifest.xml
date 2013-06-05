@@ -17,13 +17,13 @@
         android:theme="@style/AppTheme" >
         
         <activity
-            android:name="com.leedReader.WebviewActivity"
+            android:name="com.leed.reader.WebviewActivity"
             android:theme="@android:style/Theme.NoTitleBar" />
         
-        <activity android:name="com.leedReader.SettingsActivity" />
+        <activity android:name="com.leed.reader.SettingsActivity" />
         
         <activity
-            android:name="com.leedReader.MainActivity"
+            android:name="com.leed.reader.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.leedReader;
+package com.leed.reader;
 
 import java.util.ArrayList;
 import java.util.Iterator;

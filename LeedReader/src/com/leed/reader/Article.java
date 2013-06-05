@@ -1,4 +1,4 @@
-package com.leedReader;
+package com.leed.reader;
 
 public class Article {
 

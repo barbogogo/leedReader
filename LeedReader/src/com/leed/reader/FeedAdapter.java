@@ -1,4 +1,4 @@
-package com.leedReader;
+package com.leed.reader;
 
 import java.util.ArrayList;
 
@@ -100,7 +100,7 @@ public class FeedAdapter extends ArrayAdapter<String>
 						Article article = articles.get(pPosition);
 						
 						article.setRead();
-						dataManagement.setReadArticle(article);
+//						dataManagement.setReadArticle(article);
 						
 						notifyDataSetChanged();
 						
