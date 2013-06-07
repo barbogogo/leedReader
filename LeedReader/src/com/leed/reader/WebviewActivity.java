@@ -58,15 +58,15 @@ public class WebviewActivity extends Activity
 			   content+
 			   "</article>";
 	   
-	   String content = 
+	   String finalContent = 
 		       "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"+
 		       "<html><head>"+
 		       "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />"+
 		       styleHtml()+
 		       "<head><body>";
-		content += customBody + "</body></html>";
+	   finalContent += customBody + "</body></html>";
 
-		webView.loadData(content, "text/html; charset=utf-8", "UTF-8");
+		webView.loadData(finalContent, "text/html; charset=utf-8", "UTF-8");
 	}
 	
 	@Override
@@ -83,6 +83,7 @@ public class WebviewActivity extends Activity
 				"h1 a {text-decoration:none;}"+
 				"article {color: black; font-size:12px;}"+
 				"hr {color: #EEE; background-color: #EEE; height: 1px;}"+
+				"img {max-width:100%;height:auto;}"+
 				"</style>";
 	    
 	    return style;
