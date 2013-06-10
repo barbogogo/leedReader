@@ -118,8 +118,13 @@ public class Flux {
 	}
 	
 	public int getNbNoRead()
-	{		
-		return nbNoRead;
+	{	
+		int lNbNoRead = nbNoRead;
+		
+		for(int i = 0 ; i < articles.size() ; i++)
+			lNbNoRead = lNbNoRead - articles.get(i).getIsRead();
+		
+		return lNbNoRead;
 	}
 	
 	public void setNbNoRead(int pNbNoRead)

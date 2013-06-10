@@ -9,7 +9,7 @@ import android.util.Log;
 public class DataManagement 
 {
 	private APIConnection connection;
-	private LocalData offLineData;
+	private LocalData DBData;
 	
 	private int connectionType;
 	private static final int cOnLine  = 0;
@@ -36,8 +36,8 @@ public class DataManagement
 	{
 		pContext = context;
 		
-		offLineData = new LocalData(context);
-        offLineData.open();
+		DBData = new LocalData(context);
+		DBData.open();
         
         connection = new APIConnection(context, this);
         
@@ -86,15 +86,16 @@ public class DataManagement
 		switch(connectionType)
 		{
 			case cOnLine:
+				DBData.init();
 				connection.init();
 			break;
 			case cGetData:
 				((MainActivity)pContext).initGetData();
-				offLineData.init();
+				DBData.init();
 				connection.init();
 			break;
 			case cOffLine:
-				updateCategories(offLineData.getAllFolders());
+				updateCategories(DBData.getAllFolders());
 			break;
 			case cSendData:
 				((MainActivity)pContext).initGetData();
@@ -112,7 +113,7 @@ public class DataManagement
 			case cGetData:
 			break;
 			case cOffLine:
-				updateCategories(offLineData.getAllFolders());
+				updateCategories(DBData.getAllFolders());
 			break;
 		}
     	
@@ -127,7 +128,7 @@ public class DataManagement
 			case cGetData:
 			break;
 			case cOffLine:
-				updateFeed(offLineData.getArticlesByFeed(feed.getId()));
+				updateFeed(DBData.getArticlesByFeed(feed.getId()));
 			break;
 		}
 	}
@@ -142,7 +143,7 @@ public class DataManagement
 			case cGetData:
 			break;
 			case cOffLine:
-				updateArticle(offLineData.getArticle(idArticle).getContent());
+				updateArticle(DBData.getArticle(idArticle).getContent());
 			break;
 		}
 	}
@@ -160,7 +161,6 @@ public class DataManagement
 				setOffLineButton(cGetData);
 			break;
 			case cGetData:
-//				setOffLineButton(cOnLine);
 			break;
 			case cOffLine:
 				setOffLineButton(cSendData);
@@ -182,13 +182,13 @@ public class DataManagement
 				
 				for(int i = 0 ; i < folders.size() ; i++)
 				{
-					offLineData.addFolder(folders.get(i));
+					DBData.addFolder(folders.get(i));
 					
 					Log.i("GetData", "GetFolder "+folders.get(i).getId());
 					
 					for(int j = 0 ; j < folders.get(i).getFlux().size() ; j++)
 					{
-						offLineData.addFeed(folders.get(i).getFlux().get(j));
+						DBData.addFeed(folders.get(i).getFlux().get(j));
 
 						Log.i("GetData", "GetFeed "+folders.get(i).getFlux().get(j).getId());
 						
@@ -214,7 +214,7 @@ public class DataManagement
 				
 				for(int i = 0 ; i < feed.getArticles().size() ; i++)
 				{
-					offLineData.addArticle(feed.getArticles().get(i));
+					DBData.addArticle(feed.getArticles().get(i));
 					
 					Log.i("GetData", "GetArticle "+feed.getArticles().get(i).getId() +" - Feed "+feed.getArticles().get(i).getIdFeed());
 				}
@@ -261,7 +261,7 @@ public class DataManagement
 	{
 		ArrayList<Article> articles = new ArrayList<Article>();
 		
-		articles = offLineData.getAllArticles();
+		articles = DBData.getAllArticles();
 		
 		for(int i = 0 ; i < articles.size() ; i ++)
 		{
@@ -297,7 +297,7 @@ public class DataManagement
 		}
 		if(connectionType == cOffLine)
 		{
-			offLineData.setReadArticle(article);
+			DBData.setReadArticle(article);
 		}
 	}
 	public void setUnReadArticle(Article article)
@@ -308,7 +308,7 @@ public class DataManagement
 		}
 		if(connectionType == cOffLine)
 		{
-			offLineData.setUnReadArticle(article);
+			DBData.setUnReadArticle(article);
 		}
 	}
 	
@@ -320,7 +320,7 @@ public class DataManagement
 		}
 		if(connectionType == cOffLine)
 		{
-			offLineData.setFavArticle(article);
+			DBData.setFavArticle(article);
 		}
 	}
 	public void setUnFavArticle(Article article)
@@ -331,7 +331,7 @@ public class DataManagement
 		}
 		if(connectionType == cOffLine)
 		{
-			offLineData.setUnFavArticle(article);
+			DBData.setUnFavArticle(article);
 		}
 	}
 }

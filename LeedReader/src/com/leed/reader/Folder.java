@@ -27,7 +27,6 @@ public class Folder {
 			for (Iterator<String> iterator = fluxItems.keys(); iterator.hasNext();) {
 			    Object cle = iterator.next();
 			    String val = fluxItems.getString(String.valueOf(cle));
-			    System.out.println("cle=" + cle + ", valeur=" + val);
 			    flux.add(new Flux(val, idFolder));
 			  }
             

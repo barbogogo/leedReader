@@ -51,6 +51,8 @@ public class APIConnection
 	private static final int cRead = 4;
 	private static final int cFav = 5;
 	
+	private Flux pFeed;
+	
 	public APIConnection(Context lContext, DataManagement lDataContext)
 	{
 		mainContext = lContext;
@@ -79,6 +81,7 @@ public class APIConnection
 	public void getFeed(Flux feed, String nbMaxArticle, int connectionType)
 	{
 		typeRequest = cFeed;
+		pFeed = feed;
 		new ServerConnection().execute(leedURL+"/json.php?option=flux&feedId="+feed.getId()+"&nbMaxArticle="+nbMaxArticle+"&connectionType="+connectionType);
 	}
 	
@@ -235,8 +238,6 @@ public class APIConnection
 	                
 	                	case cFeed:
 	                		
-	                		Flux feed = new Flux();
-	                		
                 			jsonObject = new JSONObject(result);
                 			
                 			JSONArray  articlesItems = new JSONArray(jsonObject.getString("articles"));
@@ -258,10 +259,10 @@ public class APIConnection
 		                            article.setIdFeed(postalCodesItem.getString("idFeed"));
 	                            }
 
-	                            feed.addArticle(article);
+	                            pFeed.addArticle(article);
 	                        }
 	                		
-	                		updateFeed(feed);
+	                		updateFeed(pFeed);
 	                	break;
                 		
 	                	case cArticle:
