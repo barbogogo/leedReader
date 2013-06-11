@@ -80,6 +80,11 @@ public class Flux {
 		articles.add(pArticle);
 	}
 	
+	public void deleteAllArticles()
+	{
+		articles.clear();
+	}
+	
 	public Article getArticle(int posArticle)
 	{
 		return articles.get(posArticle);

@@ -242,6 +242,8 @@ public class APIConnection
                 			
                 			JSONArray  articlesItems = new JSONArray(jsonObject.getString("articles"));
 	                        
+                			pFeed.deleteAllArticles();
+                			
 	                        for (int i = 0; i < articlesItems.length(); i++)
 	                        {
 	                            JSONObject postalCodesItem = articlesItems.getJSONObject(i);
