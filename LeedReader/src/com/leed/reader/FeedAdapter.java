@@ -98,7 +98,7 @@ public class FeedAdapter extends ArrayAdapter<String>
 						Article article = articles.get(pPosition);
 						
 						article.setRead();
-//						dataManagement.setReadArticle(article);
+						dataManagement.setReadArticle(article);
 						
 						notifyDataSetChanged();
 						

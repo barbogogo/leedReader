@@ -116,7 +116,29 @@ public class DataManagement
 				updateCategories(DBData.getAllFolders());
 			break;
 		}
-    	
+    }
+	public void getCategory(Folder lFolder)
+    {
+		switch(connectionType)
+		{
+			case cOnLine:
+				updateCategory(lFolder);
+			break;
+			case cGetData:
+			break;
+			case cOffLine:
+				Folder folder = new Folder();
+				
+				ArrayList<Flux> feeds = DBData.getFeedByCategory(lFolder.getId());
+				
+				for(int i = 0 ; i < feeds.size() ; i++)
+				{
+					folder.addFeed(feeds.get(i));
+				}
+				
+				updateCategory(folder);
+			break;
+		}
     }
 	public void getFeed(Flux feed)
 	{
@@ -202,6 +224,19 @@ public class DataManagement
 			case cOnLine:
 			case cOffLine:
 				((MainActivity)pContext).updateCategories(folders);
+			break;
+		}
+	}
+	
+	public void updateCategory(Folder folder)
+	{
+		switch(connectionType)
+		{
+			case cGetData:
+			break;
+			case cOnLine:
+			case cOffLine:
+				((MainActivity)pContext).updateCategory(folder);
 			break;
 		}
 	}

@@ -48,7 +48,7 @@ public class MainActivity extends Activity
 	
 	public Context context;
 	
-	private Folder pActualFeed;
+	private Folder pActualFolder;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) 
@@ -123,7 +123,7 @@ public class MainActivity extends Activity
     		
 	    	case cpFeed:
 	    		posNavigation = cpFolder;
-	    		updateCategory(pActualFeed);
+	    		dataManagement.getCategory(pActualFolder);
 	    	break;
 	    		
 	    	case cpArticle:
@@ -229,9 +229,9 @@ public class MainActivity extends Activity
 		            {
 		            	posNavigation = cpFolder;
 		            	
-		            	pActualFeed = folders.get(position);
+		            	pActualFolder = folders.get(position);
 		            	
-		            	if(pActualFeed.getFlux().size() > 0)
+		            	if(pActualFolder.getFlux().size() > 0)
 		            	{
 			            	progressBar.setVisibility(ProgressBar.VISIBLE);
 		
