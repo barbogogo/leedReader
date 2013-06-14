@@ -57,7 +57,10 @@ public class DataManagement
 		password = settings.getString("password", "");
 		connectionType = settings.getInt("connectionType", cOnLine);
 		
-		connection.SetDataConnection(leedURL, login, password);
+		try 
+		{
+			connection.SetDataConnection(leedURL, login, password);
+		} catch (Exception e) {}
     }
 	
 	public void saveConnectionType(int type)
@@ -324,11 +327,12 @@ public class DataManagement
 		((MainActivity)pContext).endGetData();
 	}
 	
-	public void setReadArticle(Article article)
+	public void setReadArticle(Article article, int type)
 	{		
 		if(connectionType == cOnLine)
 		{
-//			connection.setReadArticle(article.getId());
+			if(type == 1)
+				connection.setReadArticle(article.getId());
 		}
 		if(connectionType == cOffLine)
 		{

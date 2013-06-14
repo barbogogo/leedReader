@@ -139,7 +139,7 @@ public class MainActivity extends Activity
     	listView.removeAllViewsInLayout();
     	
     	dataManagement.getParameters();
-    	
+
     	getCategories();
     }
     
@@ -273,7 +273,7 @@ public class MainActivity extends Activity
     {
     	progressBar.setVisibility(ProgressBar.INVISIBLE);
     	
-    	FeedAdapter adapter = new FeedAdapter(this, feed);
+    	FeedAdapter adapter = new FeedAdapter(this, feed, dataManagement);
         listView.setAdapter(adapter);
         
         listView.setOnItemClickListener(
@@ -366,3 +366,4 @@ public class MainActivity extends Activity
     	progressBarGetData.setProgress(progress);
     }
 }
+

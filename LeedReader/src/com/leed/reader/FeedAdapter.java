@@ -29,7 +29,7 @@ public class FeedAdapter extends ArrayAdapter<String>
 	
 	private DataManagement dataManagement;
 	
-	public FeedAdapter(Context context, Flux feed)
+	public FeedAdapter(Context context, Flux feed, DataManagement lDataManagement)
 	{
 		super(context, R.layout.activity_main, feed.getArticlesTitle());
 		
@@ -40,7 +40,7 @@ public class FeedAdapter extends ArrayAdapter<String>
 		progressBar = (ProgressBar) ((MainActivity)context).findViewById(R.id.progressBar1);
 		progressBar.setVisibility(ProgressBar.INVISIBLE);
 		
-		dataManagement = new DataManagement(context);
+		dataManagement = lDataManagement;
 	}
  
 	@Override
@@ -85,6 +85,27 @@ public class FeedAdapter extends ArrayAdapter<String>
 		noReadView.setTextSize(10);
 		favoriteView.setTextSize(10);
 		
+		pRowView.setOnClickListener(
+				new View.OnClickListener() 
+				{
+					@Override
+					public void onClick(View v) 
+					{
+						progressBar.setVisibility(ProgressBar.VISIBLE);
+						
+						pPosition = position;
+						
+						Article article = articles.get(pPosition);
+						
+						article.setRead();
+						dataManagement.setReadArticle(article, 0);
+						
+						notifyDataSetChanged();
+						
+						dataManagement.getArticle(articles.get(position).getId());
+					}
+				});
+		
 		titleView.setOnClickListener(
 				new View.OnClickListener() 
 				{
@@ -98,7 +119,7 @@ public class FeedAdapter extends ArrayAdapter<String>
 						Article article = articles.get(pPosition);
 						
 						article.setRead();
-						dataManagement.setReadArticle(article);
+						dataManagement.setReadArticle(article, 0);
 						
 						notifyDataSetChanged();
 						
@@ -121,7 +142,7 @@ public class FeedAdapter extends ArrayAdapter<String>
 						if(article.getIsRead() == 0)
 						{
 							article.setRead();
-							dataManagement.setReadArticle(article);
+							dataManagement.setReadArticle(article, 1);
 						}
 						else
 						{

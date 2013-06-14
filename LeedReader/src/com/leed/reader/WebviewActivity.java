@@ -14,7 +14,6 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.PluginState;
 import android.webkit.WebView;
-import android.widget.Toast;
  
 public class WebviewActivity extends Activity  
 {

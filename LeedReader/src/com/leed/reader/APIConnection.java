@@ -4,17 +4,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.security.MessageDigest;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -22,13 +22,14 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build.VERSION;
 import android.util.Log;
+import android.content.pm.PackageManager;
+
 
 public class APIConnection 
 {
 	private String leedURL;
-	private String login;
-	private String password;
 	
 	private Context mainContext;
 	private DataManagement dataContext;
@@ -37,6 +38,7 @@ public class APIConnection
 	private static final int cNoError = 0;
 	private static final int cNetworkError = 1;
 	private static final int cServerError = 2;
+	private static final int cIdentificationError = 3;
 	
 	private ArrayList<String> items = new ArrayList<String>();
 	private ArrayList<String> nbNoRead = new ArrayList<String>();
@@ -50,26 +52,50 @@ public class APIConnection
 	private static final int cInit = 3;
 	private static final int cRead = 4;
 	private static final int cFav = 5;
+
+	private DefaultHttpClient httpClient;
+	private String            userAgent;
 	
 	private Flux pFeed;
 	
 	public APIConnection(Context lContext, DataManagement lDataContext)
 	{
 		mainContext = lContext;
+
 		dataContext = lDataContext;
+
+		// create connection object
+		httpClient = new DefaultHttpClient();
+
+		String version = "unknown";
+		try 
+		{
+			version = lContext.getPackageManager().getPackageInfo(lContext.getPackageName(), 0).versionName;
+		} 
+		catch(PackageManager.NameNotFoundException e) 
+		{
+		}
+
+		userAgent  = "Android-" + VERSION.RELEASE + "/LeedReader-" + version;
 	}
 	
-	public void SetDataConnection(String lUrl, String lLogin, String lPassword)
+	public void SetDataConnection(String lUrl, String lLogin, String lPassword) throws java.net.URISyntaxException, java.security.NoSuchAlgorithmException
 	{
 		leedURL  = lUrl;
-		login    = lLogin;
-		password = lPassword;
+
+		URI uri = new URI(lUrl);
+		String SHA1Pwd = Utils.hex(MessageDigest.getInstance("SHA1").digest(lPassword.getBytes()));
+
+		httpClient.getCredentialsProvider().setCredentials(
+			new AuthScope(uri.getHost(), uri.getPort()),
+			new UsernamePasswordCredentials(lLogin, SHA1Pwd)
+		);
 	}
-	
+
 	public void init()
 	{
 		typeRequest = cInit;
-		new ServerConnection().execute(leedURL+"/json.php?option=init");
+		new ServerConnection().execute(leedURL+"/login.php");
 	}
 	
 	public void getCategories()
@@ -118,8 +144,8 @@ public class APIConnection
 	public String readJSONFeed(String URL) 
     {
         StringBuilder stringBuilder = new StringBuilder();
-        HttpClient httpClient = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(URL);
+		httpGet.setHeader("User-Agent", this.userAgent);
         
         URI pUri = httpGet.getURI();
         String host = pUri.getHost();
@@ -145,6 +171,20 @@ public class APIConnection
 	                
 	                serverError = cNoError;
 	            }
+	            if(statusCode == 401)
+	            {
+	            	HttpEntity entity = response.getEntity();
+	                InputStream inputStream = entity.getContent();
+	                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+	                String line;
+	                while ((line = reader.readLine()) != null) 
+	                {
+	                    stringBuilder.append(line);
+	                }
+	                inputStream.close();
+	                
+	            	serverError = cIdentificationError;
+	            }
 	        }
 	        catch (IOException e)
 	        {
@@ -152,6 +192,8 @@ public class APIConnection
 	        	erreurServeur(e.getLocalizedMessage(), false);
 	        }
         }
+        else
+        	serverError = cServerError;
         
         return stringBuilder.toString();
     }
@@ -191,22 +233,7 @@ public class APIConnection
     	// String... permit to define a String array
     	protected String doInBackground(String... urls) 
         {
-    		String loginEncoded;
-    		String passwordEncoded;
-    		try
-    		{
-        		loginEncoded = URLEncoder.encode(login, "UTF-8");
-        		passwordEncoded = URLEncoder.encode(password, "UTF-8");
-        	} 
-    		catch (UnsupportedEncodingException e) 
-    		{
-    			loginEncoded="";
-    			passwordEncoded="";
-	    	}
-    		
-    		String url = urls[0]+"&login="+loginEncoded+"&password="+passwordEncoded;
-    		
-    		return readJSONFeed(url);
+            return readJSONFeed(urls[0]);
         }
  
         protected void onPostExecute(String result) 
@@ -221,18 +248,18 @@ public class APIConnection
 	                {
 	                	case cInit:
 	                		JSONObject json = new JSONObject(result);
-	                	    JSONObject json2 = json.getJSONObject("error");
-	                	    int idError = json2.getInt("id");
-	                	    String msgError = json2.getString("message");
-	                	    
-	                	    if(idError == 0)
-	                	    {
-	                	    	getCategories();
-	                	    }
-	                	    else
-	                	    {
-	                	    	erreurServeur(msgError, true);
-	                	    }
+	                		JSONObject json2 = json.getJSONObject("error");
+	                		int idError = json2.getInt("id");
+	                		String msgError = json2.getString("message");
+
+	                		if(idError == 0)
+	                		{
+	                			getCategories();
+	                		}
+	                		else
+	                		{
+	                			erreurServeur(msgError, true);
+	                		}
 	                		
 	                	break;
 	                
