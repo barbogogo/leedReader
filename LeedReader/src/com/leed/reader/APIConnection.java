@@ -57,6 +57,7 @@ public class APIConnection
 	private String            userAgent;
 	
 	private Flux pFeed;
+	private Article pArticle;
 	
 	public APIConnection(Context lContext, DataManagement lDataContext)
 	{
@@ -111,10 +112,11 @@ public class APIConnection
 		new ServerConnection().execute(leedURL+"/json.php?option=flux&feedId="+feed.getId()+"&nbMaxArticle="+nbMaxArticle+"&connectionType="+connectionType);
 	}
 	
-	public void getArticle(String idArticle)
+	public void getArticle(Article article)
 	{
 		typeRequest = cArticle;
-		new ServerConnection().execute(leedURL+"/json.php?option=article&idArticle=" + idArticle);
+		pArticle = article;
+		new ServerConnection().execute(leedURL+"/json.php?option=article&idArticle=" + article.getId());
 	}
 	
 	public void setReadArticle(String idArticle)
@@ -300,7 +302,9 @@ public class APIConnection
     		        		
     		        		String content = jsonObject.getString("content");
     		        		
-    		                updateArticle(content);
+    		        		pArticle.setContent(content);
+    		        		
+    		                updateArticle(pArticle);
 	                		
 	                	break;
 	                	
@@ -364,9 +368,9 @@ public class APIConnection
 		((DataManagement)dataContext).updateFeed(feed);
 	}
 	
-	private void updateArticle(String content)
+	private void updateArticle(Article article)
 	{
-		((DataManagement)dataContext).updateArticle(content);
+		((DataManagement)dataContext).updateArticle(article);
 	}
 	
 	private void stateChanged()

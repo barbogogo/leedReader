@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +103,7 @@ public class FeedAdapter extends ArrayAdapter<String>
 						
 						notifyDataSetChanged();
 						
-						dataManagement.getArticle(articles.get(position).getId());
+						dataManagement.getArticle(articles.get(position));
 					}
 				});
 		
@@ -123,7 +124,14 @@ public class FeedAdapter extends ArrayAdapter<String>
 						
 						notifyDataSetChanged();
 						
-						dataManagement.getArticle(articles.get(position).getId());
+//						dataManagement.getArticle(articles.get(position));
+						
+						((MainActivity) mainContext).setModeView(MainActivity.cModeWebView);
+						WebviewAdapter adapter = new WebviewAdapter(articles);
+						ViewPager myPager = (ViewPager) ((MainActivity) mainContext)
+								.findViewById(R.id.home_pannels_pager);
+						myPager.setAdapter(adapter);
+						myPager.setCurrentItem(pPosition);
 					}
 				});
 		
@@ -184,25 +192,9 @@ public class FeedAdapter extends ArrayAdapter<String>
 		return pRowView;
 	}
 	
-	public static void updateArticle(String content)
-    {
-		Article article = articles.get(pPosition);
-	    
-        article.setContent(content);
-    	
-		Bundle objetbunble = new Bundle();
-		objetbunble.putString("id", article.getId());
-		objetbunble.putString("title", article.getTitle());
-		objetbunble.putString("content", article.getContent());
-		objetbunble.putString("date", article.getDate());
-		objetbunble.putString("author", article.getAuthor());
-		objetbunble.putString("urlArticle", article.getUrlArticle());
-    	
-		Intent intent = new Intent(mainContext, WebviewActivity.class);
-		
-		intent.putExtras(objetbunble);
-		
-		mainContext.startActivity(intent);
+	public static void updateArticle(Article article)
+    {		
+//        adapter.updateArticles(article);
 
 		progressBar.setVisibility(ProgressBar.INVISIBLE);
     }

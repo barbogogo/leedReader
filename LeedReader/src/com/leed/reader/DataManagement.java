@@ -148,7 +148,9 @@ public class DataManagement
 		switch(connectionType)
 		{
 			case cOnLine:
-				connection.getFeed(feed, NB_ELEMENT_ONLINE, connectionType);
+				//TODO: trouver comment charger les articles au fur et à mesure
+//				connection.getFeed(feed, NB_ELEMENT_ONLINE, connectionType);
+				connection.getFeed(feed, NB_ELEMENT_ONLINE, cGetData);
 			break;
 			case cGetData:
 			break;
@@ -158,17 +160,17 @@ public class DataManagement
 		}
 	}
 	
-	public void getArticle(String idArticle)
+	public void getArticle(Article article)
 	{
 		switch(connectionType)
 		{
 			case cOnLine:
-				connection.getArticle(idArticle);
+				connection.getArticle(article);
 			break;
 			case cGetData:
 			break;
 			case cOffLine:
-				updateArticle(DBData.getArticle(idArticle).getContent());
+//				updateArticle(DBData.getArticle(idArticle).getContent());
 			break;
 		}
 	}
@@ -277,9 +279,9 @@ public class DataManagement
 		}
 	}
 	
-	public void updateArticle(String content)
+	public void updateArticle(Article article)
 	{
-		FeedAdapter.updateArticle(content);
+		FeedAdapter.updateArticle(article);
 	}
 	
 	public void endGetData()

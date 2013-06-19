@@ -6,72 +6,66 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-public class SettingsActivity extends Activity 
-{
+public class SettingsActivity extends Activity {
 
 	final String fileName = "settings.dat";
 	public static final String PREFS_NAME = "MyPrefsFile";
-	
+
 	@Override
-	public void onCreate(Bundle savedInstanceState) 
-	{
-		   super.onCreate(savedInstanceState);
-		   setContentView(R.layout.settings);
-		   
-		   String url = this.getIntent().getStringExtra("url");
-		   String login = this.getIntent().getStringExtra("login");
-		   
-		   TextView dataText = (TextView) findViewById(R.id.adresseServeurEdit);
-		   dataText.setText(url);
-		   
-		   TextView loginText = (TextView) findViewById(R.id.loginServerEdit);
-		   loginText.setText(login);
-	}
-	
-	public void btnSaveData(View view)
-	{
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.settings);
+
+		String url = this.getIntent().getStringExtra("url");
+		String login = this.getIntent().getStringExtra("login");
+
 		TextView dataText = (TextView) findViewById(R.id.adresseServeurEdit);
-		
-		String sData = dataText.getText()+"";
-		
+		dataText.setText(url);
+
+		TextView loginText = (TextView) findViewById(R.id.loginServerEdit);
+		loginText.setText(login);
+	}
+
+	public void btnSaveData(View view) {
+		TextView dataText = (TextView) findViewById(R.id.adresseServeurEdit);
+
+		String sData = dataText.getText() + "";
+
 		saveURL(sData);
-		
+
 		TextView loginText = (TextView) findViewById(R.id.loginServerEdit);
 		TextView passwordText = (TextView) findViewById(R.id.passwordServerEdit);
-		
-		String lData = loginText.getText()+"";
-		String pData = passwordText.getText()+"";
-		
-		if(pData.length() > 0)
+
+		String lData = loginText.getText() + "";
+		String pData = passwordText.getText() + "";
+
+		if (pData.length() > 0)
 			saveLoginPasswd(lData, pData);
-		
+
 		this.finish();
 	}
-	
-	public void saveURL(String data)
-	{
+
+	public void saveURL(String data) {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		SharedPreferences.Editor editor = settings.edit();
-		
+
 		editor.putString("url", data);
-		
+
 		editor.commit();
 	}
-	
-	public void saveLoginPasswd(String login, String password)
-	{
+
+	public void saveLoginPasswd(String login, String password) {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		SharedPreferences.Editor editor = settings.edit();
-		
+
 		editor.putString("login", login);
 		editor.putString("password", password);
-		
+
 		editor.commit();
 	}
-	
+
 	@Override
-	public void finish()
-	{
+	public void finish() {
 		super.finish();
 	}
 }
