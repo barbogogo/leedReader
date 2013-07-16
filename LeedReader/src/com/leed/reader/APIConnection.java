@@ -355,7 +355,7 @@ public class APIConnection
 	
 	public void erreurServeur(String msg, boolean showSetting)
     {
-    	((MainActivity)mainContext).erreurServeur(msg, showSetting);
+    	((LeedReader)mainContext).erreurServeur(msg, showSetting);
     }
 	
 	private void updateData(final ArrayList<Folder> folders)
@@ -381,7 +381,7 @@ public class APIConnection
 	private boolean isNetworkAvailable() 
 	{
 	    ConnectivityManager connectivityManager = 
-	    		(ConnectivityManager)((MainActivity)mainContext).getSystemService(Context.CONNECTIVITY_SERVICE);
+	    		(ConnectivityManager)((LeedReader)mainContext).getSystemService(Context.CONNECTIVITY_SERVICE);
 	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}

@@ -22,7 +22,7 @@ import android.widget.Toast;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class MainActivity extends Activity {
+public class LeedReader extends Activity {
 	private ListView listView;
 	private ProgressBar progressBar;
 	private ProgressBar progressBarGetData;

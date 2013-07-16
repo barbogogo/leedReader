@@ -23,7 +23,7 @@
         <activity android:name="com.leed.reader.SettingsActivity" />
         
         <activity
-            android:name="com.leed.reader.MainActivity"
+            android:name="com.leed.reader.LeedReader"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

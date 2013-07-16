@@ -38,7 +38,7 @@ public class FeedAdapter extends ArrayAdapter<String>
 		
 		mainContext = context;
 		
-		progressBar = (ProgressBar) ((MainActivity)context).findViewById(R.id.progressBar1);
+		progressBar = (ProgressBar) ((LeedReader)context).findViewById(R.id.progressBar1);
 		progressBar.setVisibility(ProgressBar.INVISIBLE);
 		
 		dataManagement = lDataManagement;
@@ -126,9 +126,9 @@ public class FeedAdapter extends ArrayAdapter<String>
 						
 //						dataManagement.getArticle(articles.get(position));
 						
-						((MainActivity) mainContext).setModeView(MainActivity.cModeWebView);
+						((LeedReader) mainContext).setModeView(LeedReader.cModeWebView);
 						WebviewAdapter adapter = new WebviewAdapter(articles);
-						ViewPager myPager = (ViewPager) ((MainActivity) mainContext)
+						ViewPager myPager = (ViewPager) ((LeedReader) mainContext)
 								.findViewById(R.id.home_pannels_pager);
 						myPager.setAdapter(adapter);
 						myPager.setCurrentItem(pPosition);

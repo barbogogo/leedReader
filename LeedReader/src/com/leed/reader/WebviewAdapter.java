@@ -3,13 +3,12 @@ package com.leed.reader;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Parcelable;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
@@ -82,7 +81,7 @@ public class WebviewAdapter extends PagerAdapter {
 				+ "<head><body>";
 		finalContent += customBody + "</body></html>";
 
-		 webView.addJavascriptInterface( new WebAppInterface((MainActivity) mainContext), "Android");
+		 webView.addJavascriptInterface( new WebAppInterface((LeedReader) mainContext), "Android");
 
 		webView.loadData(finalContent, "text/html; charset=utf-8", "UTF-8");
 
@@ -146,7 +145,7 @@ public class WebviewAdapter extends PagerAdapter {
 		@JavascriptInterface
 		public void showToast(String url) {
 			Intent viewIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-			((MainActivity) mainContext).startActivity(viewIntent);
+			((LeedReader) mainContext).startActivity(viewIntent);
 		}
 	}
 
@@ -178,6 +177,6 @@ public class WebviewAdapter extends PagerAdapter {
 		
 		Article article = articles.get(Integer.valueOf(container.getTag().toString()));
 		
-		((MainActivity) mainContext).getDataManagement().setReadArticle(article, 1);
+		((LeedReader) mainContext).getDataManagement().setReadArticle(article, 1);
 	}
 }

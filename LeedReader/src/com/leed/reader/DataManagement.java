@@ -43,7 +43,7 @@ public class DataManagement
         
         getParameters();
         
-        ((MainActivity)pContext).setOffLineButton(connectionType);
+        ((LeedReader)pContext).setOffLineButton(connectionType);
 	}
 	
 	public void getParameters()
@@ -93,7 +93,7 @@ public class DataManagement
 				connection.init();
 			break;
 			case cGetData:
-				((MainActivity)pContext).initGetData();
+				((LeedReader)pContext).initGetData();
 				DBData.init();
 				connection.init();
 			break;
@@ -101,7 +101,7 @@ public class DataManagement
 				updateCategories(DBData.getAllFolders());
 			break;
 			case cSendData:
-				((MainActivity)pContext).initGetData();
+				((LeedReader)pContext).initGetData();
 				sendData();
 			break;
 		}
@@ -228,7 +228,7 @@ public class DataManagement
 			break;
 			case cOnLine:
 			case cOffLine:
-				((MainActivity)pContext).updateCategories(folders);
+				((LeedReader)pContext).updateCategories(folders);
 			break;
 		}
 	}
@@ -241,7 +241,7 @@ public class DataManagement
 			break;
 			case cOnLine:
 			case cOffLine:
-				((MainActivity)pContext).updateCategory(folder);
+				((LeedReader)pContext).updateCategory(folder);
 			break;
 		}
 	}
@@ -261,8 +261,8 @@ public class DataManagement
 				
 				Log.i("SuiviFeed", iterateurFeed+1 +"/"+ pFeeds.size());
 				
-				((MainActivity)pContext).addTextGetData("("+(iterateurFeed+1) +"/"+ pFeeds.size()+") "+ pFeeds.get(iterateurFeed).getName());
-				((MainActivity)pContext).setBarGetData(iterateurFeed+1, pFeeds.size());
+				((LeedReader)pContext).addTextGetData("("+(iterateurFeed+1) +"/"+ pFeeds.size()+") "+ pFeeds.get(iterateurFeed).getName());
+				((LeedReader)pContext).setBarGetData(iterateurFeed+1, pFeeds.size());
 				
 				iterateurFeed ++;
 				
@@ -274,7 +274,7 @@ public class DataManagement
 			break;
 			case cOnLine:
 			case cOffLine:
-				((MainActivity)pContext).updateFeed(feed);
+				((LeedReader)pContext).updateFeed(feed);
 			break;
 		}
 	}
@@ -287,14 +287,14 @@ public class DataManagement
 	public void endGetData()
 	{
 		setOffLineButton(cOffLine);
-		((MainActivity)pContext).endGetData();
+		((LeedReader)pContext).endGetData();
 	}
 	
 	public void setOffLineButton(int lConnectionType)
 	{
 		connectionType = lConnectionType;
 		saveConnectionType(lConnectionType);
-		((MainActivity)pContext).setOffLineButton(lConnectionType);
+		((LeedReader)pContext).setOffLineButton(lConnectionType);
 	}
 	
 	public void sendData()
@@ -305,7 +305,7 @@ public class DataManagement
 		
 		for(int i = 0 ; i < articles.size() ; i ++)
 		{
-			((MainActivity)pContext).addTextGetData(String.valueOf(i));
+			((LeedReader)pContext).addTextGetData(String.valueOf(i));
 			
 			if(Integer.parseInt(articles.get(i).getId()) == 3226)
 			{
@@ -319,14 +319,14 @@ public class DataManagement
 		}
 		for(int i = 0 ; i < articles.size() ; i ++)
 		{
-			((MainActivity)pContext).addTextGetData(String.valueOf(i));
+			((LeedReader)pContext).addTextGetData(String.valueOf(i));
 			if(articles.get(i).getIsFav() == 1)
 			{
 				connection.setFavArticle(articles.get(i).getId());
 			}
 		}
 		setOffLineButton(cOnLine);
-		((MainActivity)pContext).endGetData();
+		((LeedReader)pContext).endGetData();
 	}
 	
 	public void setReadArticle(Article article, int type)
