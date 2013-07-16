@@ -1,6 +1,8 @@
-package com.leed.reader;
+package com.barbogogo.leedreader;
 
 import java.util.ArrayList;
+
+import com.leed.reader.R;
 
 import android.content.Context;
 import android.content.Intent;

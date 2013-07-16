@@ -1,4 +1,4 @@
-package com.leed.reader;
+package com.barbogogo.leedreader;
 
 import java.io.BufferedReader;
 import java.io.IOException;

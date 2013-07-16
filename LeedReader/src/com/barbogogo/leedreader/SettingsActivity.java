@@ -1,4 +1,6 @@
-package com.leed.reader;
+package com.barbogogo.leedreader;
+
+import com.leed.reader.R;
 
 import android.app.Activity;
 import android.content.SharedPreferences;

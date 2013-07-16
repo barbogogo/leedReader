@@ -1,4 +1,4 @@
-package com.leed.reader;
+package com.barbogogo.leedreader;
 
 public class Article {
 
