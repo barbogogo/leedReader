@@ -28,7 +28,7 @@ public class FeedAdapter extends ArrayAdapter<String>
 	final int pTitlePosition = 0;
 	final int pNoReadPosition = 1;
 	
-	private static ProgressBar progressBar;
+//	private static ProgressBar progressBar;
 	
 	private DataManagement dataManagement;
 	
@@ -40,8 +40,8 @@ public class FeedAdapter extends ArrayAdapter<String>
 		
 		mainContext = context;
 		
-		progressBar = (ProgressBar) ((LeedReader)context).findViewById(R.id.progressBar1);
-		progressBar.setVisibility(ProgressBar.INVISIBLE);
+//		progressBar = (ProgressBar) ((LeedReader)context).findViewById(R.id.progressBar1);
+//		progressBar.setVisibility(ProgressBar.INVISIBLE);
 		
 		dataManagement = lDataManagement;
 	}
@@ -94,7 +94,7 @@ public class FeedAdapter extends ArrayAdapter<String>
 					@Override
 					public void onClick(View v) 
 					{
-						progressBar.setVisibility(ProgressBar.VISIBLE);
+//						progressBar.setVisibility(ProgressBar.VISIBLE);
 						
 						pPosition = position;
 						
@@ -115,7 +115,7 @@ public class FeedAdapter extends ArrayAdapter<String>
 					@Override
 					public void onClick(View v) 
 					{
-						progressBar.setVisibility(ProgressBar.VISIBLE);
+//						progressBar.setVisibility(ProgressBar.VISIBLE);
 						
 						pPosition = position;
 						
@@ -143,7 +143,7 @@ public class FeedAdapter extends ArrayAdapter<String>
 					@Override
 					public void onClick(View v) 
 					{
-						progressBar.setVisibility(ProgressBar.VISIBLE);
+//						progressBar.setVisibility(ProgressBar.VISIBLE);
 						
 						pPosition = position;
 						
@@ -170,7 +170,7 @@ public class FeedAdapter extends ArrayAdapter<String>
 					@Override
 					public void onClick(View v) 
 					{
-						progressBar.setVisibility(ProgressBar.VISIBLE);
+//						progressBar.setVisibility(ProgressBar.VISIBLE);
 						
 						pPosition = position;
 						
@@ -198,11 +198,11 @@ public class FeedAdapter extends ArrayAdapter<String>
     {		
 //        adapter.updateArticles(article);
 
-		progressBar.setVisibility(ProgressBar.INVISIBLE);
+//		progressBar.setVisibility(ProgressBar.INVISIBLE);
     }
 	
 	public static void stateChanged()
 	{
-		progressBar.setVisibility(ProgressBar.INVISIBLE);
+//		progressBar.setVisibility(ProgressBar.INVISIBLE);
 	}
 }

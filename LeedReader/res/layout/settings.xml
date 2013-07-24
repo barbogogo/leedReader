@@ -1,58 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/adresseServeurLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Adresse du serveur"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <EditText
-        android:id="@+id/adresseServeurEdit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textUri" >
-        <requestFocus />
-    </EditText>
-
-    <TextView
-        android:id="@+id/loginServerLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <EditText
-        android:id="@+id/loginServerEdit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textShortMessage" />
-
-    <TextView
-        android:id="@+id/passwordServerLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mot de passe"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <EditText
-        android:id="@+id/passwordServerEdit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPassword" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="btnSaveData"
-        android:text="Valider" />
-
-</LinearLayout>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+        <PreferenceCategory
+                android:title="@string/setting_connection_parameter">
+                <EditTextPreference
+                        android:title="@string/setting_server_link"
+                        android:summary="@string/setting_server_link_summary"
+                        android:key="serverLinkPref" />
+                <EditTextPreference
+                        android:title="@string/setting_username"
+                        android:summary="@string/setting_username_summary"
+                        android:key="usernamePref" />
+                <EditTextPreference
+                        android:title="@string/setting_password"
+                        android:summary="@string/setting_password_summary"
+                        android:key="passwordPref"
+                        android:inputType="textPassword" />
+        </PreferenceCategory>
+        <PreferenceCategory
+                android:title="@string/setting_connection_mode">
+                <ListPreference
+                        android:title="@string/setting_connection"
+                        android:summary="@string/setting_connection_summary"
+                        android:key="connectionType"
+                        android:entries="@array/listArray"
+                        android:entryValues="@array/listValues"
+                        android:defaultValue="0"/>
+        </PreferenceCategory>
+</PreferenceScreen>

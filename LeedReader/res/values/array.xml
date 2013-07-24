@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+		<string-array name="listValues">
+		   <item>0</item> <!-- onLine = DataManagement.cOnLine -->
+		   <item>2</item> <!-- offLine  = DataManagement.cOffLine -->
+		</string-array>
+	
+</resources>

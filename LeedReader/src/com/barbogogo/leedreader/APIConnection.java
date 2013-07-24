@@ -18,6 +18,8 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.leed.reader.R;
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -25,7 +27,6 @@ import android.os.AsyncTask;
 import android.os.Build.VERSION;
 import android.util.Log;
 import android.content.pm.PackageManager;
-
 
 public class APIConnection 
 {
@@ -52,6 +53,7 @@ public class APIConnection
 	private static final int cInit = 3;
 	private static final int cRead = 4;
 	private static final int cFav = 5;
+	private static final int cHomePage = 6;
 
 	private DefaultHttpClient httpClient;
 	private String            userAgent;
@@ -97,6 +99,13 @@ public class APIConnection
 	{
 		typeRequest = cInit;
 		new ServerConnection().execute(leedURL+"/login.php");
+	}
+	
+	public void getHomePage(String nbMaxArticle)
+	{
+		typeRequest = cHomePage;
+		pFeed = new Flux();
+		new ServerConnection().execute(leedURL+"/json.php?option=getUnread"+"&nbMaxArticle="+nbMaxArticle);
 	}
 	
 	public void getCategories()
@@ -185,13 +194,13 @@ public class APIConnection
 	                }
 	                inputStream.close();
 	                
-	            	serverError = cIdentificationError;
+	            	serverError = cNoError;
 	            }
 	        }
 	        catch (IOException e)
 	        {
 	        	Log.w("LeedReaderConnection", e.getLocalizedMessage());
-	        	erreurServeur(e.getLocalizedMessage(), false);
+//	        	erreurServeur(e.getLocalizedMessage(), false);
 	        }
         }
         else
@@ -205,7 +214,9 @@ public class APIConnection
     	
     	protected void onPreExecute() 
         {
-    		// we check if a network is available, if not error message    		
+    		serverError = cServerError;
+    		
+    		// we check if a network is available, if not error message
     		if(!isNetworkAvailable())
     		{
     			serverError = cNetworkError;
@@ -223,6 +234,7 @@ public class APIConnection
             		
             	case cInit:
             	case cFolder:
+            	case cHomePage:
             	default:
 		    		items.clear();
 		    		nbNoRead.clear();
@@ -256,7 +268,7 @@ public class APIConnection
 
 	                		if(idError == 0)
 	                		{
-	                			getCategories();
+	                			endInit();
 	                		}
 	                		else
 	                		{
@@ -266,6 +278,7 @@ public class APIConnection
 	                	break;
 	                
 	                	case cFeed:
+	                	case cHomePage:
 	                		
                 			jsonObject = new JSONObject(result);
                 			
@@ -337,10 +350,10 @@ public class APIConnection
         			switch(serverError)
                     {		
                     	case cNetworkError:
-                    		erreurServeur("Pas de connexion internet", false);
+                    		erreurServeur(mainContext.getResources().getString(R.string.msg_nointernet_connexion), false);
                     	break;
                     	case cServerError:
-                    		erreurServeur("URL non valide, merci de la changer", true);
+                    		erreurServeur(mainContext.getResources().getString(R.string.msg_bad_url), true);
         	    		break;
                     }
         		}
@@ -352,6 +365,11 @@ public class APIConnection
             }
         }
     }
+	
+	public void endInit()
+	{
+		((DataManagement)dataContext).getHomePage();
+	}
 	
 	public void erreurServeur(String msg, boolean showSetting)
     {
@@ -375,7 +393,7 @@ public class APIConnection
 	
 	private void stateChanged()
 	{
-		FeedAdapter.stateChanged();
+//		FeedAdapter.stateChanged();
 	}
 	
 	private boolean isNetworkAvailable() 
