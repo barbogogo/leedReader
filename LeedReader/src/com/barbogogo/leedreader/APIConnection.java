@@ -13,6 +13,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.json.JSONArray;
@@ -39,7 +42,6 @@ public class APIConnection
 	private static final int cNoError = 0;
 	private static final int cNetworkError = 1;
 	private static final int cServerError = 2;
-	private static final int cIdentificationError = 3;
 	
 	private ArrayList<String> items = new ArrayList<String>();
 	private ArrayList<String> nbNoRead = new ArrayList<String>();
@@ -157,7 +159,17 @@ public class APIConnection
         StringBuilder stringBuilder = new StringBuilder();
         HttpGet httpGet = new HttpGet(URL);
 		httpGet.setHeader("User-Agent", this.userAgent);
-        
+		
+		HttpParams httpParameters = new BasicHttpParams();
+		// Define timeout to be connected
+		int timeoutConnection = 10000;
+		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+		// Define timeout to receive data
+		int timeoutSocket = 10000;
+		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+		
+		httpClient.setParams(httpParameters);
+		
         URI pUri = httpGet.getURI();
         String host = pUri.getHost();
         
@@ -199,7 +211,7 @@ public class APIConnection
 	        }
 	        catch (IOException e)
 	        {
-	        	Log.w("LeedReaderConnection", e.getLocalizedMessage());
+	        	Log.i("LeedReaderConnection", e.getLocalizedMessage());
 //	        	erreurServeur(e.getLocalizedMessage(), false);
 	        }
         }
@@ -301,9 +313,9 @@ public class APIConnection
 		                            article.setFav(postalCodesItem.getInt("favorite"));
 		                            article.setContent(postalCodesItem.getString("content"));
 		                            article.setIdFeed(postalCodesItem.getString("idFeed"));
+		                            
+		                            pFeed.addArticle(article);
 	                            }
-
-	                            pFeed.addArticle(article);
 	                        }
 	                		
 	                		updateFeed(pFeed);
@@ -360,7 +372,7 @@ public class APIConnection
             }
             catch (Exception e)
             {
-                Log.w("LeedReaderGetData", e.getLocalizedMessage());
+                Log.i("LeedReaderGetData", e.getLocalizedMessage());
                 erreurServeur(e.getLocalizedMessage(), false);
             }
         }

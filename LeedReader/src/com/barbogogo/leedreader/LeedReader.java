@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
@@ -30,9 +31,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class LeedReader extends Activity {
-	// private ListView listView;
-	// private ProgressBar progressBar;
-	// private ProgressBar progressBarGetData;
+	private LinearLayout mloadingLayout;
 	private TextView mInformationArea;
 	private Button mButton;
 
@@ -60,13 +59,6 @@ public class LeedReader extends Activity {
 
 	private DataManagement dataManagement;
 
-	// private Button offLineButton;
-
-	private static final int cOnLine = 0;
-	private static final int cGetData = 1;
-	private static final int cOffLine = 2;
-	private static final int cSendData = 3;
-
 	/**
 	 * Mode view
 	 */
@@ -74,10 +66,9 @@ public class LeedReader extends Activity {
 	static final int cModeNavigation = 0;
 	static final int cModeTextView = 1;
 	static final int cModeWebView = 2;
+	static final int cModePageLoading = 3;
 
 	public Context context;
-
-	private Folder pActualFolder;
 
 	private boolean parameterGiven;
 
@@ -88,11 +79,13 @@ public class LeedReader extends Activity {
 
 		getOverflowMenu();
 
-		mTitle = mDrawerTitle = getTitle();
-
+		mTitle = getTitle();
+		mDrawerTitle = getTitle();
+		
 		mInformationArea = (TextView) findViewById(R.id.informationArea);
 		mButton = (Button) findViewById(R.id.buttonParameter);
 		mWebView = (ViewPager) findViewById(R.id.home_pannels_pager);
+		mloadingLayout = (LinearLayout) findViewById(R.id.loadingLayout);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ExpandableListView) findViewById(R.id.left_drawer);
 		mListView = (ListView) findViewById(R.id.content_frame);
@@ -105,6 +98,7 @@ public class LeedReader extends Activity {
 		// enable ActionBar app icon to behave as action to toggle nav drawer
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
+		getActionBar().setTitle(mTitle);
 
 		// ActionBarDrawerToggle ties together the the proper interactions
 		// between the sliding drawer and the action bar app icon
@@ -133,9 +127,13 @@ public class LeedReader extends Activity {
 
 		context = this;
 
-		setModeView(cModeNavigation);
+		dataManagement = new DataManagement(context);
 
 		init();
+	}
+
+	public void setPosNavigation(int pos) {
+		posNavigation = pos;
 	}
 
 	@Override
@@ -148,15 +146,10 @@ public class LeedReader extends Activity {
 			super.onBackPressed();
 			break;
 
-		case cpFolder:
-			posNavigation = cpGlobal;
-			getCategories();
-			break;
-
 		case cpFeed:
-			posNavigation = cpFolder;
+			posNavigation = cpGlobal;
 			setModeView(cModeNavigation);
-			dataManagement.getCategory(pActualFolder);
+			getHomePage();
 			break;
 
 		case cpArticle:
@@ -166,90 +159,50 @@ public class LeedReader extends Activity {
 		}
 	}
 
-	public void setPosNavigation(int pos) {
-		posNavigation = pos;
-	}
-
-	public void btnGetData(View view) {
-		// progressBar.setVisibility(ProgressBar.VISIBLE);
-
-		// listView.removeAllViewsInLayout();
-
+	public void init() {
+		setModeView(cModePageLoading);
+		
+		parameterGiven = true;
 		dataManagement.getParameters();
 
-		getCategories();
-	}
-
-	public void btnGetOffLineData(View view) throws InterruptedException {
-		// progressBar.setVisibility(ProgressBar.VISIBLE);
-
-		// listView.removeAllViewsInLayout();
-
-		dataManagement.changeConnectionMode();
-
-		init();
-	}
-
-	public void setOffLineButton(int connectionType) {
-		switch (connectionType) {
-		case cOnLine:
-			// offLineButton.setText("On\nLine");
-			// offLineButton.setTextColor(Color.parseColor("#00FF00"));
-			break;
-		case cGetData:
-			// offLineButton.setText("Get\nData");
-			// offLineButton.setTextColor(Color.parseColor("#FF0000"));
-			break;
-		case cOffLine:
-			// offLineButton.setText("Off\nLine");
-			// offLineButton.setTextColor(Color.parseColor("#000000"));
-			break;
-		case cSendData:
-			// offLineButton.setText("Send\nData");
-			// offLineButton.setTextColor(Color.parseColor("#FF0000"));
-			break;
-		}
-	}
-
-	public void init() {
-
-		parameterGiven = true;
-		dataManagement = new DataManagement(context);
-
 		if (parameterGiven == true) {
-			setModeView(cModeNavigation);
 			dataManagement.init();
 		}
-
 	}
 
 	public void endGetData() {
 		setModeView(cModeNavigation);
 
-		// progressBar.setVisibility(ProgressBar.INVISIBLE);
-
 		Toast.makeText(this, "Téléchargement terminé", Toast.LENGTH_LONG)
 				.show();
+
 		init();
 	}
 
+	public void getHomePage() {
+		setTitle(mTitle);
+		setModeView(cModePageLoading);
+		dataManagement.getHomePage();
+	}
+
 	public void getCategories() {
+		setModeView(cModePageLoading);
 		dataManagement.getCategories();
 	}
 
 	public void updateCategories(final ArrayList<Folder> folders) {
 		// progressBar.setVisibility(ProgressBar.INVISIBLE);
 
-		if (folders.size() > 0) {
-			mDrawerList.setAdapter(new MenuAdapter(this, folders));
-		}
+		mDrawerList.setAdapter(new MenuAdapter(this, folders));
 	}
 
 	public void getFeed(Flux feed) {
 		dataManagement.getFeed(feed);
 
 		setTitle(feed.getName());
+
 		mDrawerLayout.closeDrawer(mDrawerList);
+		posNavigation = cpFeed;
 	}
 
 	public void updateFeed(Flux feed) {
@@ -260,6 +213,8 @@ public class LeedReader extends Activity {
 
 		dataManagement.getCategories();
 
+		setModeView(cModeNavigation);
+
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -267,6 +222,7 @@ public class LeedReader extends Activity {
 				// do nothing
 			}
 		});
+
 	}
 
 	public void erreurServeur(String msg, boolean showSetting) {
@@ -307,11 +263,7 @@ public class LeedReader extends Activity {
 	public void onResume() {
 		// update data when parameters modification
 		if (settingFlag == true) {
-			// progressBar.setVisibility(ProgressBar.VISIBLE);
-
-			// listView.removeAllViewsInLayout();
-
-			dataManagement.getParameters();
+			
 			init();
 			settingFlag = false;
 		}
@@ -320,10 +272,6 @@ public class LeedReader extends Activity {
 
 	public void noParameterInformation() {
 		setModeView(cModeTextView);
-		// mInformationArea.setText(R.string.setting_no_information_text);
-		//
-		// mInformationArea.setGravity(Gravity.CENTER_HORIZONTAL
-		// | Gravity.CENTER_VERTICAL);
 
 		mInformationArea.setVisibility(View.GONE);
 
@@ -370,29 +318,36 @@ public class LeedReader extends Activity {
 		switch (modeView) {
 
 		case cModeNavigation:
-			// progressBarGetData.setVisibility(View.GONE);
 			mInformationArea.setVisibility(View.GONE);
 			mListView.setVisibility(View.VISIBLE);
 			mWebView.setVisibility(View.GONE);
 			mButton.setVisibility(View.GONE);
+			mloadingLayout.setVisibility(View.GONE);
 			break;
 
 		case cModeTextView:
-			// progressBarGetData.setVisibility(View.VISIBLE);
 			mInformationArea.setVisibility(View.VISIBLE);
 			mListView.setVisibility(View.GONE);
 			mWebView.setVisibility(View.GONE);
 			mButton.setVisibility(View.GONE);
+			mloadingLayout.setVisibility(View.GONE);
 			break;
 
 		case cModeWebView:
-			// progressBarGetData.setVisibility(View.GONE);
 			mInformationArea.setVisibility(View.GONE);
 			mListView.setVisibility(View.GONE);
 			mWebView.setVisibility(View.VISIBLE);
 			mButton.setVisibility(View.GONE);
+			mloadingLayout.setVisibility(View.GONE);
 			break;
 
+		case cModePageLoading:
+			mInformationArea.setVisibility(View.GONE);
+			mListView.setVisibility(View.GONE);
+			mWebView.setVisibility(View.GONE);
+			mButton.setVisibility(View.GONE);
+			mloadingLayout.setVisibility(View.VISIBLE);
+			break;
 		}
 	}
 
@@ -405,7 +360,12 @@ public class LeedReader extends Activity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
 
-		// mShareActionProvider.setShareIntent(getDefaultShareIntent());
+		MenuItem item = menu.findItem(R.id.action_share);
+		mShareActionProvider = (ShareActionProvider) item.getActionProvider();
+
+		mShareActionProvider
+				.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
+		mShareActionProvider.setShareIntent(createShareIntent());
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -457,12 +417,12 @@ public class LeedReader extends Activity {
 		case R.id.action_settings:
 			settings();
 			return true;
-		case R.id.action_share:
-			Toast.makeText(
-					this,
-					getResources().getString(R.string.msg_unavailable_function),
-					Toast.LENGTH_LONG).show();
-			return true;
+			// case R.id.action_share:
+			// Toast.makeText(
+			// this,
+			// getResources().getString(R.string.msg_unavailable_function),
+			// Toast.LENGTH_LONG).show();
+			// return true;
 		case R.id.action_reload:
 			init();
 			return true;
@@ -501,12 +461,20 @@ public class LeedReader extends Activity {
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		// Pass any configuration change to the drawer toggls
+		// Pass any configuration change to the drawer toggles
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
-	// Call to update the share intent
-	private void setShareIntent(Intent shareIntent) {
+	private Intent createShareIntent() {
+		Intent shareIntent = new Intent(Intent.ACTION_SEND);
+		shareIntent.setType("text/plain");
+		shareIntent.putExtra(Intent.EXTRA_SUBJECT, "subject");
+		shareIntent.putExtra(Intent.EXTRA_TEXT, "Some text");
+		return shareIntent;
+	}
+
+	// Somewhere in the application.
+	public void doShare(Intent shareIntent) {
 		if (mShareActionProvider != null) {
 			mShareActionProvider.setShareIntent(shareIntent);
 		}

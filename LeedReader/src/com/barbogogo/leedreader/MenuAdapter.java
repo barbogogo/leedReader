@@ -9,9 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MenuAdapter extends BaseExpandableListAdapter {
 
@@ -65,6 +63,7 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 
 		childViewHolder.textViewChild.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				((LeedReader) context).setModeView(LeedReader.cModePageLoading);
 				((LeedReader) context).getFeed(feed);
 			}
 		});

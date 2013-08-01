@@ -50,4 +50,6 @@
 	<string name="msg_unavailable_function">Fonction non disponible pour le moment</string>
 	<string name="msg_initialization">Initialisation...</string>
 	
+	<string name="msg_loading">En cours de chargement...</string>
+	
 </resources>

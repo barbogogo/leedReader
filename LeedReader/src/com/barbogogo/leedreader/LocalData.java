@@ -181,7 +181,8 @@ public class LocalData
 				MySQLiteHelper.ARTI_COL_URL,
 				MySQLiteHelper.ARTI_COL_CONTENT,
 				MySQLiteHelper.ARTI_COL_ISREAD,
-				MySQLiteHelper.ARTI_COL_ISFAV};
+				MySQLiteHelper.ARTI_COL_ISFAV,
+				MySQLiteHelper.ARTI_COL_IDFEED};
 		
 		String[] args = { idFeed };
 		
@@ -215,6 +216,7 @@ public class LocalData
 		article.setContent(cursor.getString(5));
 		article.setIsRead(cursor.getInt(6));
 		article.setFav(cursor.getInt(7));
+		article.setIdFeed(cursor.getString(8));
 		return article;
 	}
 	
@@ -230,7 +232,8 @@ public class LocalData
 				MySQLiteHelper.ARTI_COL_URL,
 				MySQLiteHelper.ARTI_COL_CONTENT,
 				MySQLiteHelper.ARTI_COL_ISREAD,
-				MySQLiteHelper.ARTI_COL_ISFAV};
+				MySQLiteHelper.ARTI_COL_ISFAV,
+				MySQLiteHelper.ARTI_COL_IDFEED};
 		
 		Cursor cursor = database.query(
 							MySQLiteHelper.ARTI_TABLE,
@@ -249,6 +252,43 @@ public class LocalData
 		return articles;
 	}
 	
+	public Flux getHomePage()
+	{
+		Flux flux = new Flux();
+		
+		String[] extractColumns = { 
+				MySQLiteHelper.ARTI_COL_ID,
+				MySQLiteHelper.ARTI_COL_TITLE,
+				MySQLiteHelper.ARTI_COL_AUTHOR,
+				MySQLiteHelper.ARTI_COL_DATE,
+				MySQLiteHelper.ARTI_COL_URL,
+				MySQLiteHelper.ARTI_COL_CONTENT,
+				MySQLiteHelper.ARTI_COL_ISREAD,
+				MySQLiteHelper.ARTI_COL_ISFAV,
+				MySQLiteHelper.ARTI_COL_IDFEED};
+		
+		String[] args = { "0" };
+		
+		Cursor cursor = database.query(
+				true,
+				MySQLiteHelper.ARTI_TABLE,
+				extractColumns, 
+				MySQLiteHelper.ARTI_COL_ISREAD+"=?",
+				args, 
+				null, null, null, null);
+		
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast())
+		{
+			Article article = cursorToArticle(cursor);
+			flux.addArticle(article);
+			cursor.moveToNext();
+		}
+		// Make sure to close the cursor
+		cursor.close();
+		return flux;
+	}
+	
 	public Article getArticle(String idArticle)
 	{	
 		String[] extractColumns = { 
@@ -259,7 +299,8 @@ public class LocalData
 				MySQLiteHelper.ARTI_COL_URL,
 				MySQLiteHelper.ARTI_COL_CONTENT,
 				MySQLiteHelper.ARTI_COL_ISREAD,
-				MySQLiteHelper.ARTI_COL_ISFAV};
+				MySQLiteHelper.ARTI_COL_ISFAV,
+				MySQLiteHelper.ARTI_COL_IDFEED};
 		
 		String[] args = { idArticle };
 		

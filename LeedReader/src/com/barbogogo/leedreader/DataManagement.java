@@ -27,6 +27,7 @@ public class DataManagement {
 	private String login;
 	private String password;
 
+	private ArrayList<Folder> pFolders;
 	private ArrayList<Flux> pFeeds;
 	private int iterateurFeed;
 
@@ -40,9 +41,11 @@ public class DataManagement {
 
 		connection = new APIConnection(context, this);
 
-		getParameters();
+		SharedPreferences settings = PreferenceManager
+				.getDefaultSharedPreferences(pContext);
 
-		((LeedReader) pContext).setOffLineButton(connectionType);
+		connectionType = Integer.valueOf(settings.getString("connectionType",
+				"0"));
 	}
 
 	public void getParameters() {
@@ -58,8 +61,9 @@ public class DataManagement {
 		// String.valueOf(cOnLine)));
 
 		int connectionType_old = connectionType;
+		// int connectionType_new = settings.getInt("connectionType", cOnLine);
 		int connectionType_new = Integer.valueOf(settings.getString(
-				"connectionType", String.valueOf(cOnLine)));
+				"connectionType", "0"));
 
 		if (connectionType_old != connectionType_new) {
 			if (connectionType_old == cOnLine && connectionType_new == cOffLine) {
@@ -89,7 +93,7 @@ public class DataManagement {
 				.getDefaultSharedPreferences(pContext);
 		SharedPreferences.Editor editor = settings.edit();
 
-		editor.putInt("connectionType", type);
+		editor.putString("connectionType", String.valueOf(type));
 
 		connectionType = type;
 
@@ -117,6 +121,7 @@ public class DataManagement {
 			break;
 		case cOffLine:
 			updateCategories(DBData.getAllFolders());
+			getHomePage();
 			break;
 		case cSendData:
 			((LeedReader) pContext).initGetData();
@@ -191,36 +196,24 @@ public class DataManagement {
 		return connection;
 	}
 
-	public void changeConnectionMode() {
-		switch (connectionType) {
-		case cOnLine:
-			setOffLineButton(cGetData);
-			break;
-		case cGetData:
-			break;
-		case cOffLine:
-			setOffLineButton(cSendData);
-			break;
-		case cSendData:
-			setOffLineButton(cOnLine);
-			break;
-		}
-	}
-
 	public void getHomePage() {
 		switch (connectionType) {
 		case cGetData:
+			connection.getCategories();
 			break;
 		case cOnLine:
-			connection.getHomePage("50");
+			connection.getHomePage("20");
 			break;
 		case cOffLine:
-			// TODO
+			((LeedReader) pContext).updateFeed(DBData.getHomePage());
 			break;
 		}
 	}
 
 	public void updateCategories(ArrayList<Folder> folders) {
+
+		pFolders = folders;
+
 		switch (connectionType) {
 		case cGetData:
 
@@ -269,12 +262,14 @@ public class DataManagement {
 		switch (connectionType) {
 		case cGetData:
 
-			for (int i = 0; i < feed.getArticles().size(); i++) {
-				DBData.addArticle(feed.getArticles().get(i));
+			if (feed.getArticles().size() > 0) {
+				for (int i = 0; i < feed.getArticles().size(); i++) {
+					DBData.addArticle(feed.getArticles().get(i));
 
-				Log.i("GetData", "GetArticle "
-						+ feed.getArticles().get(i).getId() + " - Feed "
-						+ feed.getArticles().get(i).getIdFeed());
+					Log.i("GetData", "GetArticle " + i + " - "
+							+ feed.getArticles().get(i).getId() + " - Feed "
+							+ feed.getArticles().get(i).getIdFeed());
+				}
 			}
 
 			Log.i("SuiviFeed", iterateurFeed + 1 + "/" + pFeeds.size());
@@ -287,9 +282,10 @@ public class DataManagement {
 
 			iterateurFeed++;
 
-			if (iterateurFeed == pFeeds.size())
+			if (iterateurFeed == pFeeds.size()) {
+				saveConnectionType(cOffLine);
 				endGetData();
-			else
+			} else
 				connection.getFeed(pFeeds.get(iterateurFeed),
 						NB_ELEMENT_OFFLINE, connectionType);
 
@@ -306,14 +302,8 @@ public class DataManagement {
 	}
 
 	public void endGetData() {
-		setOffLineButton(cOffLine);
+		// setOffLineButton(cOffLine);
 		((LeedReader) pContext).endGetData();
-	}
-
-	public void setOffLineButton(int lConnectionType) {
-		connectionType = lConnectionType;
-		saveConnectionType(lConnectionType);
-		((LeedReader) pContext).setOffLineButton(lConnectionType);
 	}
 
 	public void sendData() {
@@ -338,7 +328,7 @@ public class DataManagement {
 				connection.setFavArticle(articles.get(i).getId());
 			}
 		}
-		setOffLineButton(cOnLine);
+		saveConnectionType(cOnLine);
 		((LeedReader) pContext).endGetData();
 	}
 
@@ -377,5 +367,17 @@ public class DataManagement {
 		if (connectionType == cOffLine) {
 			DBData.setUnFavArticle(article);
 		}
+	}
+
+	public void decreaseNbNoReadArticle(String idFeed) {
+		for (int i = 0; i < pFolders.size(); i++) {
+			for (int j = 0; j < pFolders.get(i).getFlux().size(); j++) {
+				if (pFolders.get(i).getFlux().get(j).getId().equals(idFeed)) {
+					pFolders.get(i).getFlux().get(j).addReadArticle();
+				}
+			}
+		}
+
+		updateCategories(pFolders);
 	}
 }

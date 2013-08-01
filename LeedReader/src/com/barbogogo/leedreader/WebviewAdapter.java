@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Parcelable;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
@@ -26,8 +25,6 @@ public class WebviewAdapter extends PagerAdapter {
 
 	public WebviewAdapter(ArrayList<Article> lArticles) {
 		articles = lArticles;
-
-		Log.i("swig", "::WebviewAdapter");
 	}
 
 	// State number of pages
@@ -39,13 +36,13 @@ public class WebviewAdapter extends PagerAdapter {
 	// Set each screen's content
 	@Override
 	public Object instantiateItem(View container, int position) {
-		mainContext = container.getContext();
+		 mainContext = container.getContext();
 
 		// Add elements
 		LinearLayout layout = setWebView(position);
 
 		container.setTag(position);
-		
+
 		((ViewPager) container).addView(layout);
 		return layout;
 	}
@@ -81,7 +78,8 @@ public class WebviewAdapter extends PagerAdapter {
 				+ "<head><body>";
 		finalContent += customBody + "</body></html>";
 
-		 webView.addJavascriptInterface( new WebAppInterface((LeedReader) mainContext), "Android");
+		webView.addJavascriptInterface(new WebAppInterface(
+				(LeedReader) mainContext), "Android");
 
 		webView.loadData(finalContent, "text/html; charset=utf-8", "UTF-8");
 
@@ -172,11 +170,5 @@ public class WebviewAdapter extends PagerAdapter {
 
 	@Override
 	public void finishUpdate(View container) {
-		int i = 0;
-		i=i+1;
-		
-		Article article = articles.get(Integer.valueOf(container.getTag().toString()));
-		
-		((LeedReader) mainContext).getDataManagement().setReadArticle(article, 1);
 	}
 }

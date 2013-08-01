@@ -4,27 +4,30 @@
         android:id="@+id/action_settings"
         android:icon="@drawable/action_settings"
         android:orderInCategory="100"
-        android:showAsAction="ifRoom|withText"
+        android:showAsAction="ifRoom"
         android:title="@string/action_settings"/>
     <item
         android:id="@+id/action_share"
         android:actionProviderClass="android.widget.ShareActionProvider"
         android:icon="@drawable/action_share"
         android:orderInCategory="100"
-        android:showAsAction="ifRoom|withText"
+        android:showAsAction="ifRoom"
         android:title="@string/action_share"/>
     <item
         android:id="@+id/action_reload"
         android:icon="@drawable/action_reload"
         android:orderInCategory="100"
-        android:showAsAction="ifRoom|withText"
+        android:showAsAction="ifRoom"
         android:title="@string/action_reload"/>
     <item
         android:id="@+id/action_allRead"
-        android:showAsAction="ifRoom|withText"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
         android:title="@string/action_allRead"/>
     <item
         android:id="@+id/quitter"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
         android:title="@string/action_quit"/>
 
 </menu>

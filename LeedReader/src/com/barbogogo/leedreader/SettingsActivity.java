@@ -3,8 +3,6 @@ package com.barbogogo.leedreader;
 import com.leed.reader.R;
 
 import android.app.ActionBar;
-import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
@@ -12,9 +10,6 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class SettingsActivity extends PreferenceActivity {
 
