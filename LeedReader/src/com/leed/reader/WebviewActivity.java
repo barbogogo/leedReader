@@ -6,7 +6,6 @@ import android.webkit.WebView;
  
 public class WebviewActivity extends Activity  
 {
-	
 	private WebView webView;
 	
 	private String id;
