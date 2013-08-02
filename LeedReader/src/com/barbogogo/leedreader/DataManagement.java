@@ -277,8 +277,6 @@ public class DataManagement {
 			((LeedReader) pContext).addTextGetData("(" + (iterateurFeed + 1)
 					+ "/" + pFeeds.size() + ") "
 					+ pFeeds.get(iterateurFeed).getName());
-			((LeedReader) pContext).setBarGetData(iterateurFeed + 1,
-					pFeeds.size());
 
 			iterateurFeed++;
 

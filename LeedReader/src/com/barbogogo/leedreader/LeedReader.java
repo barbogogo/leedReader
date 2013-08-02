@@ -81,7 +81,7 @@ public class LeedReader extends Activity {
 
 		mTitle = getTitle();
 		mDrawerTitle = getTitle();
-		
+
 		mInformationArea = (TextView) findViewById(R.id.informationArea);
 		mButton = (Button) findViewById(R.id.buttonParameter);
 		mWebView = (ViewPager) findViewById(R.id.home_pannels_pager);
@@ -98,7 +98,7 @@ public class LeedReader extends Activity {
 		// enable ActionBar app icon to behave as action to toggle nav drawer
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
-		getActionBar().setTitle(mTitle);
+		getActionBar().setTitle(mDrawerTitle);
 
 		// ActionBarDrawerToggle ties together the the proper interactions
 		// between the sliding drawer and the action bar app icon
@@ -161,7 +161,7 @@ public class LeedReader extends Activity {
 
 	public void init() {
 		setModeView(cModePageLoading);
-		
+
 		parameterGiven = true;
 		dataManagement.getParameters();
 
@@ -180,7 +180,7 @@ public class LeedReader extends Activity {
 	}
 
 	public void getHomePage() {
-		setTitle(mTitle);
+		setTitle(mDrawerTitle);
 		setModeView(cModePageLoading);
 		dataManagement.getHomePage();
 	}
@@ -206,8 +206,6 @@ public class LeedReader extends Activity {
 	}
 
 	public void updateFeed(Flux feed) {
-		// progressBar.setVisibility(ProgressBar.INVISIBLE);
-
 		FeedAdapter adapter = new FeedAdapter(this, feed, dataManagement);
 		mListView.setAdapter(adapter);
 
@@ -222,13 +220,13 @@ public class LeedReader extends Activity {
 				// do nothing
 			}
 		});
-
 	}
 
 	public void erreurServeur(String msg, boolean showSetting) {
 		Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
 
-		// progressBar.setVisibility(ProgressBar.INVISIBLE);
+		setModeView(cModeTextView);
+		mInformationArea.setText(msg);
 
 		if (settingFlag == false && showSetting == true) {
 			settings();
@@ -263,7 +261,7 @@ public class LeedReader extends Activity {
 	public void onResume() {
 		// update data when parameters modification
 		if (settingFlag == true) {
-			
+
 			init();
 			settingFlag = false;
 		}
@@ -292,17 +290,6 @@ public class LeedReader extends Activity {
 		String text = (String) mInformationArea.getText();
 
 		mInformationArea.setText(pText + "\n" + text);
-	}
-
-	public void setBarGetData(int value, int max) {
-		// int maxValue = progressBarGetData.getMax();
-
-		// int progress = 0;
-		//
-		// if (max > 0)
-		// progress = (value * maxValue) / max;
-
-		// progressBarGetData.setProgress(progress);
 	}
 
 	public DataManagement getDataManagement() {

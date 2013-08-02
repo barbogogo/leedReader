@@ -16,7 +16,6 @@
     
     <string name="drawer_open">Ouvrir le menu</string>
     <string name="drawer_close">Fermer le menu</string>
-    <string name="action_websearch">Recherche</string>
     <string name="app_not_available">Désolé, il n\'y a pas de navigateur internet de disponible.</string>
     
     <string name="setting_title">Paramètres</string>

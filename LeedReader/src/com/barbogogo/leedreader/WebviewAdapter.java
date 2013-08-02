@@ -110,13 +110,10 @@ public class WebviewAdapter extends PagerAdapter {
 		ArrayList<String> found = new ArrayList<String>();
 
 		while (matches2.find()) {
-			Log.i("RegEx", matches2.group());
-			Log.i("RegEx", "Lien trouvé : " + matches2.group(2));
-
 			String replace = matches2.group();
 			replace += "<a onClick=\"showAndroidToast('" + matches2.group(2)
 					+ "')\">";
-			replace += "Voir la vidéo dans l'app youtube</a>";
+			replace += "Ouvrir en externe</a>";
 
 			found.add(replace);
 		}

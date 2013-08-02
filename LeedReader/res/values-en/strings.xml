@@ -16,7 +16,6 @@
     
     <string name="drawer_open">Open the menu</string>
     <string name="drawer_close">Close the menu</string>
-    <string name="action_websearch">Search</string>
     <string name="app_not_available">Sorry, there is no internet navigator available.</string>
     
     <string name="setting_title">Settings</string>
@@ -46,10 +45,10 @@
 	<string name="setting_no_information_text">Welcome on the LeedReader application.\r\nYou have not configured the application.\n\rTo configure the application, please click on the screen.\r\nGood reading!</string>
     
 	<string name="msg_nointernet_connexion">No internet connexion</string>
-	<string name="msg_bad_url">Invalide URL, please change it</string>
+	<string name="msg_bad_url">Invalid URL, please change it</string>
 	<string name="msg_unavailable_function">Function unavailable</string>
-	<string name="msg_initialization">Initialization...</string>
+	<string name="msg_initialization">Initialization…</string>
 	
-	<string name="msg_loading">Loading...</string>
+	<string name="msg_loading">Loading…</string>
 	
 </resources>
