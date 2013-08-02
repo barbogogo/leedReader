@@ -22,8 +22,6 @@ public class WebviewActivity extends Activity
 	   setContentView(R.layout.webview);
  
 	   webView = (WebView) findViewById(R.id.webView1);
-	   // webView.getSettings().setJavaScriptEnabled(true);
-	   // webView.loadUrl("http://www.google.com");
 	   
        Bundle objetbunble  = this.getIntent().getExtras();
  
