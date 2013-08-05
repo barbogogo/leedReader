@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
@@ -20,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
@@ -38,6 +40,7 @@ public class LeedReader extends Activity {
 	private ViewPager mWebView;
 	private DrawerLayout mDrawerLayout;
 	private ExpandableListView mDrawerList;
+	private WebView mServerErrorView;
 	private ActionBarDrawerToggle mDrawerToggle;
 	private ListView mListView;
 
@@ -67,6 +70,7 @@ public class LeedReader extends Activity {
 	static final int cModeTextView = 1;
 	static final int cModeWebView = 2;
 	static final int cModePageLoading = 3;
+	static final int cModeServerError = 4;
 
 	public Context context;
 
@@ -85,6 +89,7 @@ public class LeedReader extends Activity {
 		mInformationArea = (TextView) findViewById(R.id.informationArea);
 		mButton = (Button) findViewById(R.id.buttonParameter);
 		mWebView = (ViewPager) findViewById(R.id.home_pannels_pager);
+		mServerErrorView = (WebView) findViewById(R.id.serverErrorArea);
 		mloadingLayout = (LinearLayout) findViewById(R.id.loadingLayout);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ExpandableListView) findViewById(R.id.left_drawer);
@@ -223,13 +228,15 @@ public class LeedReader extends Activity {
 	}
 
 	public void erreurServeur(String msg, boolean showSetting) {
-		Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-
-		setModeView(cModeTextView);
-		mInformationArea.setText(msg);
-
+		
 		if (settingFlag == false && showSetting == true) {
+			Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
 			settings();
+		}
+		else{
+			setModeView(cModeServerError);
+			
+			mServerErrorView.loadData(msg, "text/html; charset=utf-8", "UTF-8");
 		}
 	}
 
@@ -310,6 +317,7 @@ public class LeedReader extends Activity {
 			mWebView.setVisibility(View.GONE);
 			mButton.setVisibility(View.GONE);
 			mloadingLayout.setVisibility(View.GONE);
+			mServerErrorView.setVisibility(View.GONE);
 			break;
 
 		case cModeTextView:
@@ -318,6 +326,7 @@ public class LeedReader extends Activity {
 			mWebView.setVisibility(View.GONE);
 			mButton.setVisibility(View.GONE);
 			mloadingLayout.setVisibility(View.GONE);
+			mServerErrorView.setVisibility(View.GONE);
 			break;
 
 		case cModeWebView:
@@ -326,6 +335,7 @@ public class LeedReader extends Activity {
 			mWebView.setVisibility(View.VISIBLE);
 			mButton.setVisibility(View.GONE);
 			mloadingLayout.setVisibility(View.GONE);
+			mServerErrorView.setVisibility(View.GONE);
 			break;
 
 		case cModePageLoading:
@@ -334,6 +344,16 @@ public class LeedReader extends Activity {
 			mWebView.setVisibility(View.GONE);
 			mButton.setVisibility(View.GONE);
 			mloadingLayout.setVisibility(View.VISIBLE);
+			mServerErrorView.setVisibility(View.GONE);
+			break;
+
+		case cModeServerError:
+			mInformationArea.setVisibility(View.GONE);
+			mListView.setVisibility(View.GONE);
+			mWebView.setVisibility(View.GONE);
+			mButton.setVisibility(View.GONE);
+			mloadingLayout.setVisibility(View.GONE);
+			mServerErrorView.setVisibility(View.VISIBLE);
 			break;
 		}
 	}

@@ -64,6 +64,7 @@ public class APIConnection {
 	private Article pArticle;
 
 	public APIConnection(Context lContext, DataManagement lDataContext) {
+
 		mainContext = lContext;
 
 		dataContext = lDataContext;
@@ -97,7 +98,7 @@ public class APIConnection {
 
 	public void init() {
 		typeRequest = cInit;
-		new ServerConnection().execute(leedURL + "/login.php");
+		new ServerConnection().execute(leedURL + "/login.php?option=init");
 	}
 
 	public void getHomePage(String nbMaxArticle) {
