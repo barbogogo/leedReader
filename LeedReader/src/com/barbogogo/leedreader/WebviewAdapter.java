@@ -36,7 +36,7 @@ public class WebviewAdapter extends PagerAdapter {
 	// Set each screen's content
 	@Override
 	public Object instantiateItem(View container, int position) {
-		 mainContext = container.getContext();
+		mainContext = container.getContext();
 
 		// Add elements
 		LinearLayout layout = setWebView(position);

@@ -46,9 +46,11 @@
     
 	<string name="msg_nointernet_connexion">Pas de connection internet</string>
 	<string name="msg_bad_url">URL non valide, merci de la changer</string>
+	<string name="msg_bad_authentication">Erreur d\'identification</string>
+	<string name="msg_api_disabled">API désactivée sur le site Leed</string>
 	<string name="msg_unavailable_function">Fonction non disponible pour le moment</string>
-	<string name="msg_initialization">Initialisation...</string>
+	<string name="msg_initialization">Initialisation…</string>
 	
-	<string name="msg_loading">En cours de chargement...</string>
+	<string name="msg_loading">En cours de chargement…</string>
 	
 </resources>
