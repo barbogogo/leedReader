@@ -1,11 +1,14 @@
 package com.barbogogo.leedreader;
 
 import java.lang.reflect.Field;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import com.leed.reader.R;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -290,7 +293,6 @@ public class LeedReader extends Activity
         // update data when parameters modification
         if (settingFlag == true)
         {
-
             init();
             settingFlag = false;
         }

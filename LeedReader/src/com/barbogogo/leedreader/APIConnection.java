@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -215,12 +216,17 @@ public class APIConnection
             }
             catch (IOException e)
             {
-                // Log.i("LeedReaderConnection", e.getLocalizedMessage());
-                erreurServeur(e.getLocalizedMessage(), false);
+                // TODO: ligne pour debuggage, à supprimer
+                erreurServeur("APIConnection Erreur #1", false);
             }
         }
         else
+        {
+            // TODO: ligne pour debuggage, à supprimer
+            erreurServeur("APIConnection Erreur #2", false);
+
             serverError = cServerError;
+        }
 
         return stringBuilder.toString();
     }
@@ -288,6 +294,7 @@ public class APIConnection
                             serverError = cAPIDisabled;
                         break;
                         case 2: // 2: Login failed
+                            erreurServeur(msgError, false);
                             serverError = cAuthError;
                         break;
                         case 3: // 3: PHP Error
@@ -301,7 +308,6 @@ public class APIConnection
                 }
                 catch (Exception e)
                 {
-                    // Log.i("NoError", e.getLocalizedMessage());
                 }
 
                 if (serverError == cNoError)
@@ -358,11 +364,6 @@ public class APIConnection
 
                         break;
 
-                        case cRead:
-                        case cFav:
-                            stateChanged();
-                        break;
-
                         case cFolder:
                         default:
                             jsonObject = new JSONObject(result);
@@ -398,9 +399,9 @@ public class APIConnection
                         // Done previously
                         break;
                         case cAuthError:
-                            erreurServeur(
-                                    mainContext.getResources().getString(R.string.msg_bad_authentication),
-                                    true);
+                        // erreurServeur(
+                        // mainContext.getResources().getString(R.string.msg_bad_authentication),
+                        // false);
                         break;
                         case cAPIDisabled:
                             erreurServeur(mainContext.getResources().getString(R.string.msg_api_disabled),
@@ -411,8 +412,8 @@ public class APIConnection
             }
             catch (Exception e)
             {
-                // Log.i("LeedReaderGetData", e.getLocalizedMessage());
-                erreurServeur(e.getLocalizedMessage(), false);
+                // TODO: ligne pour debuggage, à supprimer
+                erreurServeur("APIConnection Erreur #3", false);
             }
         }
     }
@@ -440,11 +441,6 @@ public class APIConnection
     private void updateArticle(Article article)
     {
         ((DataManagement) dataContext).updateArticle(article);
-    }
-
-    private void stateChanged()
-    {
-        // FeedAdapter.stateChanged();
     }
 
     private boolean isNetworkAvailable()

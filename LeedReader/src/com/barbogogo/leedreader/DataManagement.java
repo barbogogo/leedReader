@@ -107,6 +107,9 @@ public class DataManagement {
 	public String getLogin() {
 		return login;
 	}
+	public String getPassWord() {
+        return password;
+    }
 
 	public void init() {
 		switch (connectionType) {
