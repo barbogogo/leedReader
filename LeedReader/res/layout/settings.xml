@@ -22,8 +22,18 @@
                         android:title="@string/setting_connection"
                         android:summary="@string/setting_connection_summary"
                         android:key="connectionType"
-                        android:entries="@array/listArray"
-                        android:entryValues="@array/listValues"
+                        android:entries="@array/connection_mode_array"
+                        android:entryValues="@array/connection_mode_values"
                         android:defaultValue="0"/>
+        </PreferenceCategory>
+        <PreferenceCategory
+                android:title="@string/setting_authentication_mode">
+                <ListPreference
+                        android:title="@string/setting_authentication"
+                        android:summary="@string/setting_authentication_summary"
+                        android:key="authenticationType"
+                        android:entries="@array/authentication_mode_array"
+                        android:entryValues="@array/authentication_mode_values"
+                        android:defaultValue="1"/>
         </PreferenceCategory>
 </PreferenceScreen>

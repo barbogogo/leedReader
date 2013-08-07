@@ -1,14 +1,11 @@
 package com.barbogogo.leedreader;
 
 import java.lang.reflect.Field;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import com.leed.reader.R;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -16,7 +13,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
@@ -266,18 +262,9 @@ public class LeedReader extends Activity
     {
         if (settingFlag == false)
         {
-            Bundle objetbunble = new Bundle();
-            objetbunble.putString("url", dataManagement.getUrl());
-            objetbunble.putString("login", dataManagement.getLogin());
-
             Intent intent = new Intent(this, SettingsActivity.class);
-
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            intent.putExtras(objetbunble);
-
             startActivity(intent);
-
             settingFlag = true;
         }
     }

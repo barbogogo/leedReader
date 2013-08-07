@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources>
+
     <string name="app_name">LeedReader</string>
     <string name="app_descrip"></string>
     <string name="app_credits"></string>
-
     <string name="action_settings">Settings</string>
     <string name="action_reload">Reload</string>
     <string name="action_share">Share</string>
-    
     <string name="action_allRead">All read</string>
     <string name="action_quit">Quit</string>
-    
     <string name="main_menu_home">Home</string>
-    
     <string name="drawer_open">Open the menu</string>
     <string name="drawer_close">Close the menu</string>
     <string name="app_not_available">Sorry, there is no internet navigator available.</string>
-    
     <string name="setting_title">Settings</string>
-    
     <string name="setting_connection_parameter">Connexion setting</string>
     <string name="setting_server_link">Server address</string>
     <string name="setting_server_link_summary">Leed website address</string>
@@ -27,30 +21,37 @@
     <string name="setting_username_summary">Leed account login</string>
     <string name="setting_password">Password</string>
     <string name="setting_password_summary">Leed account password</string>
-    
     <string name="setting_password_summary_given">Leed account password saved</string>
     <string name="setting_password_summary_notgiven">No saved password</string>
-    
     <string name="setting_connection_mode">Connexion mode</string>
     <string name="setting_connection">Connexion mode</string>
-    <string name="setting_connection_summary">Permit to change the application connexion mode</string>
-	<string name="setting_connection_mode_offline">Offline</string>
-	<string name="setting_connection_mode_online">On line</string>
-	
-	<string-array name="listArray">
-	   <item>@string/setting_connection_mode_online</item>
-	   <item>@string/setting_connection_mode_offline</item>
-	</string-array>
-	
-	<string name="setting_no_information_text">Welcome on the LeedReader application.\r\nYou have not configured the application.\n\rTo configure the application, please click on the screen.\r\nGood reading!</string>
-    
-	<string name="msg_nointernet_connexion">No internet connexion</string>
-	<string name="msg_bad_url">Invalid URL, please change it</string>
-	<string name="msg_bad_authentication">Authentication error</string>
-	<string name="msg_api_disabled">API disabled</string>
-	<string name="msg_unavailable_function">Function unavailable</string>
-	<string name="msg_initialization">Initialization…</string>
-	
-	<string name="msg_loading">Loading…</string>
-	
+    <string name="setting_connection_summary">Permit to change the application connection mode</string>
+    <string name="setting_connection_mode_offline">Offline</string>
+    <string name="setting_connection_mode_online">On line</string>
+
+    <string-array name="connection_mode_array">
+        <item>@string/setting_connection_mode_online</item>
+        <item>@string/setting_connection_mode_offline</item>
+    </string-array>
+
+    <string name="setting_authentication_mode">Authentication mode</string>
+    <string name="setting_authentication">Authentication mode</string>
+    <string name="setting_authentication_summary">Permit to change the application connection mode to the API for the authentication</string>
+    <string name="setting_connection_mode_digest">Digest mode (permit a secure authentication, need mod_headers installed on the server)</string>
+    <string name="setting_connection_mode_basic">Basic mode (the hashed password is sent to the API)</string>
+
+    <string-array name="authentication_mode_array">
+        <item>@string/setting_connection_mode_digest</item>
+        <item>@string/setting_connection_mode_basic</item>
+    </string-array>
+
+    <string name="setting_no_information_text">Welcome on the LeedReader application.\r\nYou have not configured the application.\n\rTo configure the application, please click on the screen.\r\nGood reading!</string>
+    <string name="msg_nointernet_connexion">No internet connexion</string>
+    <string name="msg_bad_url">Invalid URL, please change it</string>
+    <string name="msg_bad_authentication">Authentication error</string>
+    <string name="msg_api_disabled">API disabled</string>
+    <string name="msg_unavailable_function">Function unavailable</string>
+    <string name="msg_initialization">Initialization…</string>
+    <string name="msg_loading">Loading…</string>
+
 </resources>

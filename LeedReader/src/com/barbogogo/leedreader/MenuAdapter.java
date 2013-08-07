@@ -11,130 +11,148 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-public class MenuAdapter extends BaseExpandableListAdapter {
+public class MenuAdapter extends BaseExpandableListAdapter
+{
 
-	private Context context;
-	private ArrayList<Folder> folders;
-	private LayoutInflater inflater;
+    private Context           context;
+    private ArrayList<Folder> folders;
+    private LayoutInflater    inflater;
 
-	public MenuAdapter(Context context, ArrayList<Folder> folders) {
-		this.context = context;
-		this.folders = folders;
-		inflater = LayoutInflater.from(context);
-	}
+    public MenuAdapter(Context context, ArrayList<Folder> folders)
+    {
+        this.context = context;
+        this.folders = folders;
+        inflater = LayoutInflater.from(context);
+    }
 
-	@Override
-	public boolean areAllItemsEnabled() {
-		return true;
-	}
+    @Override
+    public boolean areAllItemsEnabled()
+    {
+        return true;
+    }
 
-	public Flux getChild(int gPosition, int cPosition) {
-		return folders.get(gPosition).getFeed(cPosition);
-	}
+    public Flux getChild(int gPosition, int cPosition)
+    {
+        return folders.get(gPosition).getFeed(cPosition);
+    }
 
-	public long getChildId(int gPosition, int cPosition) {
-		return cPosition;
-	}
+    public long getChildId(int gPosition, int cPosition)
+    {
+        return cPosition;
+    }
 
-	public View getChildView(int groupPosition, int childPosition,
-			boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView,
+            ViewGroup parent)
+    {
 
-		ChildViewHolder childViewHolder;
+        ChildViewHolder childViewHolder;
 
-		final Flux feed = (Flux) getChild(groupPosition, childPosition);
+        final Flux feed = (Flux) getChild(groupPosition, childPosition);
 
-		if (convertView == null) {
-			childViewHolder = new ChildViewHolder();
+        if (convertView == null)
+        {
+            childViewHolder = new ChildViewHolder();
 
-			convertView = inflater.inflate(R.layout.menu_child, null);
+            convertView = inflater.inflate(R.layout.menu_child, null);
 
-			childViewHolder.textViewChild = (TextView) convertView
-					.findViewById(R.id.labelChild);
-			
-			childViewHolder.textViewNoReadChild = (TextView) convertView
-					.findViewById(R.id.feedNoReadChild);
+            childViewHolder.textViewChild = (TextView) convertView.findViewById(R.id.labelChild);
 
-			convertView.setTag(childViewHolder);
-		} else {
-			childViewHolder = (ChildViewHolder) convertView.getTag();
-		}
+            childViewHolder.textViewNoReadChild = (TextView) convertView.findViewById(R.id.feedNoReadChild);
 
-		childViewHolder.textViewChild.setText(feed.getName());
+            convertView.setTag(childViewHolder);
+        }
+        else
+        {
+            childViewHolder = (ChildViewHolder) convertView.getTag();
+        }
 
-		childViewHolder.textViewChild.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				((LeedReader) context).setModeView(LeedReader.cModePageLoading);
-				((LeedReader) context).getFeed(feed);
-			}
-		});
-		
-		childViewHolder.textViewNoReadChild.setText(String.valueOf(feed.getNbNoRead()));
+        childViewHolder.textViewChild.setText(feed.getName());
 
-		return convertView;
-	}
+        childViewHolder.textViewChild.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                ((LeedReader) context).setModeView(LeedReader.cModePageLoading);
+                ((LeedReader) context).getFeed(feed);
+            }
+        });
 
-	public int getChildrenCount(int gPosition) {
-		return folders.get(gPosition).getFlux().size();
-	}
+        childViewHolder.textViewNoReadChild.setText(String.valueOf(feed.getNbNoRead()));
 
-	public Object getGroup(int gPosition) {
-		return folders.get(gPosition);
-	}
+        return convertView;
+    }
 
-	public int getGroupCount() {
-		return folders.size();
-	}
+    public int getChildrenCount(int gPosition)
+    {
+        return folders.get(gPosition).getFlux().size();
+    }
 
-	public long getGroupId(int gPosition) {
-		return gPosition;
-	}
+    public Object getGroup(int gPosition)
+    {
+        return folders.get(gPosition);
+    }
 
-	public View getGroupView(int groupPosition, boolean isExpanded,
-			View convertView, ViewGroup parent) {
+    public int getGroupCount()
+    {
+        return folders.size();
+    }
 
-		GroupViewHolder gholder;
+    public long getGroupId(int gPosition)
+    {
+        return gPosition;
+    }
 
-		Folder folder = (Folder) getGroup(groupPosition);
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent)
+    {
 
-		if (convertView == null) {
-			gholder = new GroupViewHolder();
+        GroupViewHolder gholder;
 
-			convertView = inflater.inflate(R.layout.menu_group, null);
+        Folder folder = (Folder) getGroup(groupPosition);
 
-			gholder.textViewGroup = (TextView) convertView
-					.findViewById(R.id.labelGroup);
-			
-			gholder.textViewNoReadGroup = (TextView) convertView
-					.findViewById(R.id.feedNoReadGroup);
+        if (convertView == null)
+        {
+            gholder = new GroupViewHolder();
 
-			convertView.setTag(gholder);
-		} else {
-			gholder = (GroupViewHolder) convertView.getTag();
-		}
+            convertView = inflater.inflate(R.layout.menu_group, null);
 
-		gholder.textViewGroup.setText(folder.getTitle());
-		
-		gholder.textViewNoReadGroup.setText(String.valueOf(folder.getNbNoRead()));
+            gholder.textViewGroup = (TextView) convertView.findViewById(R.id.labelGroup);
 
-		return convertView;
-	}
+            gholder.textViewNoReadGroup = (TextView) convertView.findViewById(R.id.feedNoReadGroup);
 
-	public boolean hasStableIds() {
-		return true;
-	}
+            convertView.setTag(gholder);
+        }
+        else
+        {
+            gholder = (GroupViewHolder) convertView.getTag();
+        }
 
-	public boolean isChildSelectable(int arg0, int arg1) {
-		return true;
-	}
+        gholder.textViewGroup.setText(folder.getTitle());
 
-	class GroupViewHolder {
-		public TextView textViewGroup;
-		public TextView textViewNoReadGroup;
-	}
+        gholder.textViewNoReadGroup.setText(String.valueOf(folder.getNbNoRead()));
 
-	class ChildViewHolder {
-		public TextView textViewChild;
-		public TextView textViewNoReadChild;
-	}
+        return convertView;
+    }
+
+    public boolean hasStableIds()
+    {
+        return true;
+    }
+
+    public boolean isChildSelectable(int arg0, int arg1)
+    {
+        return true;
+    }
+
+    class GroupViewHolder
+    {
+        public TextView textViewGroup;
+        public TextView textViewNoReadGroup;
+    }
+
+    class ChildViewHolder
+    {
+        public TextView textViewChild;
+        public TextView textViewNoReadChild;
+    }
 
 }

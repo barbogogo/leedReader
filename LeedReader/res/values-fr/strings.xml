@@ -37,9 +37,20 @@
 	<string name="setting_connection_mode_offline">Hors ligne</string>
 	<string name="setting_connection_mode_online">En ligne</string>
 	
-	<string-array name="listArray">
+	<string-array name="connection_mode_array">
 	   <item>@string/setting_connection_mode_online</item>
 	   <item>@string/setting_connection_mode_offline</item>
+	</string-array>
+	
+	<string name="setting_authentication_mode">Mode d\'authentification</string>
+	<string name="setting_authentication">Mode d\'authentification</string>
+	<string name="setting_authentication_summary">Permet de modifier le mode de connexion de l\'application vers l\'API pour l\'authentification</string>
+	<string name="setting_connection_mode_digest">Mode digest (permet une authentification sécurisée, nécessite mod_headers sur le serveur)</string>
+	<string name="setting_connection_mode_basic">Mode basic (le mot de passe n\'est pas transmis en clair)</string>
+	
+	<string-array name="authentication_mode_array">
+	   <item>@string/setting_connection_mode_digest</item>
+	   <item>@string/setting_connection_mode_basic</item>
 	</string-array>
 	
 	<string name="setting_no_information_text">Bienvenue sur l\'application LeedReader.\n\rVous n\'avez pas encore configuré l\'application.\n\rPour ce faire, veuillez cliquer sur l\'écran.\n\rBonne lecture !</string>

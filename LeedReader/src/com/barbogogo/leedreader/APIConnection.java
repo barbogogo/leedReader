@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -34,6 +33,12 @@ import android.content.pm.PackageManager;
 public class APIConnection
 {
     private String            leedURL;
+    private String            leedLogin;
+    private String            leedPassword;
+
+    private int               authMode;
+    private static final int  cAuthDigest   = 0;
+    private static final int  cAuthBasic    = 1;
 
     private Context           mainContext;
     private DataManagement    dataContext;
@@ -88,22 +93,45 @@ public class APIConnection
         userAgent = "Android-" + VERSION.RELEASE + "/LeedReader-" + version;
     }
 
-    public void SetDataConnection(String lUrl, String lLogin, String lPassword)
+    public void SetDataConnection(String lUrl, String lLogin, String lPassword, String lAuthMode)
             throws java.net.URISyntaxException, java.security.NoSuchAlgorithmException
     {
         leedURL = lUrl;
+        leedLogin = lLogin;
+
+        if (lAuthMode.equals("0"))
+        {
+            authMode = cAuthDigest;
+        }
+        else
+        {
+            authMode = cAuthBasic;
+        }
 
         URI uri = new URI(lUrl);
         String SHA1Pwd = Utils.hex(MessageDigest.getInstance("SHA1").digest(lPassword.getBytes()));
 
-        httpClient.getCredentialsProvider().setCredentials(new AuthScope(uri.getHost(), uri.getPort()),
-                new UsernamePasswordCredentials(lLogin, SHA1Pwd));
+        leedPassword = SHA1Pwd;
+
+        if (authMode == cAuthDigest)
+        {
+            httpClient.getCredentialsProvider().setCredentials(new AuthScope(uri.getHost(), uri.getPort()),
+                    new UsernamePasswordCredentials(lLogin, SHA1Pwd));
+        }
     }
 
     public void init()
     {
         typeRequest = cInit;
-        new ServerConnection().execute(leedURL + "/login.php");
+        if (authMode == cAuthDigest)
+        {
+            new ServerConnection().execute(leedURL + "/login.php");
+        }
+        else
+        {
+            new ServerConnection().execute(leedURL + "/login.php?&login=" + leedLogin + "&password="
+                    + leedPassword);
+        }
     }
 
     public void getHomePage(String nbMaxArticle)
@@ -364,8 +392,12 @@ public class APIConnection
 
                         break;
 
+                        case cRead:
+                        case cFav:
+
+                        break;
+
                         case cFolder:
-                        default:
                             jsonObject = new JSONObject(result);
 
                             JSONArray foldersItems = new JSONArray(jsonObject.getString("folders"));
@@ -413,7 +445,7 @@ public class APIConnection
             catch (Exception e)
             {
                 // TODO: ligne pour debuggage, à supprimer
-                erreurServeur("APIConnection Erreur #3", false);
+                erreurServeur("<h1>APIConnection Erreur #3</h1>" + e.getLocalizedMessage(), false);
             }
         }
     }

@@ -16,172 +16,193 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class FeedAdapter extends ArrayAdapter<String> {
-	private static Context mainContext;
+public class FeedAdapter extends ArrayAdapter<String>
+{
+    private static Context            mainContext;
 
-	private static ArrayList<Article> articles;
+    private static ArrayList<Article> articles;
 
-	private static int pPosition;
+    private static int                pPosition;
 
-	final int pTitlePosition = 0;
-	final int pNoReadPosition = 1;
+    final int                         pTitlePosition  = 0;
+    final int                         pNoReadPosition = 1;
 
-	// private static ProgressBar progressBar;
+    // private static ProgressBar progressBar;
 
-	private DataManagement dataManagement;
+    private DataManagement            dataManagement;
 
-	public FeedAdapter(Context context, Flux feed,
-			DataManagement lDataManagement) {
-		super(context, R.layout.activity_main, feed.getArticlesTitle());
+    public FeedAdapter(Context context, Flux feed, DataManagement lDataManagement)
+    {
+        super(context, R.layout.activity_main, feed.getArticlesTitle());
 
-		articles = feed.getArticles();
+        articles = feed.getArticles();
 
-		mainContext = context;
+        mainContext = context;
 
-		dataManagement = lDataManagement;
-	}
+        dataManagement = lDataManagement;
+    }
 
-	@Override
-	public View getView(final int position, View convertView, ViewGroup parent) {
-		LayoutInflater inflater = (LayoutInflater) mainContext
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent)
+    {
+        LayoutInflater inflater =
+                (LayoutInflater) mainContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		View pRowView = inflater.inflate(R.layout.activity_feed, parent, false);
-		TextView titleView = (TextView) pRowView
-				.findViewById(R.id.articleTitle);
-		TextView favoriteView = (TextView) pRowView.findViewById(R.id.favorite);
-		TextView noReadView = (TextView) pRowView.findViewById(R.id.readNoRead);
+        View pRowView = inflater.inflate(R.layout.activity_feed, parent, false);
+        TextView titleView = (TextView) pRowView.findViewById(R.id.articleTitle);
+        TextView favoriteView = (TextView) pRowView.findViewById(R.id.favorite);
+        TextView noReadView = (TextView) pRowView.findViewById(R.id.readNoRead);
 
-		int isRead = articles.get(position).getIsRead();
-		int isFav = articles.get(position).getIsFav();
+        int isRead = articles.get(position).getIsRead();
+        int isFav = articles.get(position).getIsFav();
 
-		titleView.setText(articles.get(position).getTitle());
+        titleView.setText(articles.get(position).getTitle());
 
-		favoriteView.setText("");
-		favoriteView.setWidth(0);
+        favoriteView.setText("");
+        favoriteView.setWidth(0);
 
-		if (isRead == 1) {
-			noReadView.setText("lu");
-		} else {
-			titleView.setTypeface(null, Typeface.BOLD);
-			noReadView.setText("noLu");
-		}
+        if (isRead == 1)
+        {
+            noReadView.setText("lu");
+        }
+        else
+        {
+            titleView.setTypeface(null, Typeface.BOLD);
+            noReadView.setText("noLu");
+        }
 
-		if (isFav == 1) {
-			favoriteView.setTextColor(Color.parseColor("#0000FF"));
-			favoriteView.setText("fav");
-		} else {
-			favoriteView.setText("noFav");
-		}
+        if (isFav == 1)
+        {
+            favoriteView.setTextColor(Color.parseColor("#0000FF"));
+            favoriteView.setText("fav");
+        }
+        else
+        {
+            favoriteView.setText("noFav");
+        }
 
-		noReadView.setTextSize(10);
-		favoriteView.setTextSize(10);
+        noReadView.setTextSize(10);
+        favoriteView.setTextSize(10);
 
-		View.OnClickListener onClick = new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
+        View.OnClickListener onClick = new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
 
-				pPosition = position;
+                pPosition = position;
 
-				((LeedReader) mainContext)
-						.setPosNavigation(LeedReader.cpArticle);
+                ((LeedReader) mainContext).setPosNavigation(LeedReader.cpArticle);
 
-				setReadArticle(pPosition);
+                setReadArticle(pPosition);
 
-				((LeedReader) mainContext).setModeView(LeedReader.cModeWebView);
-				WebviewAdapter adapter = new WebviewAdapter(articles);
-				ViewPager myPager = (ViewPager) ((LeedReader) mainContext)
-						.findViewById(R.id.home_pannels_pager);
+                ((LeedReader) mainContext).setModeView(LeedReader.cModeWebView);
+                WebviewAdapter adapter = new WebviewAdapter(articles);
+                ViewPager myPager =
+                        (ViewPager) ((LeedReader) mainContext).findViewById(R.id.home_pannels_pager);
 
-				myPager.setOnPageChangeListener(new OnPageChangeListener() {
+                myPager.setOnPageChangeListener(new OnPageChangeListener()
+                {
 
-					@Override
-					public void onPageSelected(int position) {
-						setReadArticle(position);
-					}
+                    @Override
+                    public void onPageSelected(int position)
+                    {
+                        setReadArticle(position);
+                    }
 
-					@Override
-					public void onPageScrollStateChanged(int arg0) {
-					}
+                    @Override
+                    public void onPageScrollStateChanged(int arg0)
+                    {
+                    }
 
-					@Override
-					public void onPageScrolled(int arg0, float arg1, int arg2) {
-					}
-				});
+                    @Override
+                    public void onPageScrolled(int arg0, float arg1, int arg2)
+                    {
+                    }
+                });
 
-				myPager.setAdapter(adapter);
-				myPager.setCurrentItem(pPosition);
-			}
+                myPager.setAdapter(adapter);
+                myPager.setCurrentItem(pPosition);
+            }
 
-			public void setReadArticle(int position) {
-				Intent shareIntent = new Intent(Intent.ACTION_SEND);
-				shareIntent.setType("text/plain");
-				shareIntent.putExtra(Intent.EXTRA_SUBJECT,
-						articles.get(position).getTitle());
-				shareIntent.putExtra(Intent.EXTRA_TEXT, articles.get(position)
-						.getUrlArticle());
-				((LeedReader) mainContext).doShare(shareIntent);
+            public void setReadArticle(int position)
+            {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, articles.get(position).getTitle());
+                shareIntent.putExtra(Intent.EXTRA_TEXT, articles.get(position).getUrlArticle());
+                ((LeedReader) mainContext).doShare(shareIntent);
 
-				if (articles.get(position).getIsRead() == 0) {
-					dataManagement.setReadArticle(articles.get(position), 1);
-					articles.get(position).setRead();
+                if (articles.get(position).getIsRead() == 0)
+                {
+                    dataManagement.setReadArticle(articles.get(position), 1);
+                    articles.get(position).setRead();
 
-					dataManagement.decreaseNbNoReadArticle(articles.get(
-							position).getIdFeed());
+                    dataManagement.decreaseNbNoReadArticle(articles.get(position).getIdFeed());
 
-					notifyDataSetChanged();
-				}
-			}
+                    notifyDataSetChanged();
+                }
+            }
 
-		};
+        };
 
-		pRowView.setOnClickListener(onClick);
+        pRowView.setOnClickListener(onClick);
 
-		titleView.setOnClickListener(onClick);
+        titleView.setOnClickListener(onClick);
 
-		noReadView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// progressBar.setVisibility(ProgressBar.VISIBLE);
+        noReadView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // progressBar.setVisibility(ProgressBar.VISIBLE);
 
-				pPosition = position;
+                pPosition = position;
 
-				Article article = articles.get(pPosition);
+                Article article = articles.get(pPosition);
 
-				if (article.getIsRead() == 0) {
-					article.setRead();
-					dataManagement.setReadArticle(article, 1);
-					dataManagement.decreaseNbNoReadArticle(article.getIdFeed());
-				} else {
-					article.setUnRead();
-					dataManagement.setUnReadArticle(article);
-				}
+                if (article.getIsRead() == 0)
+                {
+                    article.setRead();
+                    dataManagement.setReadArticle(article, 1);
+                    dataManagement.decreaseNbNoReadArticle(article.getIdFeed());
+                }
+                else
+                {
+                    article.setUnRead();
+                    dataManagement.setUnReadArticle(article);
+                }
 
-				notifyDataSetChanged();
-			}
-		});
+                notifyDataSetChanged();
+            }
+        });
 
-		favoriteView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// progressBar.setVisibility(ProgressBar.VISIBLE);
+        favoriteView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // progressBar.setVisibility(ProgressBar.VISIBLE);
 
-				pPosition = position;
+                pPosition = position;
 
-				Article article = articles.get(pPosition);
+                Article article = articles.get(pPosition);
 
-				notifyDataSetChanged();
+                notifyDataSetChanged();
 
-				if (article.getIsFav() == 0) {
-					article.setFav(1);
-					dataManagement.setFavArticle(article);
-				} else {
-					article.setFav(0);
-					dataManagement.setUnFavArticle(article);
-				}
-			}
-		});
+                if (article.getIsFav() == 0)
+                {
+                    article.setFav(1);
+                    dataManagement.setFavArticle(article);
+                }
+                else
+                {
+                    article.setFav(0);
+                    dataManagement.setUnFavArticle(article);
+                }
+            }
+        });
 
-		return pRowView;
-	}
+        return pRowView;
+    }
 }
