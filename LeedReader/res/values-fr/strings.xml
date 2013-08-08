@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="app_name">LeedReader</string>
+    <string name="app_descrip"></string>
+    <string name="app_credits"></string>
+
+    <string name="action_settings">Paramètres</string>
+    <string name="action_reload">Recharger</string>
+    <string name="action_share">Partager</string>
+    
+    <string name="action_allRead">Tout lu</string>
+    <string name="action_quit">Quitter</string>
+    
+    <string name="main_menu_home">Accueil</string>
+    
+    <string name="drawer_open">Ouvrir le menu</string>
+    <string name="drawer_close">Fermer le menu</string>
+    <string name="app_not_available">Désolé, il n\'y a pas de navigateur internet de disponible.</string>
+    
+    <string name="setting_title">Paramètres</string>
+    
+    <string name="setting_connection_parameter">Paramètres de connexion</string>
+    <string name="setting_server_link">Adresse du serveur</string>
+    <string name="setting_server_link_summary">Adresse racine du site Leed</string>
+    <string name="setting_username">Identifiant</string>
+    <string name="setting_username_summary">Identifiant du compte Leed</string>
+    <string name="setting_password">Mot de passe</string>
+    <string name="setting_password_summary">Mot de passe du compte Leed</string>
+    
+    <string name="setting_password_summary_given">Mot de passe du compte Leed enregistré</string>
+    <string name="setting_password_summary_notgiven">Pas de mot de passe enregistré</string>
+    
+    <string name="setting_connection_mode">Mode de connexion</string>
+    <string name="setting_connection">Mode de connexion</string>
+    <string name="setting_connection_summary">Permet de modifier le mode de connexion de l\'application</string>
+	<string name="setting_connection_mode_offline">Hors ligne</string>
+	<string name="setting_connection_mode_online">En ligne</string>
+	
+	<string-array name="connection_mode_array">
+	   <item>@string/setting_connection_mode_online</item>
+	   <item>@string/setting_connection_mode_offline</item>
+	</string-array>
+	
+	<string name="setting_authentication_mode">Mode d\'authentification</string>
+	<string name="setting_authentication">Mode d\'authentification</string>
+	<string name="setting_authentication_summary">Permet de modifier le mode de connexion de l\'application vers l\'API pour l\'authentification</string>
+	<string name="setting_connection_mode_digest">Mode digest (permet une authentification sécurisée, nécessite mod_headers sur le serveur)</string>
+	<string name="setting_connection_mode_basic">Mode basic (le mot de passe n\'est pas transmis en clair)</string>
+	
+	<string-array name="authentication_mode_array">
+	   <item>@string/setting_connection_mode_digest</item>
+	   <item>@string/setting_connection_mode_basic</item>
+	</string-array>
+	
+	<string name="setting_no_information_text">Bienvenue sur l\'application LeedReader.\n\rVous n\'avez pas encore configuré l\'application.\n\rPour ce faire, veuillez cliquer sur l\'écran.\n\rBonne lecture !</string>
+    
+	<string name="msg_nointernet_connexion">Pas de connection internet</string>
+	<string name="msg_bad_url">URL non valide, merci de la changer</string>
+	<string name="msg_bad_authentication">Erreur d\'identification</string>
+	<string name="msg_api_disabled">API désactivée sur le site Leed</string>
+	<string name="msg_unavailable_function">Fonction non disponible pour le moment</string>
+	<string name="msg_initialization">Initialisation…</string>
+	
+	<string name="msg_loading">En cours de chargement…</string>
+	
+</resources>

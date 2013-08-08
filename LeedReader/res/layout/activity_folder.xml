@@ -9,7 +9,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="289.81"
-        android:text="TextView" />
+        android:text="feedTitle" />
 
     <TextView
         android:id="@+id/feedNoRead"
@@ -17,6 +17,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:gravity="right"
-        android:text="TextView" />
+        android:text="feedNoRead" />
 
 </LinearLayout>

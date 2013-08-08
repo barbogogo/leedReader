@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+		<string-array name="connection_mode_values">
+		   <item>0</item> <!-- onLine = DataManagement.cOnLine -->
+		   <item>2</item> <!-- offLine  = DataManagement.cOffLine -->
+		</string-array>
+	
+		<string-array name="authentication_mode_values">
+		   <item>0</item> <!-- Digest -->
+		   <item>1</item> <!-- Basic -->
+		</string-array>
+		
+</resources>

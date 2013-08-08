@@ -21,54 +21,73 @@
             android:contentDescription="@string/main_menu_home"
             android:onClick="btnGetData"
             android:src="@drawable/home" />
-        
-        <Button 
+
+        <Button
             android:id="@+id/offLineButton"
             android:layout_width="54dp"
             android:layout_height="54dp"
             android:layout_gravity="left"
             android:background="@null"
-            android:text="offLine"
-            android:onClick="btnGetOffLineData" />
-
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="right"
-            android:layout_weight="300"
-            android:src="@null" />
-
-        <ProgressBar
-            android:id="@+id/progressBar1"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="visible" />
-
+            android:onClick="btnGetOffLineData"
+            android:text="offLine" />
     </LinearLayout>
-    
+
     <ListView
         android:id="@+id/ListViewId"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="top"
         android:layout_weight="1" />
-    
-    <ProgressBar
-        android:id="@+id/progressBarGetData"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top" />
 
     <TextView
-        android:id="@+id/textGetData"
+        android:id="@+id/informationArea"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_gravity="top"
-        android:text="TextView" />
-    
+        android:background="#000"
+        android:textColor="#FFF" />
+
+    <Button
+        android:id="@+id/buttonParameter"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FFF"
+        android:onClick="btnParameter"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#000" />
+
+    <WebView
+        android:id="@+id/serverErrorArea"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FFF"
+        android:textColor="#000" />
+
+    <LinearLayout
+        android:id="@+id/loadingLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FFF"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="vertical" >
+
+        <ProgressBar
+            android:id="@+id/loadingProgressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#FFF"
+            android:gravity="center_horizontal|center_vertical" />
+
+        <TextView
+            android:id="@+id/loadingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#FFF"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@+string/msg_loading"
+            android:textColor="#000" />
+    </LinearLayout>
+
     <android.support.v4.view.ViewPager
         android:id="@+id/home_pannels_pager"
         android:layout_width="match_parent"

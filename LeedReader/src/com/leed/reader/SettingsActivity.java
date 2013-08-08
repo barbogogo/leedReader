@@ -1,71 +1,189 @@
 package com.leed.reader;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
+import com.leed.reader.R;
+
+import android.app.ActionBar;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
+import android.preference.EditTextPreference;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.PreferenceActivity;
+import android.view.MenuItem;
 
-public class SettingsActivity extends Activity {
+public class SettingsActivity extends PreferenceActivity
+{
 
-	final String fileName = "settings.dat";
-	public static final String PREFS_NAME = "MyPrefsFile";
+    public static final String KEY_SERVER_LINK     = "serverLinkPref";
+    public static final String KEY_USERNAME        = "usernamePref";
+    public static final String KEY_PASSWORD        = "passwordPref";
+    public static final String KEY_CONNECTION_TYPE = "connectionType";
+    public static final String KEY_AUTH_TYPE       = "authenticationType";
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.settings);
+    private EditTextPreference mServerLinkPref;
+    private EditTextPreference mUsernamePref;
+    private EditTextPreference mTextPassword;
+    private ListPreference     mConnectionType;
+    private ListPreference     mAuthType;
 
-		String url = this.getIntent().getStringExtra("url");
-		String login = this.getIntent().getStringExtra("login");
+    OnPreferenceChangeListener textChangeListener;
+    OnPreferenceChangeListener passwordChangeListener;
+    OnPreferenceChangeListener connectionTypeChangeListener;
+    OnPreferenceChangeListener authTypeChangeListener;
 
-		TextView dataText = (TextView) findViewById(R.id.adresseServeurEdit);
-		dataText.setText(url);
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
 
-		TextView loginText = (TextView) findViewById(R.id.loginServerEdit);
-		loginText.setText(login);
-	}
+        overridePendingTransition(R.anim.slide_up, R.anim.do_nothing);
 
-	public void btnSaveData(View view) {
-		TextView dataText = (TextView) findViewById(R.id.adresseServeurEdit);
+        setTitle(getResources().getText(R.string.setting_title));
 
-		String sData = dataText.getText() + "";
+        addPreferencesFromResource(R.layout.settings);
 
-		saveURL(sData);
+        mServerLinkPref = (EditTextPreference) getPreferenceScreen().findPreference(KEY_SERVER_LINK);
+        mUsernamePref = (EditTextPreference) getPreferenceScreen().findPreference(KEY_USERNAME);
+        mTextPassword = (EditTextPreference) getPreferenceScreen().findPreference(KEY_PASSWORD);
+        mConnectionType = (ListPreference) getPreferenceScreen().findPreference(KEY_CONNECTION_TYPE);
+        mAuthType = (ListPreference) getPreferenceScreen().findPreference(KEY_AUTH_TYPE);
 
-		TextView loginText = (TextView) findViewById(R.id.loginServerEdit);
-		TextView passwordText = (TextView) findViewById(R.id.passwordServerEdit);
+        textChangeListener = new OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                preference.setSummary(newValue.toString());
+                return true;
+            }
+        };
 
-		String lData = loginText.getText() + "";
-		String pData = passwordText.getText() + "";
+        passwordChangeListener = new OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                if (newValue.toString().equals(""))
+                    preference.setSummary(R.string.setting_password_summary_notgiven);
+                else
+                    preference.setSummary(R.string.setting_password_summary_given);
+                return true;
+            }
+        };
 
-		if (pData.length() > 0)
-			saveLoginPasswd(lData, pData);
+        connectionTypeChangeListener = new OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                if (newValue.toString().equals("") || newValue.toString().equals("0"))
+                {
+                    // preference.setDefaultValue("0");
+                    preference.setSummary(R.string.setting_connection_mode_online);
+                }
+                else
+                    if (newValue.toString().equals("2"))
+                    {
+                        preference.setSummary(R.string.setting_connection_mode_offline);
+                    }
+                return true;
+            }
+        };
 
-		this.finish();
-	}
+        authTypeChangeListener = new OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                if (newValue.toString().isEmpty() || newValue.toString().equals("1"))
+                {
+                    preference.setSummary(R.string.setting_connection_mode_basic);
+                }
+                else
+                    if (newValue.toString().equals("0"))
+                    {
+                        preference.setSummary(R.string.setting_connection_mode_digest);
+                    }
+                return true;
+            }
+        };
 
-	public void saveURL(String data) {
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		SharedPreferences.Editor editor = settings.edit();
+        mServerLinkPref.setOnPreferenceChangeListener(textChangeListener);
+        mUsernamePref.setOnPreferenceChangeListener(textChangeListener);
+        mTextPassword.setOnPreferenceChangeListener(passwordChangeListener);
+        mConnectionType.setOnPreferenceChangeListener(connectionTypeChangeListener);
+        mAuthType.setOnPreferenceChangeListener(authTypeChangeListener);
 
-		editor.putString("url", data);
+        displayPreferences();
+    }
 
-		editor.commit();
-	}
+    public void displayPreferences()
+    {
 
-	public void saveLoginPasswd(String login, String password) {
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		SharedPreferences.Editor editor = settings.edit();
+        // Post signature
+        if (!(mServerLinkPref.getText() == null || mServerLinkPref.getText().equals("")))
+        {
+            mServerLinkPref.setSummary(mServerLinkPref.getText());
+        }
+        else
+        {
+            mServerLinkPref.setSummary(R.string.setting_server_link_summary);
+        }
 
-		editor.putString("login", login);
-		editor.putString("password", password);
+        if (!(mUsernamePref.getText() == null || mUsernamePref.getText().equals("")))
+        {
+            mUsernamePref.setSummary(mUsernamePref.getText());
+        }
+        else
+        {
+            mUsernamePref.setSummary(R.string.setting_username_summary);
+        }
 
-		editor.commit();
-	}
+        if (!(mTextPassword.getText() == null || mTextPassword.getText().equals("")))
+        {
+            mTextPassword.setSummary(R.string.setting_password_summary_given);
+        }
+        else
+        {
+            mTextPassword.setSummary(R.string.setting_password_summary_notgiven);
+        }
 
-	@Override
-	public void finish() {
-		super.finish();
-	}
+        if (mConnectionType.getValue().equals("") || mConnectionType.getValue().equals("0"))
+        {
+            mConnectionType.setSummary(R.string.setting_connection_mode_online);
+        }
+        else
+            if (mConnectionType.getValue().equals("2"))
+            {
+                mConnectionType.setSummary(R.string.setting_connection_mode_offline);
+            }
+
+        if (mAuthType.getValue().equals("") || mAuthType.getValue().equals("1"))
+        {
+            mAuthType.setSummary(R.string.setting_connection_mode_basic);
+        }
+        else
+            if (mAuthType.getValue().equals("0"))
+            {
+                mAuthType.setSummary(R.string.setting_connection_mode_digest);
+            }
+    }
+
+    @Override
+    protected void onPause()
+    {
+        overridePendingTransition(R.anim.do_nothing, R.anim.slide_down);
+        setResult(RESULT_OK);
+        super.onPause();
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

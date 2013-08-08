@@ -2,14 +2,15 @@
 
     <item
         android:id="@+id/settings"
+        android:icon="@drawable/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_settings"/>
-    
-    <item android:id="@+id/allRead" 
-	     android:title="@string/action_allRead" />
-    
-    <item android:id="@+id/quitter" 
-	     android:title="@string/action_quit" />
-    
+    <item
+        android:id="@+id/allRead"
+        android:title="@string/action_allRead"/>
+    <item
+        android:id="@+id/quitter"
+        android:title="@string/action_quit"/>
+
 </menu>
