@@ -327,7 +327,6 @@ public class LeedReader extends Activity
     {
         switch (modeView)
         {
-
             case cModeNavigation:
                 mInformationArea.setVisibility(View.GONE);
                 mListView.setVisibility(View.VISIBLE);
@@ -510,7 +509,6 @@ public class LeedReader extends Activity
         return shareIntent;
     }
 
-    // Somewhere in the application.
     public void doShare(Intent shareIntent)
     {
         if (mShareActionProvider != null)

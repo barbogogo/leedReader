@@ -42,8 +42,6 @@ public class DataManagement
         DBData = new LocalData(context);
         DBData.open();
 
-        connection = new APIConnection(context, this);
-
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(pContext);
 
         connectionType = Integer.valueOf(settings.getString("connectionType", "0"));
@@ -93,6 +91,7 @@ public class DataManagement
         {
             try
             {
+                connection = new APIConnection(pContext, this);
                 connection.SetDataConnection(leedURL, login, password, authMode);
             }
             catch (Exception e)

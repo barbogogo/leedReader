@@ -62,6 +62,7 @@ public class WebviewAdapter extends PagerAdapter
         settings.setLoadWithOverviewMode(false);
         settings.setJavaScriptEnabled(true);
         settings.setPluginState(PluginState.ON);
+        settings.setDefaultTextEncodingName("utf-8");
 
         String content = testRegEx(articles.get(position).getContent());
 

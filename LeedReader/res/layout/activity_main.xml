@@ -20,8 +20,8 @@
         android:id="@+id/informationArea"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#000"
-        android:textColor="#FFF" />
+        android:background="#FFF"
+        android:textColor="#000" />
     
     <WebView
         android:id="@+id/serverErrorArea"
