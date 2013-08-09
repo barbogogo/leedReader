@@ -52,6 +52,7 @@ public class APIConnection
     private static final int  cPHPError     = 3;
     private static final int  cAuthError    = 4;
     private static final int  cAPIDisabled  = 5;
+    private static final int  cConnectErr   = 6;
 
     private ArrayList<String> items         = new ArrayList<String>();
     private ArrayList<String> nbNoRead      = new ArrayList<String>();
@@ -74,6 +75,8 @@ public class APIConnection
     private Flux              pFeed;
     private Article           pArticle;
 
+    private String            errorMessage;
+
     public APIConnection(Context lContext, DataManagement lDataContext)
     {
 
@@ -94,6 +97,8 @@ public class APIConnection
         }
 
         userAgent = "Android-" + VERSION.RELEASE + "/LeedReader-" + version;
+
+        errorMessage = "";
     }
 
     public void SetDataConnection(String lUrl, String lLogin, String lPassword, String lAuthMode)
@@ -199,6 +204,8 @@ public class APIConnection
 
     public String readJSONFeed(String URL)
     {
+        errorMessage = "";
+
         StringBuilder stringBuilder = new StringBuilder();
         HttpGet httpGet = new HttpGet(URL);
         httpGet.setHeader("User-Agent", this.userAgent);
@@ -261,16 +268,19 @@ public class APIConnection
             }
             catch (IOException e)
             {
-
-                // TODO: ligne pour debuggage, à supprimer
-                erreurServeur("APIConnection Erreur #1", false);
+                if (e.toString().equals("java.net.SocketTimeoutException"))
+                    errorMessage =
+                            "<h1>APIConnection Error</h1><p>"
+                                    + mainContext.getResources().getString(
+                                            R.string.msg_SocketTimeoutException) + "</p>";
+                else
+                    errorMessage = "<h1>APIConnection Error</h1><p>" + e.toString() + "</p>";
+                
+                serverError = cConnectErr;
             }
         }
         else
         {
-            // TODO: ligne pour debuggage, à supprimer
-            erreurServeur("APIConnection Erreur #2", false);
-
             serverError = cServerError;
         }
 
@@ -447,14 +457,15 @@ public class APIConnection
                     switch (serverError)
                     {
                         case cNetworkError:
-
                             erreurServeur(
                                     mainContext.getResources().getString(R.string.msg_nointernet_connexion),
                                     false);
                         break;
                         case cServerError:
-
                             erreurServeur(mainContext.getResources().getString(R.string.msg_bad_url), true);
+                        break;
+                        case cConnectErr:
+                            erreurServeur(errorMessage, false);
                         break;
                         case cPHPError:
                         // Done previously
@@ -473,8 +484,6 @@ public class APIConnection
             }
             catch (Exception e)
             {
-
-                // TODO: ligne pour debuggage, à supprimer
                 erreurServeur("<h1>APIConnection Erreur #3</h1>" + e.getLocalizedMessage(), false);
             }
         }

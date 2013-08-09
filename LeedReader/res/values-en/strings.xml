@@ -56,5 +56,6 @@
     <string name="msg_loading">Loading…</string>
     <string name="msg_synchronization_loading_message">Synchronization in progress, \nthis can take a while…</string>
     <string name="msg_synchronization_result">Synchronization result</string>
+    <string name="msg_SocketTimeoutException">Server timeout exception</string>
 
 </resources>

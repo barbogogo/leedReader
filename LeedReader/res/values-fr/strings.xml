@@ -56,5 +56,6 @@
     <string name="msg_loading">En cours de chargement…</string>
     <string name="msg_synchronization_loading_message">Synchronisation en cours, cela peut prendre un certain temps…</string>
     <string name="msg_synchronization_result">Résultat de la synchronisation</string>
+    <string name="msg_SocketTimeoutException">Le serveur ne répond pas</string>
 
 </resources>

@@ -465,8 +465,7 @@ public class MainActivity extends Activity
                         + "h1 {color: #f16529; font-size:14px;}"
                         + "h1 a {text-decoration:none; color: #f16529;}"
                         + "article {color: black; font-size:12px;}"
-                        + "hr {color: #f16529; background-color: #f16529; height: 1px;}"
-                        + "</style>";
+                        + "hr {color: #f16529; background-color: #f16529; height: 1px;}" + "</style>";
 
         return style;
     }
