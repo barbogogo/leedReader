@@ -26,7 +26,8 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class MainActivity extends Activity
 {
-    private LinearLayout        mloadingLayout;
+    private LinearLayout        mLoadingLayout;
+    private TextView            mLoadingMessage;
     private ListView            mListView;
     // private TextView textGetData;
     private ViewPager           mWebView;
@@ -63,6 +64,7 @@ public class MainActivity extends Activity
     static final int            cModeWebView     = 2;
     static final int            cModePageLoading = 3;
     static final int            cModeServerError = 4;
+    static final int            cModeSyncResult  = 5;
 
     public Context              context;
 
@@ -87,7 +89,8 @@ public class MainActivity extends Activity
         mWebView = (ViewPager) findViewById(R.id.home_pannels_pager);
         mServerErrorView = (WebView) findViewById(R.id.serverErrorArea);
 
-        mloadingLayout = (LinearLayout) findViewById(R.id.loadingLayout);
+        mLoadingLayout = (LinearLayout) findViewById(R.id.loadingLayout);
+        mLoadingMessage = (TextView) findViewById(R.id.loadingText);
 
         setModeView(cModeNavigation);
 
@@ -116,14 +119,15 @@ public class MainActivity extends Activity
             case R.id.quitter:
                 finish();
             break;
-
             case R.id.allRead:
                 Toast.makeText(this, "Fonction non disponible pour le moment", Toast.LENGTH_LONG).show();
             break;
-
             case R.id.settings:
                 settings();
             break;
+            case R.id.action_synchronize:
+                synchronize();
+                return true;
         }
 
         return false;
@@ -285,7 +289,7 @@ public class MainActivity extends Activity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 posNavigation = cpFeed;
-                
+
                 pActualFeed = folder.getFeed(position);
 
                 setModeView(cModePageLoading);
@@ -404,52 +408,66 @@ public class MainActivity extends Activity
 
     public void showModeView()
     {
+        mInformationArea.setVisibility(View.GONE);
+        mListView.setVisibility(View.GONE);
+        mWebView.setVisibility(View.GONE);
+        mButton.setVisibility(View.GONE);
+        mLoadingLayout.setVisibility(View.GONE);
+        mServerErrorView.setVisibility(View.GONE);
+
         switch (modeView)
         {
             case cModeNavigation:
-                mInformationArea.setVisibility(View.GONE);
                 mListView.setVisibility(View.VISIBLE);
-                mWebView.setVisibility(View.GONE);
-                mButton.setVisibility(View.GONE);
-                mloadingLayout.setVisibility(View.GONE);
-                mServerErrorView.setVisibility(View.GONE);
             break;
-
             case cModeTextView:
                 mInformationArea.setVisibility(View.VISIBLE);
-                mListView.setVisibility(View.GONE);
-                mWebView.setVisibility(View.GONE);
-                mButton.setVisibility(View.GONE);
-                mloadingLayout.setVisibility(View.GONE);
-                mServerErrorView.setVisibility(View.GONE);
             break;
-
             case cModeWebView:
-                mInformationArea.setVisibility(View.GONE);
-                mListView.setVisibility(View.GONE);
                 mWebView.setVisibility(View.VISIBLE);
-                mButton.setVisibility(View.GONE);
-                mloadingLayout.setVisibility(View.GONE);
-                mServerErrorView.setVisibility(View.GONE);
             break;
-
             case cModePageLoading:
-                mInformationArea.setVisibility(View.GONE);
-                mListView.setVisibility(View.GONE);
-                mWebView.setVisibility(View.GONE);
-                mButton.setVisibility(View.GONE);
-                mloadingLayout.setVisibility(View.VISIBLE);
-                mServerErrorView.setVisibility(View.GONE);
+                mLoadingLayout.setVisibility(View.VISIBLE);
             break;
-
             case cModeServerError:
-                mInformationArea.setVisibility(View.GONE);
-                mListView.setVisibility(View.GONE);
-                mWebView.setVisibility(View.GONE);
-                mButton.setVisibility(View.GONE);
-                mloadingLayout.setVisibility(View.GONE);
+            case cModeSyncResult:
                 mServerErrorView.setVisibility(View.VISIBLE);
             break;
         }
+    }
+
+    public void synchronize()
+    {
+        mLoadingMessage.setText(getResources().getString(R.string.msg_synchronization_loading_message));
+        setModeView(cModePageLoading);
+
+        dataManagement.synchronize();
+    }
+
+    public void synchronisationResult(String msg)
+    {
+        String finalContent =
+                "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" + "<html><head>"
+                        + "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />"
+                        + styleHtml() + "<head><body>" + "<h1>"
+                        + getResources().getString(R.string.msg_synchronization_result) + "</h1><hr>";
+        finalContent += msg + "</body></html>";
+        mServerErrorView.loadData(finalContent, "text/html; charset=utf-8", "UTF-8");
+
+        setModeView(cModeServerError);
+        mLoadingMessage.setText(getResources().getString(R.string.msg_loading));
+    }
+
+    public String styleHtml()
+    {
+        String style =
+                "<style type='text/css'>" + "body {font-size: 12px;}"
+                        + "h1 {color: #f16529; font-size:14px;}"
+                        + "h1 a {text-decoration:none; color: #f16529;}"
+                        + "article {color: black; font-size:12px;}"
+                        + "hr {color: #f16529; background-color: #f16529; height: 1px;}"
+                        + "</style>";
+
+        return style;
     }
 }

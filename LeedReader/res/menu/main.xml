@@ -8,9 +8,15 @@
         android:title="@string/action_settings"/>
     <item
         android:id="@+id/allRead"
+        android:orderInCategory="100"
         android:title="@string/action_allRead"/>
     <item
+        android:id="@+id/action_synchronize"
+        android:orderInCategory="100"
+        android:title="@string/action_synchronize"/>
+    <item
         android:id="@+id/quitter"
+        android:orderInCategory="100"
         android:title="@string/action_quit"/>
 
 </menu>

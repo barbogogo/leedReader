@@ -34,6 +34,7 @@ import android.content.pm.PackageManager;
 public class APIConnection
 {
     private String            leedURL;
+    private String            leedURLParam;
     private String            leedLogin;
     private String            leedPassword;
 
@@ -65,6 +66,7 @@ public class APIConnection
     private static final int  cRead         = 4;
     private static final int  cFav          = 5;
     private static final int  cHomePage     = 6;
+    private static final int  cSynchronize  = 7;
 
     private DefaultHttpClient httpClient;
     private String            userAgent;
@@ -97,7 +99,8 @@ public class APIConnection
     public void SetDataConnection(String lUrl, String lLogin, String lPassword, String lAuthMode)
             throws java.net.URISyntaxException, java.security.NoSuchAlgorithmException
     {
-        leedURL = lUrl;
+        leedURLParam = lUrl;
+        leedURL = lUrl + "/plugins/api";
         leedLogin = lLogin;
 
         if (lAuthMode.equals("0"))
@@ -188,6 +191,12 @@ public class APIConnection
         new ServerConnection().execute(leedURL + "/json.php?option=unsetFavorite&idArticle=" + idArticle);
     }
 
+    public void synchronize()
+    {
+        typeRequest = cSynchronize;
+        new ServerConnection().execute(leedURLParam + "/action.php?action=synchronize");
+    }
+
     public String readJSONFeed(String URL)
     {
         StringBuilder stringBuilder = new StringBuilder();
@@ -195,13 +204,20 @@ public class APIConnection
         httpGet.setHeader("User-Agent", this.userAgent);
 
         HttpParams httpParameters = new BasicHttpParams();
+
         // Define timeout to be connected
         int timeoutConnection = 10000;
-        HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
         // Define timeout to receive data
         int timeoutSocket = 10000;
-        HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
 
+        if (typeRequest == cSynchronize)
+        {
+            timeoutConnection = 0;
+            timeoutSocket = 0;
+        }
+
+        HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+        HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
         httpClient.setParams(httpParameters);
 
         URI pUri = httpGet.getURI();
@@ -420,6 +436,10 @@ public class APIConnection
                             updateData(folders);
 
                         break;
+
+                        case cSynchronize:
+                            synchronisationResult(result);
+                        break;
                     }
                 }
                 else
@@ -468,6 +488,11 @@ public class APIConnection
     public void erreurServeur(String msg, boolean showSetting)
     {
         ((MainActivity) mainContext).erreurServeur(msg, showSetting);
+    }
+
+    public void synchronisationResult(String msg)
+    {
+        ((MainActivity) mainContext).synchronisationResult(msg);
     }
 
     private void updateData(final ArrayList<Folder> folders)

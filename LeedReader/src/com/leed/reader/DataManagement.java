@@ -24,7 +24,6 @@ public class DataManagement
     private Context             pContext;
 
     private String              leedURL            = "";
-    private String              leedURLParam       = "";
     private String              login;
     private String              password;
     private String              authMode;
@@ -52,9 +51,7 @@ public class DataManagement
     {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(pContext);
 
-        leedURLParam = settings.getString("serverLinkPref", "");
-
-        leedURL = leedURLParam + "/plugins/api";
+        leedURL = settings.getString("serverLinkPref", "");
 
         login = settings.getString("usernamePref", "");
         password = settings.getString("passwordPref", "");
@@ -86,7 +83,7 @@ public class DataManagement
             connectionType = connectionType_new;
         }
 
-        if (leedURLParam.equals("") || login.equals("") || password.equals(""))
+        if (leedURL.equals("") || login.equals("") || password.equals(""))
 
         {
             ((MainActivity) pContext).noParameterInformation();
@@ -121,7 +118,7 @@ public class DataManagement
 
     public String getUrl()
     {
-        return leedURLParam;
+        return leedURL;
     }
 
     public String getLogin()
@@ -344,6 +341,20 @@ public class DataManagement
         }
     }
 
+    public void synchronize()
+    {
+        switch (connectionType)
+        {
+            case cGetData:
+            break;
+            case cOffLine:
+            break;
+            case cOnLine:
+                connection.synchronize();
+            break;
+        }
+    }
+    
     public void updateArticle(Article article)
     {
         // FeedAdapter.updateArticle(article);
