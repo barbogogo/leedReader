@@ -25,6 +25,11 @@
         android:showAsAction="ifRoom"
         android:title="@string/action_allRead"/>
     <item
+        android:id="@+id/action_synchronize"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_synchronize"/>
+    <item
         android:id="@+id/quitter"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
