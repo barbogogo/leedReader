@@ -6,7 +6,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
@@ -73,6 +75,8 @@ public class MainActivity extends Activity
 
     private boolean             parameterGiven;
 
+    private Intent              mShareIntent;
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -101,6 +105,8 @@ public class MainActivity extends Activity
 
         dataManagement = new DataManagement(context);
 
+        createShareIntent();
+        
         init();
     }
 
@@ -118,15 +124,18 @@ public class MainActivity extends Activity
         {
             case R.id.quitter:
                 finish();
-            break;
+                return true;
             case R.id.allRead:
                 Toast.makeText(this, "Fonction non disponible pour le moment", Toast.LENGTH_LONG).show();
-            break;
+                return true;
             case R.id.settings:
                 settings();
-            break;
+                return true;
             case R.id.action_synchronize:
                 synchronize();
+                return true;
+            case R.id.action_share:
+                doShare();
                 return true;
         }
 
@@ -433,6 +442,27 @@ public class MainActivity extends Activity
             case cModeSyncResult:
                 mServerErrorView.setVisibility(View.VISIBLE);
             break;
+        }
+    }
+
+    public void setShareIntent(Intent shareIntent)
+    {
+        mShareIntent = shareIntent;
+    }
+    
+    private void createShareIntent()
+    {
+        mShareIntent =
+                ShareCompat.IntentBuilder.from(this).setSubject("subject").setText("some text")
+                        .setType("text/plain").getIntent();
+
+    }
+
+    public void doShare()
+    {
+        if (mShareIntent != null)
+        {
+            startActivity(mShareIntent);
         }
     }
 

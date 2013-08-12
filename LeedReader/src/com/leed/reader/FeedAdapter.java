@@ -2,12 +2,9 @@ package com.leed.reader;
 
 import java.util.ArrayList;
 
-import com.leed.reader.R;
-
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
@@ -123,6 +120,14 @@ public class FeedAdapter extends ArrayAdapter<String>
 
             public void setReadArticle(int position)
             {
+
+                Intent shareIntent =
+                        ShareCompat.IntentBuilder.from((MainActivity) mainContext)
+                                .setSubject(articles.get(position).getTitle())
+                                .setText(articles.get(position).getUrlArticle()).setType("text/plain")
+                                .getIntent();
+                ((MainActivity) mainContext).setShareIntent(shareIntent);
+
                 if (articles.get(position).getIsRead() == 0)
                 {
                     dataManagement.setReadArticle(articles.get(position), 1);
@@ -195,5 +200,4 @@ public class FeedAdapter extends ArrayAdapter<String>
 
         return pRowView;
     }
-
 }
