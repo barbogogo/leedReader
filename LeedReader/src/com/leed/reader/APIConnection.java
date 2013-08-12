@@ -308,6 +308,7 @@ public class APIConnection
                 case cFeed:
                 case cRead:
                 case cFav:
+                case cSynchronize:
                 break;
 
                 case cInit:
