@@ -274,7 +274,7 @@ public class APIConnection
                                             R.string.msg_SocketTimeoutException) + "</p>";
                 else
                     errorMessage = "<h1>APIConnection Error</h1><p>" + e.toString() + "</p>";
-                
+
                 serverError = cConnectErr;
             }
         }
@@ -307,6 +307,7 @@ public class APIConnection
                 case cFeed:
                 case cRead:
                 case cFav:
+                case cSynchronize:
                 break;
 
                 case cInit:

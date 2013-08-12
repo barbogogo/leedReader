@@ -520,7 +520,7 @@ public class LeedReader extends Activity
         finalContent += msg + "</body></html>";
         mServerErrorView.loadData(finalContent, "text/html; charset=utf-8", "UTF-8");
 
-        setModeView(cModeServerError);
+        setModeView(cModeSyncResult);
         mLoadingMessage.setText(getResources().getString(R.string.msg_loading));
     }
 
