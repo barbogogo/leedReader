@@ -354,7 +354,7 @@ public class DataManagement
             break;
         }
     }
-    
+
     public void updateArticle(Article article)
     {
         // FeedAdapter.updateArticle(article);
@@ -486,6 +486,6 @@ public class DataManagement
             }
         }
 
-        updateCategories(pFolders);
+        // updateCategories(pFolders);
     }
 }
