@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 
 import android.widget.TextView;
 
@@ -51,39 +52,33 @@ public class FeedAdapter extends ArrayAdapter<String>
 
         View pRowView = inflater.inflate(R.layout.activity_feed, parent, false);
         TextView titleView = (TextView) pRowView.findViewById(R.id.articleTitle);
-        TextView favoriteView = (TextView) pRowView.findViewById(R.id.favorite);
-        TextView noReadView = (TextView) pRowView.findViewById(R.id.readNoRead);
+        ImageView favoriteView = (ImageView) pRowView.findViewById(R.id.favorite);
+        ImageView noReadView = (ImageView) pRowView.findViewById(R.id.readNoRead);
 
         int isRead = articles.get(position).getIsRead();
         int isFav = articles.get(position).getIsFav();
 
         titleView.setText(articles.get(position).getTitle());
 
-        favoriteView.setText("");
-        favoriteView.setWidth(0);
+        favoriteView.setImageResource(R.drawable.fav_false);
 
         if (isRead == 1)
         {
-            noReadView.setText("lu");
+            noReadView.setImageResource(R.drawable.read_true);
         }
         else
         {
-            titleView.setTypeface(null, Typeface.BOLD);
-            noReadView.setText("noLu");
+            noReadView.setImageResource(R.drawable.read_false);
         }
 
         if (isFav == 1)
         {
-            favoriteView.setTextColor(Color.parseColor("#0000FF"));
-            favoriteView.setText("fav");
+            favoriteView.setImageResource(R.drawable.fav_true);
         }
         else
         {
-            favoriteView.setText("noFav");
+            favoriteView.setImageResource(R.drawable.fav_false);
         }
-
-        noReadView.setTextSize(10);
-        favoriteView.setTextSize(10);
 
         View.OnClickListener onClick = new View.OnClickListener()
         {
