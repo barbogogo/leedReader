@@ -57,5 +57,10 @@
     <string name="msg_synchronization_loading_message">Synchronisation en cours, cela peut prendre un certain temps…</string>
     <string name="msg_synchronization_result">Résultat de la synchronisation</string>
     <string name="msg_SocketTimeoutException">Le serveur ne répond pas</string>
+    <string name="msg_yes">Yes</string>
+    <string name="msg_no">No</string>
+    <string name="msg_all_read">Are you sure to set all articles as read?</string>
+    <string name="msg_feed_read">Are you sure to set the feed as read?</string>
+    <string name="msg_function_unavailable">Function unavailable for this item</string>
 
 </resources>

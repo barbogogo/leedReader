@@ -30,6 +30,7 @@ public class DataManagement
 
     private ArrayList<Folder>   pFolders;
     private ArrayList<Flux>     pFeeds;
+    private Flux                pFeed;
     private int                 iterateurFeed;
 
     public static final String  PREFS_NAME         = "MyPrefsFile";
@@ -294,6 +295,8 @@ public class DataManagement
 
     public void updateFeed(Flux feed)
     {
+        pFeed = feed;
+
         switch (connectionType)
         {
             case cGetData:
@@ -435,6 +438,30 @@ public class DataManagement
         if (connectionType == cOffLine)
         {
             DBData.setUnFavArticle(article);
+        }
+    }
+
+    public void setFeedRead()
+    {
+        if (connectionType == cOnLine)
+        {
+            connection.setReadFeed(pFeed.getId());
+        }
+        if (connectionType == cOffLine)
+        {
+            // DBData.setUnReadArticle(article);
+        }
+    }
+    
+    public void setAllRead()
+    {
+        if (connectionType == cOnLine)
+        {
+            connection.setAllRead();
+        }
+        if (connectionType == cOffLine)
+        {
+            // DBData.setUnReadArticle(article);
         }
     }
 

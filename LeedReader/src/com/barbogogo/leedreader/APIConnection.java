@@ -67,6 +67,8 @@ public class APIConnection
     private static final int  cFav          = 5;
     private static final int  cHomePage     = 6;
     private static final int  cSynchronize  = 7;
+    private static final int  cFeedRead     = 8;
+    private static final int  cAllRead      = 9;
 
     private DefaultHttpClient httpClient;
     private String            userAgent;
@@ -201,6 +203,18 @@ public class APIConnection
         new ServerConnection().execute(leedURLParam + "/action.php?action=synchronize");
     }
 
+    public void setReadFeed(String idFeed)
+    {
+        typeRequest = cFeedRead;
+        new ServerConnection().execute(leedURL + "/json.php?option=setFeedRead&idFeed=" + idFeed);
+    }
+
+    public void setAllRead()
+    {
+        typeRequest = cAllRead;
+        new ServerConnection().execute(leedURL + "/json.php?option=setAllRead");
+    }
+
     public String readJSONFeed(String URL)
     {
         errorMessage = "";
@@ -308,6 +322,8 @@ public class APIConnection
                 case cRead:
                 case cFav:
                 case cSynchronize:
+                case cFeedRead:
+                case cAllRead:
                 break;
 
                 case cInit:
@@ -423,6 +439,13 @@ public class APIConnection
                         case cRead:
                         case cFav:
 
+                        break;
+
+                        case cFeedRead:
+                            ((LeedReader) mainContext).init();
+                        break;
+                        case cAllRead:
+                            ((LeedReader) mainContext).init();
                         break;
 
                         case cFolder:

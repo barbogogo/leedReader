@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import com.leed.reader.R;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -176,6 +178,8 @@ public class LeedReader extends Activity
     public void init()
     {
         setModeView(cModePageLoading);
+
+        setTitle(mDrawerTitle);
 
         parameterGiven = true;
         dataManagement.getParameters();
@@ -433,12 +437,6 @@ public class LeedReader extends Activity
             case R.id.action_settings:
                 settings();
                 return true;
-                // case R.id.action_share:
-                // Toast.makeText(
-                // this,
-                // getResources().getString(R.string.msg_unavailable_function),
-                // Toast.LENGTH_LONG).show();
-                // return true;
             case R.id.action_reload:
                 init();
                 return true;
@@ -446,8 +444,7 @@ public class LeedReader extends Activity
                 finish();
                 return true;
             case R.id.action_allRead:
-                Toast.makeText(this, getResources().getString(R.string.msg_unavailable_function),
-                        Toast.LENGTH_LONG).show();
+                allRead();
                 return true;
             case R.id.action_synchronize:
                 synchronize();
@@ -506,6 +503,7 @@ public class LeedReader extends Activity
     {
         mLoadingMessage.setText(getResources().getString(R.string.msg_synchronization_loading_message));
         setModeView(cModePageLoading);
+        setTitle(mDrawerTitle);
 
         dataManagement.synchronize();
     }
@@ -536,5 +534,59 @@ public class LeedReader extends Activity
                         + "</style>";
 
         return style;
+    }
+
+    public void allRead()
+    {
+        setModeView(cModePageLoading);
+
+        AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
+
+        switch (posNavigation)
+        {
+            case cpGlobal:
+                alertbox.setMessage(getResources().getString(R.string.msg_all_read));
+            break;
+
+            case cpFeed:
+                alertbox.setMessage(getResources().getString(R.string.msg_feed_read));
+            break;
+
+            default:
+                alertbox.setMessage(getResources().getString(R.string.msg_function_unavailable));
+            break;
+        }
+
+        alertbox.setPositiveButton(getResources().getString(R.string.msg_yes),
+                new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface arg0, int arg1)
+                    {
+                        switch (posNavigation)
+                        {
+                            case cpGlobal:
+                                dataManagement.setAllRead();
+                            break;
+
+                            case cpFeed:
+                                dataManagement.setFeedRead();
+                            break;
+
+                            default:
+                            break;
+                        }
+                    }
+                });
+
+        alertbox.setNegativeButton(getResources().getString(R.string.msg_no),
+                new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface arg0, int arg1)
+                    {
+                        setModeView(cModeNavigation);
+                    }
+                });
+
+        alertbox.show();
     }
 }
