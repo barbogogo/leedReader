@@ -2,14 +2,13 @@
 
     <item
         android:id="@+id/settings"
-        android:icon="@drawable/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_settings"/>
     <item
         android:id="@+id/action_share"
         android:orderInCategory="100"
-        android:title="action_share"/>
+        android:title="@string/action_share"/>
     <item
         android:id="@+id/allRead"
         android:orderInCategory="100"

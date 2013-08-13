@@ -3,10 +3,11 @@ package com.leed.reader;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.view.ViewPager;
@@ -19,8 +20,6 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView;
@@ -28,54 +27,53 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class MainActivity extends Activity
 {
-    private LinearLayout        mLoadingLayout;
-    private TextView            mLoadingMessage;
-    private ListView            mListView;
+    private LinearLayout     mLoadingLayout;
+    private TextView         mLoadingMessage;
+    private ListView         mListView;
     // private TextView textGetData;
-    private ViewPager           mWebView;
-    private WebView             mServerErrorView;
-    private TextView            mInformationArea;
-    private Button              mButton;
-    private ShareActionProvider mShareActionProvider;
+    private ViewPager        mWebView;
+    private WebView          mServerErrorView;
+    private TextView         mInformationArea;
+    private Button           mButton;
     /**
      * Navigation automate
      */
-    private int                 posNavigation    = 0;
-    static final int            cpGlobal         = 0;
-    static final int            cpFolder         = 1;
-    static final int            cpFeed           = 2;
-    static final int            cpArticle        = 3;
+    private int              posNavigation    = 0;
+    static final int         cpGlobal         = 0;
+    static final int         cpFolder         = 1;
+    static final int         cpFeed           = 2;
+    static final int         cpArticle        = 3;
 
-    private boolean             settingFlag;
+    private boolean          settingFlag;
 
-    private DataManagement      dataManagement;
+    private DataManagement   dataManagement;
 
-    private Button              offLineButton;
+    private Button           offLineButton;
 
-    private static final int    cOnLine          = 0;
-    private static final int    cGetData         = 1;
-    private static final int    cOffLine         = 2;
-    private static final int    cSendData        = 3;
+    private static final int cOnLine          = 0;
+    private static final int cGetData         = 1;
+    private static final int cOffLine         = 2;
+    private static final int cSendData        = 3;
 
     /**
      * Mode view
      */
-    private int                 modeView         = 0;
-    static final int            cModeNavigation  = 0;
-    static final int            cModeTextView    = 1;
-    static final int            cModeWebView     = 2;
-    static final int            cModePageLoading = 3;
-    static final int            cModeServerError = 4;
-    static final int            cModeSyncResult  = 5;
+    private int              modeView         = 0;
+    static final int         cModeNavigation  = 0;
+    static final int         cModeTextView    = 1;
+    static final int         cModeWebView     = 2;
+    static final int         cModePageLoading = 3;
+    static final int         cModeServerError = 4;
+    static final int         cModeSyncResult  = 5;
 
-    public Context              context;
+    public Context           context;
 
-    private Folder              pActualFolder;
-    private Flux                pActualFeed;
+    private Folder           pActualFolder;
+    private Flux             pActualFeed;
 
-    private boolean             parameterGiven;
+    private boolean          parameterGiven;
 
-    private Intent              mShareIntent;
+    private Intent           mShareIntent;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -106,7 +104,7 @@ public class MainActivity extends Activity
         dataManagement = new DataManagement(context);
 
         createShareIntent();
-        
+
         init();
     }
 
@@ -126,7 +124,7 @@ public class MainActivity extends Activity
                 finish();
                 return true;
             case R.id.allRead:
-                Toast.makeText(this, "Fonction non disponible pour le moment", Toast.LENGTH_LONG).show();
+                allRead();
                 return true;
             case R.id.settings:
                 settings();
@@ -449,7 +447,7 @@ public class MainActivity extends Activity
     {
         mShareIntent = shareIntent;
     }
-    
+
     private void createShareIntent()
     {
         mShareIntent =
@@ -498,5 +496,59 @@ public class MainActivity extends Activity
                         + "hr {color: #f16529; background-color: #f16529; height: 1px;}" + "</style>";
 
         return style;
+    }
+
+    public void allRead()
+    {
+        setModeView(cModePageLoading);
+
+        AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
+
+        switch (posNavigation)
+        {
+            case cpGlobal:
+                alertbox.setMessage(getResources().getString(R.string.msg_all_read));
+            break;
+
+            case cpFeed:
+                alertbox.setMessage(getResources().getString(R.string.msg_feed_read));
+            break;
+
+            default:
+                alertbox.setMessage(getResources().getString(R.string.msg_function_unavailable));
+            break;
+        }
+
+        alertbox.setPositiveButton(getResources().getString(R.string.msg_yes),
+                new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface arg0, int arg1)
+                    {
+                        switch (posNavigation)
+                        {
+                            case cpGlobal:
+                                dataManagement.setAllRead();
+                            break;
+
+                            case cpFeed:
+                                dataManagement.setFeedRead();
+                            break;
+
+                            default:
+                            break;
+                        }
+                    }
+                });
+
+        alertbox.setNegativeButton(getResources().getString(R.string.msg_no),
+                new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface arg0, int arg1)
+                    {
+                        setModeView(cModeNavigation);
+                    }
+                });
+
+        alertbox.show();
     }
 }

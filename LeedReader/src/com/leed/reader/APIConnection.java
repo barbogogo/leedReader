@@ -28,7 +28,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build.VERSION;
-
 import android.content.pm.PackageManager;
 
 public class APIConnection
@@ -68,6 +67,8 @@ public class APIConnection
     private static final int  cFav          = 5;
     private static final int  cHomePage     = 6;
     private static final int  cSynchronize  = 7;
+    private static final int  cFeedRead     = 8;
+    private static final int  cAllRead      = 9;
 
     private DefaultHttpClient httpClient;
     private String            userAgent;
@@ -202,6 +203,18 @@ public class APIConnection
         new ServerConnection().execute(leedURLParam + "/action.php?action=synchronize");
     }
 
+    public void setReadFeed(String idFeed)
+    {
+        typeRequest = cFeedRead;
+        new ServerConnection().execute(leedURL + "/json.php?option=setFeedRead&idFeed=" + idFeed);
+    }
+
+    public void setAllRead()
+    {
+        typeRequest = cAllRead;
+        new ServerConnection().execute(leedURL + "/json.php?option=setAllRead");
+    }
+
     public String readJSONFeed(String URL)
     {
         errorMessage = "";
@@ -275,7 +288,7 @@ public class APIConnection
                                             R.string.msg_SocketTimeoutException) + "</p>";
                 else
                     errorMessage = "<h1>APIConnection Error</h1><p>" + e.toString() + "</p>";
-                
+
                 serverError = cConnectErr;
             }
         }
@@ -309,6 +322,8 @@ public class APIConnection
                 case cRead:
                 case cFav:
                 case cSynchronize:
+                case cFeedRead:
+                case cAllRead:
                 break;
 
                 case cInit:
@@ -346,7 +361,6 @@ public class APIConnection
                     {
                         case 0: // 0: No error
                             serverError = cNoError;
-
                         break;
                         case 1: // 1: API Disabled
                             serverError = cAPIDisabled;
@@ -358,17 +372,14 @@ public class APIConnection
                         case 3: // 3: PHP Error
                             erreurServeur(msgError, false);
                             serverError = cPHPError;
-
                         break;
                         default:
                             serverError = cServerError;
-
                         break;
                     }
                 }
                 catch (Exception e)
                 {
-
                 }
 
                 if (serverError == cNoError)
@@ -428,6 +439,13 @@ public class APIConnection
                         case cRead:
                         case cFav:
 
+                        break;
+
+                        case cFeedRead:
+                            ((MainActivity) mainContext).init();
+                        break;
+                        case cAllRead:
+                            ((MainActivity) mainContext).init();
                         break;
 
                         case cFolder:

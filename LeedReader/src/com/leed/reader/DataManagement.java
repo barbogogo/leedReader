@@ -30,6 +30,7 @@ public class DataManagement
 
     private ArrayList<Folder>   pFolders;
     private ArrayList<Flux>     pFeeds;
+    private Flux                pFeed;
     private int                 iterateurFeed;
 
     public static final String  PREFS_NAME         = "MyPrefsFile";
@@ -44,7 +45,6 @@ public class DataManagement
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(pContext);
 
         connectionType = Integer.valueOf(settings.getString("connectionType", "0"));
-
     }
 
     public void getParameters()
@@ -74,7 +74,6 @@ public class DataManagement
                 }
                 else
                 {
-
                     connectionType = cOnLine;
                 }
         }
@@ -84,13 +83,10 @@ public class DataManagement
         }
 
         if (leedURL.equals("") || login.equals("") || password.equals(""))
-
         {
             ((MainActivity) pContext).noParameterInformation();
-
         }
         else
-
         {
             try
             {
@@ -106,7 +102,6 @@ public class DataManagement
     public void saveConnectionType(int type)
     {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(pContext);
-
         SharedPreferences.Editor editor = settings.edit();
 
         editor.putString("connectionType", String.valueOf(type));
@@ -240,13 +235,10 @@ public class DataManagement
             break;
             case cOnLine:
                 connection.getHomePage("20");
-
             break;
             case cOffLine:
                 ((MainActivity) pContext).updateFeed(DBData.getHomePage());
-
             break;
-
         }
     }
 
@@ -303,6 +295,8 @@ public class DataManagement
 
     public void updateFeed(Flux feed)
     {
+        pFeed = feed;
+
         switch (connectionType)
         {
             case cGetData:
@@ -470,6 +464,30 @@ public class DataManagement
         if (connectionType == cOffLine)
         {
             DBData.setUnFavArticle(article);
+        }
+    }
+
+    public void setFeedRead()
+    {
+        if (connectionType == cOnLine)
+        {
+            connection.setReadFeed(pFeed.getId());
+        }
+        if (connectionType == cOffLine)
+        {
+            // DBData.setUnReadArticle(article);
+        }
+    }
+
+    public void setAllRead()
+    {
+        if (connectionType == cOnLine)
+        {
+            connection.setAllRead();
+        }
+        if (connectionType == cOffLine)
+        {
+            // DBData.setUnReadArticle(article);
         }
     }
 

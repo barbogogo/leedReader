@@ -95,7 +95,7 @@ public class SettingsActivity extends PreferenceActivity
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue)
             {
-                if (newValue.toString().isEmpty() || newValue.toString().equals("1"))
+                if (newValue.toString().equals("0") || newValue.toString().equals("1"))
                 {
                     preference.setSummary(R.string.setting_connection_mode_basic);
                 }
