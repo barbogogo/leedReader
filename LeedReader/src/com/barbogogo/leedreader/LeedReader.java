@@ -397,20 +397,28 @@ public class LeedReader extends Activity
         }
     }
 
-    /* Called whenever we call invalidateOptionsMenu() */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu)
     {
-        // If the nav drawer is open, hide action items related to the content
-        // view
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 
         if (parameterGiven == true)
         {
             menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
-            menu.findItem(R.id.action_share).setVisible(!drawerOpen);
             menu.findItem(R.id.action_reload).setVisible(!drawerOpen);
-            menu.findItem(R.id.action_allRead).setVisible(!drawerOpen);
+            menu.findItem(R.id.action_synchronize).setVisible(!drawerOpen);
+            menu.findItem(R.id.quitter).setVisible(!drawerOpen);
+
+            if (posNavigation == cpArticle)
+            {
+                menu.findItem(R.id.action_share).setVisible(!drawerOpen);
+                menu.findItem(R.id.action_allRead).setVisible(false);
+            }
+            else
+            {
+                menu.findItem(R.id.action_share).setVisible(false);
+                menu.findItem(R.id.action_allRead).setVisible(!drawerOpen);
+            }
         }
         else
         {
@@ -418,6 +426,8 @@ public class LeedReader extends Activity
             menu.findItem(R.id.action_share).setVisible(false);
             menu.findItem(R.id.action_reload).setVisible(false);
             menu.findItem(R.id.action_allRead).setVisible(false);
+            menu.findItem(R.id.action_synchronize).setVisible(false);
+            menu.findItem(R.id.quitter).setVisible(true);
         }
         return super.onPrepareOptionsMenu(menu);
     }
