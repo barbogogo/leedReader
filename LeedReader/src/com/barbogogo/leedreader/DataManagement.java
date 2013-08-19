@@ -194,14 +194,27 @@ public class DataManagement
         switch (connectionType)
         {
             case cOnLine:
-                // TODO: trouver comment charger les articles au fur et à mesure
-                // connection.getFeed(feed, NB_ELEMENT_ONLINE, connectionType);
                 connection.getFeed(feed, NB_ELEMENT_ONLINE, cGetData);
             break;
             case cGetData:
             break;
             case cOffLine:
                 updateFeed(DBData.getArticlesByFeed(feed.getId()));
+            break;
+        }
+    }
+
+    public void getOffsetFeed(Flux feed, int offset)
+    {
+        switch (connectionType)
+        {
+            case cOnLine:
+                connection.getOffsetFeed(feed, offset, NB_ELEMENT_ONLINE, cGetData);
+            break;
+            case cGetData:
+            break;
+            case cOffLine:
+            // updateFeed(DBData.getArticlesByFeed(feed.getId()));
             break;
         }
     }
@@ -452,7 +465,7 @@ public class DataManagement
             // DBData.setUnReadArticle(article);
         }
     }
-    
+
     public void setAllRead()
     {
         if (connectionType == cOnLine)

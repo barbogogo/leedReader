@@ -23,6 +23,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.webkit.WebView;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
@@ -62,6 +64,7 @@ public class LeedReader extends Activity
     static final int              cpArticle        = 3;
 
     private boolean               settingFlag;
+    private boolean               mUpdateRequest;
 
     private DataManagement        dataManagement;
 
@@ -79,6 +82,7 @@ public class LeedReader extends Activity
     public Context                context;
 
     private boolean               parameterGiven;
+    private int                   mScrollPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -215,6 +219,7 @@ public class LeedReader extends Activity
     public void updateCategories(final ArrayList<Folder> folders)
     {
         mDrawerList.setAdapter(new MenuAdapter(this, folders));
+        setModeView(cModeNavigation);
     }
 
     public void getFeed(Flux feed)
@@ -227,12 +232,40 @@ public class LeedReader extends Activity
         posNavigation = cpFeed;
     }
 
-    public void updateFeed(Flux feed)
+    public void updateFeed(final Flux feed)
     {
-        FeedAdapter adapter = new FeedAdapter(this, feed, dataManagement);
+        final FeedAdapter adapter = new FeedAdapter(this, feed, dataManagement);
         mListView.setAdapter(adapter);
 
-        dataManagement.getCategories();
+        mListView.setSelection(mScrollPosition);
+
+        mUpdateRequest = false;
+
+        mListView.setOnScrollListener(new OnScrollListener()
+        {
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+                    int totalItemCount)
+            {
+                // @TODO: On peut gérer le chargement de nouveaux articles ici.
+                if ((totalItemCount - visibleItemCount) > 5
+                        && (totalItemCount - firstVisibleItem - visibleItemCount) < 5
+                        && mUpdateRequest == false)
+                {
+                    mUpdateRequest = true;
+                    dataManagement.getOffsetFeed(feed, totalItemCount);
+                    mScrollPosition = firstVisibleItem;
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState)
+            {
+            }
+        });
+
+        if (mUpdateRequest == false)
+            dataManagement.getCategories();
 
         setModeView(cModeNavigation);
 

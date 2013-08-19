@@ -69,6 +69,7 @@ public class APIConnection
     private static final int  cSynchronize  = 7;
     private static final int  cFeedRead     = 8;
     private static final int  cAllRead      = 9;
+    private static final int  cOffsetFeed   = 10;
 
     private DefaultHttpClient httpClient;
     private String            userAgent;
@@ -162,8 +163,23 @@ public class APIConnection
     {
         typeRequest = cFeed;
         pFeed = feed;
+        pFeed.deleteAllArticles();
         new ServerConnection().execute(leedURL + "/json.php?option=flux&feedId=" + feed.getId()
                 + "&nbMaxArticle=" + nbMaxArticle + "&connectionType=" + connectionType);
+    }
+
+    public void getOffsetFeed(Flux feed, int offset, String nbMaxArticle, int connectionType)
+    {
+        typeRequest = cOffsetFeed;
+        pFeed = feed;
+
+        if (feed.getId() == null)
+            new ServerConnection().execute(leedURL + "/json.php?option=getUnread&nbMaxArticle="
+                    + nbMaxArticle + "&offset=" + String.valueOf(offset));
+        else
+            new ServerConnection().execute(leedURL + "/json.php?option=flux&feedId=" + feed.getId()
+                    + "&nbMaxArticle=" + nbMaxArticle + "&offset=" + String.valueOf(offset)
+                    + "&connectionType=" + connectionType);
     }
 
     public void getArticle(Article article)
@@ -324,6 +340,7 @@ public class APIConnection
                 case cSynchronize:
                 case cFeedRead:
                 case cAllRead:
+                case cOffsetFeed:
                 break;
 
                 case cInit:
@@ -394,12 +411,11 @@ public class APIConnection
 
                         case cFeed:
                         case cHomePage:
+                        case cOffsetFeed:
 
                             jsonObject = new JSONObject(result);
 
                             JSONArray articlesItems = new JSONArray(jsonObject.getString("articles"));
-
-                            pFeed.deleteAllArticles();
 
                             for (int i = 0; i < articlesItems.length(); i++)
                             {

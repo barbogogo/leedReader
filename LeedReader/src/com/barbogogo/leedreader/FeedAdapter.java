@@ -82,7 +82,6 @@ public class FeedAdapter extends ArrayAdapter<String>
             @Override
             public void onClick(View v)
             {
-
                 pPosition = position;
 
                 ((LeedReader) mainContext).setPosNavigation(LeedReader.cpArticle);
@@ -148,8 +147,6 @@ public class FeedAdapter extends ArrayAdapter<String>
             @Override
             public void onClick(View v)
             {
-                // progressBar.setVisibility(ProgressBar.VISIBLE);
-
                 pPosition = position;
 
                 Article article = articles.get(pPosition);
@@ -175,8 +172,6 @@ public class FeedAdapter extends ArrayAdapter<String>
             @Override
             public void onClick(View v)
             {
-                // progressBar.setVisibility(ProgressBar.VISIBLE);
-
                 pPosition = position;
 
                 Article article = articles.get(pPosition);
