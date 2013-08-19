@@ -160,6 +160,35 @@ public class LocalData
         toto = toto + 1;
     }
 
+    public Flux getArticlesByFeed(Flux feed)
+    {
+        feed.deleteAllArticles();
+
+        String[] extractColumns =
+                { MySQLiteHelper.ARTI_COL_ID, MySQLiteHelper.ARTI_COL_TITLE, MySQLiteHelper.ARTI_COL_AUTHOR,
+                        MySQLiteHelper.ARTI_COL_DATE, MySQLiteHelper.ARTI_COL_URL,
+                        MySQLiteHelper.ARTI_COL_CONTENT, MySQLiteHelper.ARTI_COL_ISREAD,
+                        MySQLiteHelper.ARTI_COL_ISFAV, MySQLiteHelper.ARTI_COL_IDFEED };
+
+        String[] args =
+        { feed.getId() };
+
+        Cursor cursor =
+                database.query(true, MySQLiteHelper.ARTI_TABLE, extractColumns,
+                        MySQLiteHelper.ARTI_COL_IDFEED + "=?", args, null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            Article article = cursorToArticle(cursor);
+            feed.addArticle(article);
+            cursor.moveToNext();
+        }
+        // Make sure to close the cursor
+        cursor.close();
+        return feed;
+    }
+    
     public Flux getArticlesByFeed(String idFeed)
     {
         Flux feed = new Flux();
@@ -310,5 +339,20 @@ public class LocalData
         ContentValues args = new ContentValues();
         args.put(MySQLiteHelper.ARTI_COL_ISFAV, 0);
         database.update(MySQLiteHelper.ARTI_TABLE, args, strFilter, null);
+    }
+    
+    public void setReadFeed(String feedId)
+    {
+        String strFilter = MySQLiteHelper.ARTI_COL_IDFEED+"=" + feedId;
+        ContentValues args = new ContentValues();
+        args.put(MySQLiteHelper.ARTI_COL_ISREAD, 1);
+        database.update(MySQLiteHelper.ARTI_TABLE, args, strFilter, null);
+    }
+    
+    public void setAllRead()
+    {
+        ContentValues args = new ContentValues();
+        args.put(MySQLiteHelper.ARTI_COL_ISREAD, 1);
+        database.update(MySQLiteHelper.ARTI_TABLE, args, null, null);
     }
 }

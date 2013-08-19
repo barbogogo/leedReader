@@ -264,8 +264,7 @@ public class LeedReader extends Activity
             }
         });
 
-        if (mUpdateRequest == false)
-            dataManagement.getCategories();
+        dataManagement.getCategories();
 
         setModeView(cModeNavigation);
 

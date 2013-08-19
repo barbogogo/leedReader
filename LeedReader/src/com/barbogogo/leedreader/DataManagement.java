@@ -199,7 +199,7 @@ public class DataManagement
             case cGetData:
             break;
             case cOffLine:
-                updateFeed(DBData.getArticlesByFeed(feed.getId()));
+                updateFeed(DBData.getArticlesByFeed(feed));
             break;
         }
     }
@@ -229,6 +229,7 @@ public class DataManagement
             case cGetData:
             break;
             case cOffLine:
+            // TODO: Ajouter mode offline
             // updateArticle(DBData.getArticle(idArticle).getContent());
             break;
         }
@@ -462,7 +463,8 @@ public class DataManagement
         }
         if (connectionType == cOffLine)
         {
-            // DBData.setUnReadArticle(article);
+             DBData.setReadFeed(pFeed.getId());
+             updateFeed(DBData.getArticlesByFeed(pFeed));
         }
     }
 
@@ -474,7 +476,7 @@ public class DataManagement
         }
         if (connectionType == cOffLine)
         {
-            // DBData.setUnReadArticle(article);
+             DBData.setAllRead();
         }
     }
 
