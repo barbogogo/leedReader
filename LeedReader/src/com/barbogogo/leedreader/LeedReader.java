@@ -219,7 +219,6 @@ public class LeedReader extends Activity
     public void updateCategories(final ArrayList<Folder> folders)
     {
         mDrawerList.setAdapter(new MenuAdapter(this, folders));
-        setModeView(cModeNavigation);
     }
 
     public void getFeed(Flux feed)
@@ -567,12 +566,13 @@ public class LeedReader extends Activity
     public String styleHtml()
     {
         String style =
-                "<style type='text/css'>" + "body {font-size: 12px;}"
-                        + "h1 {color: #f16529; font-size:14px;}"
-                        + "h1 a {text-decoration:none; color: #f16529;}"
-                        + "article {color: black; font-size:12px;}"
-                        + "hr {color: #f16529; background-color: #f16529; height: 1px;}"
-                        + "img {max-width:100%;height:auto;}" + "iframe {max-width:100%;height:auto;}"
+                "<style type='text/css'>" + "body {}"
+                        + "h1 {color: %23f16529; font-size:14px;}"
+                        + "h1 a {text-decoration:none; color: %23f16529;}"
+                        + "article {color: black; font-size:14px; line-height:150%25;}"
+                        + "header {color: %23555555; font-size: 10px;}"
+                        + "hr {color: %23f16529; background-color: %23f16529; height: 1px;}"
+                        + "img {max-width:100%25;height:auto;}" + "iframe {max-width:100%25;height:auto;}"
                         + "</style>";
 
         return style;

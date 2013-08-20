@@ -477,6 +477,7 @@ public class DataManagement
         if (connectionType == cOffLine)
         {
              DBData.setAllRead();
+             getHomePage();
         }
     }
 
