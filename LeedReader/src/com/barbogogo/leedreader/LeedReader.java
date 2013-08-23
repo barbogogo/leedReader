@@ -7,12 +7,16 @@ import com.leed.reader.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -146,7 +150,8 @@ public class LeedReader extends Activity
 
         dataManagement = new DataManagement(context);
 
-        init();
+        checkVersion();
+
     }
 
     public void setPosNavigation(int pos)
@@ -177,6 +182,32 @@ public class LeedReader extends Activity
                 setModeView(cModeNavigation);
             break;
         }
+    }
+
+    public void checkVersion()
+    {
+        dataManagement.getParameters();
+
+        dataManagement.checkVersion();
+    }
+
+    public void endCheckVersion(String version, String link)
+    {
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this).setSmallIcon(R.drawable.logo)
+                        .setContentTitle("LeedReader")
+                        .setContentText("La version " + version + " est disponible.");
+
+        int mId = 1;
+
+        Intent viewIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+
+        mBuilder.setContentIntent(PendingIntent.getActivity(context, 0, viewIntent, 0));
+
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(mId, mBuilder.build());
+        init();
     }
 
     public void init()
@@ -566,8 +597,7 @@ public class LeedReader extends Activity
     public String styleHtml()
     {
         String style =
-                "<style type='text/css'>" + "body {}"
-                        + "h1 {color: %23f16529; font-size:14px;}"
+                "<style type='text/css'>" + "body {}" + "h1 {color: %23f16529; font-size:14px;}"
                         + "h1 a {text-decoration:none; color: %23f16529;}"
                         + "article {color: black; font-size:14px; line-height:150%25;}"
                         + "header {color: %23555555; font-size: 10px;}"

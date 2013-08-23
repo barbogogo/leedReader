@@ -126,6 +126,14 @@ public class DataManagement
         return password;
     }
 
+    public void checkVersion()
+    {
+        if (connectionType==cOnLine)
+        {
+            connection.checkVersion();
+        }
+    }
+    
     public void init()
     {
         switch (connectionType)

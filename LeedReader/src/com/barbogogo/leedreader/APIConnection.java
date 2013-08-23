@@ -70,6 +70,7 @@ public class APIConnection
     private static final int  cFeedRead     = 8;
     private static final int  cAllRead      = 9;
     private static final int  cOffsetFeed   = 10;
+    private static final int  cCheckVersion = 11;
 
     private DefaultHttpClient httpClient;
     private String            userAgent;
@@ -78,6 +79,8 @@ public class APIConnection
     private Article           pArticle;
 
     private String            errorMessage;
+
+    private String            mVersion;
 
     public APIConnection(Context lContext, DataManagement lDataContext)
     {
@@ -89,16 +92,16 @@ public class APIConnection
         // create connection object
         httpClient = new DefaultHttpClient();
 
-        String version = "unknown";
+        mVersion = "unknown";
         try
         {
-            version = lContext.getPackageManager().getPackageInfo(lContext.getPackageName(), 0).versionName;
+            mVersion = lContext.getPackageManager().getPackageInfo(lContext.getPackageName(), 0).versionName;
         }
         catch (PackageManager.NameNotFoundException e)
         {
         }
 
-        userAgent = "Android-" + VERSION.RELEASE + "/LeedReader-" + version;
+        userAgent = "Android-" + VERSION.RELEASE + "/LeedReader-" + mVersion;
 
         errorMessage = "";
     }
@@ -129,6 +132,12 @@ public class APIConnection
             httpClient.getCredentialsProvider().setCredentials(new AuthScope(uri.getHost(), uri.getPort()),
                     new UsernamePasswordCredentials(lLogin, SHA1Pwd));
         }
+    }
+
+    public void checkVersion()
+    {
+        typeRequest = cCheckVersion;
+        new ServerConnection().execute("http://checkLeedReaderVersion.barbogogo.fr/index.json");
     }
 
     public void init()
@@ -341,6 +350,7 @@ public class APIConnection
                 case cFeedRead:
                 case cAllRead:
                 case cOffsetFeed:
+                case cCheckVersion:
                 break;
 
                 case cInit:
@@ -403,6 +413,22 @@ public class APIConnection
                 {
                     switch (typeRequest)
                     {
+                        case cCheckVersion:
+
+                            JSONObject json = new JSONObject(result);
+                            JSONObject json2 = json.getJSONObject("checkVersion");
+                            String version = json2.getString("version");
+                            String link = json2.getString("link");
+
+                            int retour = Utils.versionCompare(mVersion, version);
+
+                            if (retour == 1)
+                            {
+                                endCheckVersion(version, link);
+                            }
+
+                        break;
+
                         case cInit:
 
                             endInit();
@@ -521,6 +547,11 @@ public class APIConnection
                 erreurServeur("<h1>APIConnection Erreur #3</h1>" + e.getLocalizedMessage(), false);
             }
         }
+    }
+
+    public void endCheckVersion(String version, String link)
+    {
+        ((LeedReader) mainContext).endCheckVersion(version, link);
     }
 
     public void endInit()
