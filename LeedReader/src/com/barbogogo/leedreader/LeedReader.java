@@ -188,7 +188,10 @@ public class LeedReader extends Activity
     {
         dataManagement.getParameters();
 
-        dataManagement.checkVersion();
+        if (parameterGiven == true)
+        {
+            dataManagement.checkVersion();
+        }
     }
 
     public void endCheckVersion(String version, String link)
