@@ -123,7 +123,7 @@ public class APIConnection
         }
 
         URI uri = new URI(lUrl);
-        String SHA1Pwd = Utils.hex(MessageDigest.getInstance("SHA1").digest(lPassword.getBytes()));
+        String SHA1Pwd = Utils.hex(MessageDigest.getInstance("SHA1").digest(Utils.htmlspecialchars(lPassword).getBytes()));
 
         leedPassword = SHA1Pwd;
 

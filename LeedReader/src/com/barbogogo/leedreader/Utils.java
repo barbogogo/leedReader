@@ -16,8 +16,19 @@ public class Utils
 
         String hex = fmt.toString();
         fmt.close();
-        
+
         return hex;
+    }
+
+    public static String htmlspecialchars(String src)
+    {
+        src=src.replace("&", "&amp;");
+        src=src.replace("\"", "&quot;");
+        src=src.replace("'", "&#039;");
+        src=src.replace("<", "&lt;");
+        src=src.replace(">", "&gt;");
+        
+        return src;
     }
 
     public static int versionCompare(String actualVersion, String serverVersion)
