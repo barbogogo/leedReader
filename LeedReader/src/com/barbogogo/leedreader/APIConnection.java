@@ -123,7 +123,9 @@ public class APIConnection
         }
 
         URI uri = new URI(lUrl);
-        String SHA1Pwd = Utils.hex(MessageDigest.getInstance("SHA1").digest(Utils.htmlspecialchars(lPassword).getBytes()));
+        String SHA1Pwd =
+                Utils.hex(MessageDigest.getInstance("SHA1").digest(
+                        Utils.htmlspecialchars(lPassword).getBytes()));
 
         leedPassword = SHA1Pwd;
 
@@ -422,10 +424,7 @@ public class APIConnection
 
                             int retour = Utils.versionCompare(mVersion, version);
 
-                            if (retour == 1)
-                            {
-                                endCheckVersion(version, link);
-                            }
+                            endCheckVersion(version, link, retour);
 
                         break;
 
@@ -549,9 +548,9 @@ public class APIConnection
         }
     }
 
-    public void endCheckVersion(String version, String link)
+    public void endCheckVersion(String version, String link, int retour)
     {
-        ((LeedReader) mainContext).endCheckVersion(version, link);
+        ((LeedReader) mainContext).endCheckVersion(version, link, retour);
     }
 
     public void endInit()

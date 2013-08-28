@@ -193,24 +193,32 @@ public class LeedReader extends Activity
         {
             dataManagement.checkVersion();
         }
+        else
+        {
+            init();
+        }
     }
 
-    public void endCheckVersion(String version, String link)
+    public void endCheckVersion(String version, String link, int retour)
     {
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this).setSmallIcon(R.drawable.logo)
-                        .setContentTitle("LeedReader")
-                        .setContentText("La version " + version + " est disponible.");
-
-        int mId = 1;
-
-        Intent viewIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
-
-        mBuilder.setContentIntent(PendingIntent.getActivity(context, 0, viewIntent, 0));
-
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(mId, mBuilder.build());
+        if(retour == 1)
+        {
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(this).setSmallIcon(R.drawable.logo)
+                            .setContentTitle("LeedReader")
+                            .setContentText("La version " + version + " est disponible.");
+    
+            int mId = 1;
+    
+            Intent viewIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+    
+            mBuilder.setContentIntent(PendingIntent.getActivity(context, 0, viewIntent, 0));
+    
+            NotificationManager mNotificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.notify(mId, mBuilder.build());
+        }
+        
         init();
     }
 
