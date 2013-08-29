@@ -88,6 +88,8 @@ public class LeedReader extends Activity
     private boolean               parameterGiven;
     private int                   mScrollPosition;
 
+    private View                  LazyLoadingView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -108,6 +110,8 @@ public class LeedReader extends Activity
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ExpandableListView) findViewById(R.id.left_drawer);
         mListView = (ListView) findViewById(R.id.content_frame);
+
+        LazyLoadingView = getLayoutInflater().inflate(R.layout.footer_view, null);
 
         // set a custom shadow that overlays the main content when the drawer
         // opens
@@ -201,24 +205,24 @@ public class LeedReader extends Activity
 
     public void endCheckVersion(String version, String link, int retour)
     {
-        if(retour == 1)
+        if (retour == 1)
         {
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(this).setSmallIcon(R.drawable.logo)
                             .setContentTitle("LeedReader")
                             .setContentText("La version " + version + " est disponible.");
-    
+
             int mId = 1;
-    
+
             Intent viewIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
-    
+
             mBuilder.setContentIntent(PendingIntent.getActivity(context, 0, viewIntent, 0));
-    
+
             NotificationManager mNotificationManager =
                     (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             mNotificationManager.notify(mId, mBuilder.build());
         }
-        
+
         init();
     }
 
@@ -277,11 +281,10 @@ public class LeedReader extends Activity
     public void updateFeed(final Flux feed)
     {
         final FeedAdapter adapter = new FeedAdapter(this, feed, dataManagement);
-        mListView.setAdapter(adapter);
-
-        mListView.setSelection(mScrollPosition);
 
         mUpdateRequest = false;
+
+        mListView.addFooterView(LazyLoadingView);
 
         mListView.setOnScrollListener(new OnScrollListener()
         {
@@ -289,22 +292,31 @@ public class LeedReader extends Activity
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
                     int totalItemCount)
             {
-                // @TODO: On peut gérer le chargement de nouveaux articles ici.
-                if ((totalItemCount - visibleItemCount) > 5
-                        && (totalItemCount - firstVisibleItem - visibleItemCount) < 5
-                        && mUpdateRequest == false)
-                {
-                    mUpdateRequest = true;
-                    dataManagement.getOffsetFeed(feed, totalItemCount);
-                    mScrollPosition = firstVisibleItem;
-                }
             }
 
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState)
             {
+                if (scrollState == SCROLL_STATE_IDLE)
+                {
+                    if (mListView.getLastVisiblePosition() >= mListView.getCount() - 2
+                            && mUpdateRequest == false)
+                    {
+                        mUpdateRequest = true;
+                        mScrollPosition = mListView.getFirstVisiblePosition();
+                        mListView.addFooterView(LazyLoadingView);
+                        dataManagement.getOffsetFeed(feed, mListView.getCount());
+                    }
+                }
             }
         });
+
+        mListView.setAdapter(adapter);
+
+        if (mListView.getFooterViewsCount() > 0)
+            mListView.removeFooterView(LazyLoadingView);
+
+        mListView.setSelection(mScrollPosition);
 
         dataManagement.getCategories();
 
