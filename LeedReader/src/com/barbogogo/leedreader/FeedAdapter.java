@@ -6,8 +6,6 @@ import com.leed.reader.R;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
