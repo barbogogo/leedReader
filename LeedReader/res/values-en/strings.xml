@@ -46,6 +46,17 @@
         <item>@string/setting_connection_mode_basic</item>
     </string-array>
 
+    <string name="setting_configuration_setting">Preferences</string>
+    <string name="setting_show_empty_feeds">Show / hide empty directories</string>
+    <string name="setting_show_empty_feeds_summary">Permit to show or hide empty directories</string>
+    <string name="setting_show_empty_feeds_show">Show empty directories</string>
+    <string name="setting_show_empty_feeds_dont_show">Hide empty directories</string>
+
+    <string-array name="show_empty_feeds_array">
+        <item>@string/setting_show_empty_feeds_dont_show</item>
+        <item>@string/setting_show_empty_feeds_show</item>
+    </string-array>
+
     <string name="setting_no_information_text">Welcome on the LeedReader application.\r\nYou have not configured the application.\n\rTo configure the application, please click on the screen.\r\nGood reading!</string>
     <string name="msg_nointernet_connexion">No internet connexion</string>
     <string name="msg_bad_url">Invalid URL, please change it</string>

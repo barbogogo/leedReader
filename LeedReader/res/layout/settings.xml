@@ -1,39 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-        <PreferenceCategory
-                android:title="@string/setting_connection_parameter">
-                <EditTextPreference
-                        android:title="@string/setting_server_link"
-                        android:summary="@string/setting_server_link_summary"
-                        android:key="serverLinkPref" />
-                <EditTextPreference
-                        android:title="@string/setting_username"
-                        android:summary="@string/setting_username_summary"
-                        android:key="usernamePref" />
-                <EditTextPreference
-                        android:title="@string/setting_password"
-                        android:summary="@string/setting_password_summary"
-                        android:key="passwordPref"
-                        android:inputType="textPassword" />
-        </PreferenceCategory>
-        <PreferenceCategory
-                android:title="@string/setting_connection_mode">
-                <ListPreference
-                        android:title="@string/setting_connection"
-                        android:summary="@string/setting_connection_summary"
-                        android:key="connectionType"
-                        android:entries="@array/connection_mode_array"
-                        android:entryValues="@array/connection_mode_values"
-                        android:defaultValue="0"/>
-        </PreferenceCategory>
-        <PreferenceCategory
-                android:title="@string/setting_authentication_mode">
-                <ListPreference
-                        android:title="@string/setting_authentication"
-                        android:summary="@string/setting_authentication_summary"
-                        android:key="authenticationType"
-                        android:entries="@array/authentication_mode_array"
-                        android:entryValues="@array/authentication_mode_values"
-                        android:defaultValue="1"/>
-        </PreferenceCategory>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/setting_connection_parameter" >
+
+        <EditTextPreference
+            android:key="serverLinkPref"
+            android:summary="@string/setting_server_link_summary"
+            android:title="@string/setting_server_link" />
+
+        <EditTextPreference
+            android:key="usernamePref"
+            android:summary="@string/setting_username_summary"
+            android:title="@string/setting_username" />
+
+        <EditTextPreference
+            android:inputType="textPassword"
+            android:key="passwordPref"
+            android:summary="@string/setting_password_summary"
+            android:title="@string/setting_password" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/setting_connection_mode" >
+
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/connection_mode_array"
+            android:entryValues="@array/connection_mode_values"
+            android:key="connectionType"
+            android:summary="@string/setting_connection_summary"
+            android:title="@string/setting_connection" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/setting_configuration_setting" >
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/show_empty_feeds_array"
+            android:entryValues="@array/show_empty_feeds_values"
+            android:key="showEmptyFeeds"
+            android:summary="@string/setting_show_empty_feeds_summary"
+            android:title="@string/setting_show_empty_feeds" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/setting_authentication_mode" >
+
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/authentication_mode_array"
+            android:entryValues="@array/authentication_mode_values"
+            android:key="authenticationType"
+            android:summary="@string/setting_authentication_summary"
+            android:title="@string/setting_authentication" />
+    </PreferenceCategory>
+
 </PreferenceScreen>

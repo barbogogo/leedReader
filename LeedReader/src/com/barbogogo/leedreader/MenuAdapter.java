@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MenuAdapter extends BaseExpandableListAdapter
@@ -17,12 +18,14 @@ public class MenuAdapter extends BaseExpandableListAdapter
     private Context           context;
     private ArrayList<Folder> folders;
     private LayoutInflater    inflater;
+    private String            mShowEmptyFeeds;
 
-    public MenuAdapter(Context context, ArrayList<Folder> folders)
+    public MenuAdapter(Context context, ArrayList<Folder> folders, String showEmptyFeeds)
     {
         this.context = context;
         this.folders = folders;
         inflater = LayoutInflater.from(context);
+        mShowEmptyFeeds = showEmptyFeeds;
     }
 
     @Override
@@ -51,12 +54,11 @@ public class MenuAdapter extends BaseExpandableListAdapter
 
         if (convertView == null)
         {
-            childViewHolder = new ChildViewHolder();
-
             convertView = inflater.inflate(R.layout.menu_child, null);
 
+            childViewHolder = new ChildViewHolder();
             childViewHolder.textViewChild = (TextView) convertView.findViewById(R.id.labelChild);
-
+            childViewHolder.linearLayout = (LinearLayout) convertView.findViewById(R.id.feedNoReadChildLayout);
             childViewHolder.textViewNoReadChild = (TextView) convertView.findViewById(R.id.feedNoReadChild);
 
             convertView.setTag(childViewHolder);
@@ -82,6 +84,21 @@ public class MenuAdapter extends BaseExpandableListAdapter
         childViewHolder.textViewNoReadChild.setOnClickListener(onClick);
 
         childViewHolder.textViewNoReadChild.setText(String.valueOf(feed.getNbNoRead()));
+
+        if (mShowEmptyFeeds.equals("0") && feed.getNbNoRead() == 0)
+        {
+            childViewHolder.textViewChild.setVisibility(View.GONE);
+            childViewHolder.linearLayout.setVisibility(View.GONE);
+            childViewHolder.textViewNoReadChild.setVisibility(View.GONE);
+            convertView.setVisibility(View.GONE);
+        }
+        else
+        {
+            childViewHolder.textViewChild.setVisibility(View.VISIBLE);
+            childViewHolder.linearLayout.setVisibility(View.VISIBLE);
+            childViewHolder.textViewNoReadChild.setVisibility(View.VISIBLE);
+            convertView.setVisibility(View.VISIBLE);
+        }
 
         return convertView;
     }
@@ -157,6 +174,7 @@ public class MenuAdapter extends BaseExpandableListAdapter
     {
         public TextView textViewChild;
         public TextView textViewNoReadChild;
+        public LinearLayout linearLayout;
     }
 
 }

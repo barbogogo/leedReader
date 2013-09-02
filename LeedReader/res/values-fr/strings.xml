@@ -46,6 +46,17 @@
         <item>@string/setting_connection_mode_basic</item>
     </string-array>
 
+    <string name="setting_configuration_setting">Préférences</string>
+    <string name="setting_show_empty_feeds">Afficher / masquer les répertoires vides</string>
+    <string name="setting_show_empty_feeds_summary">Permet d\'afficher ou masquer les répertoire sans articles.</string>
+    <string name="setting_show_empty_feeds_show">Afficher un répertoire vide</string>
+    <string name="setting_show_empty_feeds_dont_show">Masquer un répertoire vide</string>
+
+    <string-array name="show_empty_feeds_array">
+        <item>@string/setting_show_empty_feeds_dont_show</item>
+        <item>@string/setting_show_empty_feeds_show</item>
+    </string-array>
+
     <string name="setting_no_information_text">Bienvenue sur l\'application LeedReader.\n\rVous n\'avez pas encore configuré l\'application.\n\rPour ce faire, veuillez cliquer sur l\'écran.\n\rBonne lecture !</string>
     <string name="msg_nointernet_connexion">Pas de connection internet</string>
     <string name="msg_bad_url">URL non valide, merci de la changer</string>

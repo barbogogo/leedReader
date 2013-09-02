@@ -265,7 +265,7 @@ public class LeedReader extends Activity
 
     public void updateCategories(final ArrayList<Folder> folders)
     {
-        mDrawerList.setAdapter(new MenuAdapter(this, folders));
+        mDrawerList.setAdapter(new MenuAdapter(this, folders, dataManagement.getShowEmptyFeeds()));
     }
 
     public void getFeed(Flux feed)

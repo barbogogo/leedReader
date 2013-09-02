@@ -27,6 +27,7 @@ public class DataManagement
     private String              login;
     private String              password;
     private String              authMode;
+    private String              showEmptyFeeds;
 
     private ArrayList<Folder>   pFolders;
     private ArrayList<Flux>     pFeeds;
@@ -56,6 +57,7 @@ public class DataManagement
         login = settings.getString("usernamePref", "");
         password = settings.getString("passwordPref", "");
         authMode = settings.getString("authenticationType", "1");
+        showEmptyFeeds = settings.getString("showEmptyFeeds", "0");
 
         int connectionType_old = connectionType;
         // int connectionType_new = settings.getInt("connectionType", cOnLine);
@@ -126,14 +128,19 @@ public class DataManagement
         return password;
     }
 
+    public String getShowEmptyFeeds()
+    {
+        return showEmptyFeeds;
+    }
+    
     public void checkVersion()
     {
-        if (connectionType==cOnLine)
+        if (connectionType == cOnLine)
         {
             connection.checkVersion();
         }
     }
-    
+
     public void init()
     {
         switch (connectionType)
@@ -471,8 +478,8 @@ public class DataManagement
         }
         if (connectionType == cOffLine)
         {
-             DBData.setReadFeed(pFeed.getId());
-             updateFeed(DBData.getArticlesByFeed(pFeed));
+            DBData.setReadFeed(pFeed.getId());
+            updateFeed(DBData.getArticlesByFeed(pFeed));
         }
     }
 
@@ -484,8 +491,8 @@ public class DataManagement
         }
         if (connectionType == cOffLine)
         {
-             DBData.setAllRead();
-             getHomePage();
+            DBData.setAllRead();
+            getHomePage();
         }
     }
 

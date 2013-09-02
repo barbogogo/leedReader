@@ -19,17 +19,20 @@ public class SettingsActivity extends PreferenceActivity
     public static final String KEY_PASSWORD        = "passwordPref";
     public static final String KEY_CONNECTION_TYPE = "connectionType";
     public static final String KEY_AUTH_TYPE       = "authenticationType";
+    public static final String KEY_SHOW_EMPTY_FEED = "showEmptyFeeds";
 
     private EditTextPreference mServerLinkPref;
     private EditTextPreference mUsernamePref;
     private EditTextPreference mTextPassword;
     private ListPreference     mConnectionType;
     private ListPreference     mAuthType;
+    private ListPreference     mShowEmptyFeeds;
 
     OnPreferenceChangeListener textChangeListener;
     OnPreferenceChangeListener passwordChangeListener;
     OnPreferenceChangeListener connectionTypeChangeListener;
     OnPreferenceChangeListener authTypeChangeListener;
+    OnPreferenceChangeListener showEmptyFeedsChangeListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -50,6 +53,7 @@ public class SettingsActivity extends PreferenceActivity
         mTextPassword = (EditTextPreference) getPreferenceScreen().findPreference(KEY_PASSWORD);
         mConnectionType = (ListPreference) getPreferenceScreen().findPreference(KEY_CONNECTION_TYPE);
         mAuthType = (ListPreference) getPreferenceScreen().findPreference(KEY_AUTH_TYPE);
+        mShowEmptyFeeds = (ListPreference) getPreferenceScreen().findPreference(KEY_SHOW_EMPTY_FEED);
 
         textChangeListener = new OnPreferenceChangeListener()
         {
@@ -111,11 +115,30 @@ public class SettingsActivity extends PreferenceActivity
             }
         };
 
+        showEmptyFeedsChangeListener = new OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                if (newValue.toString().isEmpty() || newValue.toString().equals("0"))
+                {
+                    preference.setSummary(R.string.setting_show_empty_feeds_dont_show);
+                }
+                else
+                    if (newValue.toString().equals("1"))
+                    {
+                        preference.setSummary(R.string.setting_show_empty_feeds_show);
+                    }
+                return true;
+            }
+        };
+
         mServerLinkPref.setOnPreferenceChangeListener(textChangeListener);
         mUsernamePref.setOnPreferenceChangeListener(textChangeListener);
         mTextPassword.setOnPreferenceChangeListener(passwordChangeListener);
         mConnectionType.setOnPreferenceChangeListener(connectionTypeChangeListener);
         mAuthType.setOnPreferenceChangeListener(authTypeChangeListener);
+        mShowEmptyFeeds.setOnPreferenceChangeListener(showEmptyFeedsChangeListener);
 
         displayPreferences();
     }
@@ -168,6 +191,16 @@ public class SettingsActivity extends PreferenceActivity
             if (mAuthType.getValue().equals("0"))
             {
                 mAuthType.setSummary(R.string.setting_connection_mode_digest);
+            }
+
+        if (mShowEmptyFeeds.getValue().isEmpty() || mShowEmptyFeeds.getValue().equals("0"))
+        {
+            mShowEmptyFeeds.setSummary(R.string.setting_show_empty_feeds_dont_show);
+        }
+        else
+            if (mShowEmptyFeeds.getValue().equals("1"))
+            {
+                mShowEmptyFeeds.setSummary(R.string.setting_show_empty_feeds_show);
             }
     }
 
