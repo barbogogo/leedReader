@@ -160,6 +160,7 @@ public class DataManagement
             break;
             case cSendData:
                 ((LeedReader) pContext).initGetData();
+                connection.init();
                 sendData();
             break;
         }
