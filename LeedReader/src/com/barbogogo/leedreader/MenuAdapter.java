@@ -68,14 +68,18 @@ public class MenuAdapter extends BaseExpandableListAdapter
 
         childViewHolder.textViewChild.setText(feed.getName());
 
-        childViewHolder.textViewChild.setOnClickListener(new View.OnClickListener()
+        View.OnClickListener onClick = new View.OnClickListener()
         {
+            @Override
             public void onClick(View v)
             {
                 ((LeedReader) context).setModeView(LeedReader.cModePageLoading);
                 ((LeedReader) context).getFeed(feed);
             }
-        });
+        };
+
+        childViewHolder.textViewChild.setOnClickListener(onClick);
+        childViewHolder.textViewNoReadChild.setOnClickListener(onClick);
 
         childViewHolder.textViewNoReadChild.setText(String.valueOf(feed.getNbNoRead()));
 
