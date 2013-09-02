@@ -280,6 +280,10 @@ public class LeedReader extends Activity
 
     public void updateFeed(final Flux feed)
     {
+        
+        if(feed.getNbArticles() == 0)
+            Toast.makeText(context, getResources().getString(R.string.msg_empty_feed), Toast.LENGTH_LONG).show();
+        
         final FeedAdapter adapter = new FeedAdapter(this, feed, dataManagement);
 
         mUpdateRequest = false;

@@ -62,5 +62,6 @@
     <string name="msg_all_read">Are you sure to set all articles as read?</string>
     <string name="msg_feed_read">Are you sure to set the feed as read?</string>
     <string name="msg_function_unavailable">Function unavailable for this item</string>
+    <string name="msg_empty_feed">This feed is empty.</string>
 
 </resources>

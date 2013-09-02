@@ -62,5 +62,6 @@
     <string name="msg_all_read">Êtes-vous sûr de vouloir mettre tous vos articles comme lus ?</string>
     <string name="msg_feed_read">Êtes-vous sûr de vouloir mettre le flux comme lu ?</string>
     <string name="msg_function_unavailable">Fonction non disponible pour cet élément</string>
+    <string name="msg_empty_feed">Ce flux ne contient pas d\'articles.</string>
 
 </resources>
