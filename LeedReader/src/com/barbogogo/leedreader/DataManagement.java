@@ -139,6 +139,10 @@ public class DataManagement
         {
             connection.checkVersion();
         }
+        else
+        {
+            init();
+        }
     }
 
     public void init()
