@@ -253,9 +253,9 @@ public class APIConnection
         HttpParams httpParameters = new BasicHttpParams();
 
         // Define timeout to be connected
-        int timeoutConnection = 10000;
+        int timeoutConnection = 20000;
         // Define timeout to receive data
-        int timeoutSocket = 10000;
+        int timeoutSocket = 20000;
 
         if (typeRequest == cSynchronize)
         {
