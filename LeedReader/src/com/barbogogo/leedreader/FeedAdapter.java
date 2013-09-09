@@ -2,8 +2,6 @@ package com.barbogogo.leedreader;
 
 import java.util.ArrayList;
 
-import com.leed.reader.R;
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
@@ -14,6 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.leed.reader.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class FeedAdapter extends ArrayAdapter<String>
 {
@@ -27,6 +29,8 @@ public class FeedAdapter extends ArrayAdapter<String>
     final int                         pNoReadPosition = 1;
 
     private DataManagement            dataManagement;
+
+    DisplayImageOptions               options;
 
     public FeedAdapter(Context context, Flux feed, DataManagement lDataManagement)
     {
@@ -46,7 +50,12 @@ public class FeedAdapter extends ArrayAdapter<String>
                 (LayoutInflater) mainContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View pRowView = inflater.inflate(R.layout.activity_feed, parent, false);
+
         TextView titleView = (TextView) pRowView.findViewById(R.id.articleTitle);
+        TextView infoView = (TextView) pRowView.findViewById(R.id.articleInformation);
+        TextView extractView = (TextView) pRowView.findViewById(R.id.articleExtract);
+        ImageView imageView = (ImageView) pRowView.findViewById(R.id.articleImage);
+
         ImageView favoriteView = (ImageView) pRowView.findViewById(R.id.favorite);
         ImageView noReadView = (ImageView) pRowView.findViewById(R.id.readNoRead);
 
@@ -54,6 +63,16 @@ public class FeedAdapter extends ArrayAdapter<String>
         int isFav = articles.get(position).getIsFav();
 
         titleView.setText(articles.get(position).getTitle());
+        infoView.setText(articles.get(position).getDate() + " par " + articles.get(position).getAuthor());
+        extractView.setText(Utils.extractArticle(articles.get(position).getContent(), 20));
+        // imageView.setImageBitmap(Utils.extractImage(mainContext,
+        // articles.get(position).getContent()));
+
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.clearMemoryCache();
+        imageLoader.clearDiscCache();
+        imageLoader.displayImage(Utils.extractImage(mainContext, articles.get(position).getContent()),
+                imageView, options, null);
 
         favoriteView.setImageResource(R.drawable.fav_false);
 
