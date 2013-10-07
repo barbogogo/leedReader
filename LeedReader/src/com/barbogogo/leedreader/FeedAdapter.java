@@ -54,7 +54,8 @@ public class FeedAdapter extends ArrayAdapter<String>
         TextView titleView = (TextView) pRowView.findViewById(R.id.articleTitle);
         TextView infoView = (TextView) pRowView.findViewById(R.id.articleInformation);
         TextView extractView = (TextView) pRowView.findViewById(R.id.articleExtract);
-        ImageView imageView = (ImageView) pRowView.findViewById(R.id.articleImage);
+        // ImageView imageView = (ImageView)
+        // pRowView.findViewById(R.id.articleImage);
 
         ImageView favoriteView = (ImageView) pRowView.findViewById(R.id.favorite);
         ImageView noReadView = (ImageView) pRowView.findViewById(R.id.readNoRead);
@@ -68,11 +69,12 @@ public class FeedAdapter extends ArrayAdapter<String>
         // imageView.setImageBitmap(Utils.extractImage(mainContext,
         // articles.get(position).getContent()));
 
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.clearMemoryCache();
-        imageLoader.clearDiscCache();
-        imageLoader.displayImage(Utils.extractImage(mainContext, articles.get(position).getContent()),
-                imageView, options, null);
+        // ImageLoader imageLoader = ImageLoader.getInstance();
+        // imageLoader.clearMemoryCache();
+        // imageLoader.clearDiscCache();
+        // imageLoader.displayImage(Utils.extractImage(mainContext,
+        // articles.get(position).getContent()),
+        // imageView, options, null);
 
         favoriteView.setImageResource(R.drawable.fav_false);
 

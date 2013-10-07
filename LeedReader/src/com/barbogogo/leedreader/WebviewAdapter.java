@@ -69,7 +69,9 @@ public class WebviewAdapter extends PagerAdapter
                 "<h1><a href='" + articles.get(position).getUrlArticle() + "'>"
                         + articles.get(position).getTitle() + "</a></h1>" + "<hr>" + "<article>" + "<header>"
                         + "#" + articles.get(position).getId() + " - " + articles.get(position).getDate()
-                        + " - " + articles.get(position).getAuthor() + "</header>" + content + "</article>";
+                        + " - " + articles.get(position).getAuthor() + " - "
+                        + ((LeedReader) mainContext).getFeed(articles.get(position).getIdFeed()).getName()
+                        + "</header>" + content + "</article>";
 
         String finalContent =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" + "<html><head>"

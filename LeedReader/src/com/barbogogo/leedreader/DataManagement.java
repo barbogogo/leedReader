@@ -132,7 +132,7 @@ public class DataManagement
     {
         return showEmptyFeeds;
     }
-    
+
     public void checkVersion()
     {
         if (connectionType == cOnLine)
@@ -515,5 +515,21 @@ public class DataManagement
         }
 
         updateCategories(pFolders);
+    }
+
+    public Flux getFeed(String feed)
+    {
+        for (int i = 0; i < pFolders.size(); i++)
+        {
+            for (int j = 0; j < pFolders.get(i).getFlux().size(); j++)
+            {
+                if (pFolders.get(i).getFlux().get(j).getId().equals(feed))
+                {
+                    return pFolders.get(i).getFlux().get(j);
+                }
+            }
+        }
+
+        return null;
     }
 }

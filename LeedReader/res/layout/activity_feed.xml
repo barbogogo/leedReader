@@ -5,17 +5,17 @@
     android:layout_weight="2000"
     android:orientation="horizontal" >
 
-    <LinearLayout
+    <!-- <LinearLayout
         android:id="@+id/article"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="2000"
-        android:orientation="horizontal" >
+        android:orientation="horizontal" > -->
 
-        <ImageView
+        <!-- <ImageView
             android:id="@+id/articleImage"
             android:layout_width="70px"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" /> -->
 
         <LinearLayout
             android:id="@+id/article"
@@ -57,7 +57,8 @@
                 android:textColor="#555555"
                 android:textSize="16px" />
         </LinearLayout>
-    </LinearLayout>
+    <!-- </LinearLayout> -->
+
 
     <LinearLayout
         android:layout_width="42dp"

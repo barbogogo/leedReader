@@ -270,6 +270,7 @@ public class LeedReader extends Activity
 
     public void getFeed(Flux feed)
     {
+        setModeView(cModePageLoading);
         dataManagement.getFeed(feed);
 
         setTitle(feed.getName());
@@ -277,13 +278,19 @@ public class LeedReader extends Activity
         mDrawerLayout.closeDrawer(mDrawerList);
         posNavigation = cpFeed;
     }
+    
+    public Flux getFeed(String feed)
+    {
+        return dataManagement.getFeed(feed);
+    }
 
     public void updateFeed(final Flux feed)
     {
-        
-        if(feed.getNbArticles() == 0)
-            Toast.makeText(context, getResources().getString(R.string.msg_empty_feed), Toast.LENGTH_LONG).show();
-        
+
+        if (feed.getNbArticles() == 0)
+            Toast.makeText(context, getResources().getString(R.string.msg_empty_feed), Toast.LENGTH_LONG)
+                    .show();
+
         final FeedAdapter adapter = new FeedAdapter(this, feed, dataManagement);
 
         mUpdateRequest = false;
