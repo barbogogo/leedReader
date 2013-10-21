@@ -63,7 +63,7 @@ public class WebviewAdapter extends PagerAdapter
         settings.setPluginState(PluginState.ON);
         settings.setDefaultTextEncodingName("utf-8");
 
-        String content = testRegEx(articles.get(position).getContent());
+        String content = regEx(articles.get(position).getContent());
 
         String customBody =
                 "<h1><a href='" + articles.get(position).getUrlArticle() + "'>"
@@ -97,7 +97,15 @@ public class WebviewAdapter extends PagerAdapter
         return style;
     }
 
-    private String testRegEx(String content)
+    private String regEx(String content)
+    {
+        String output = iFrameRegEx(content);
+        output = pictureRegEx(output);
+
+        return output;
+    }
+
+    private String iFrameRegEx(String content)
     {
         String pattern = "<iframe([^>]*)src=\"([^\"]*)\"([^>]*)></iframe>";
 
@@ -112,6 +120,35 @@ public class WebviewAdapter extends PagerAdapter
             String replace = matches2.group();
             replace += "<a onClick=\"showAndroidToast('" + matches2.group(2) + "')\">";
             replace += "Ouvrir en externe</a>";
+
+            found.add(replace);
+        }
+
+        String output = fields[0];
+
+        for (int i = 1; i < fields.length; i++)
+        {
+            output += found.get(i - 1);
+            output += fields[i];
+        }
+
+        return output;
+    }
+
+    private String pictureRegEx(String content)
+    {
+        String pattern = "<img([^>]*)title=\"([^\"]*)\"([^>]*)>";
+
+        Matcher matches2 = Pattern.compile(pattern).matcher(content);
+
+        String[] fields = content.split(pattern);
+
+        ArrayList<String> found = new ArrayList<String>();
+
+        while (matches2.find())
+        {
+            String replace = matches2.group();
+            replace += "<div class=\"imageTitle\">" + matches2.group(2) + "</div>";
 
             found.add(replace);
         }

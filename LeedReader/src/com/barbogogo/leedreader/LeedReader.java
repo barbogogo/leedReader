@@ -638,6 +638,7 @@ public class LeedReader extends Activity
                         + "header {color: %23555555; font-size: 10px;}"
                         + "hr {color: %23f16529; background-color: %23f16529; height: 1px;}"
                         + "img {max-width:100%25;height:auto;}" + "iframe {max-width:100%25;height:auto;}"
+                        + ".imageTitle {padding: 2px;font-size:10px;background-color: %23ffffe5;border: solid 1px black;width:100%25;}"
                         + "</style>";
 
         return style;
