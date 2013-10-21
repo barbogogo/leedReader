@@ -164,10 +164,13 @@ public class APIConnection
                 + nbMaxArticle);
     }
 
-    public void getCategories()
+    public void getCategories(String mShowEmptyFeeds)
     {
         typeRequest = cFolder;
-        new ServerConnection().execute(leedURL + "/json.php?option=getFolders");
+        if(mShowEmptyFeeds.equals("0"))
+            new ServerConnection().execute(leedURL + "/json.php?option=getUnreadFolders");
+        else
+            new ServerConnection().execute(leedURL + "/json.php?option=getFolders");
     }
 
     public void getFeed(Flux feed, String nbMaxArticle, int connectionType)

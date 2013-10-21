@@ -175,7 +175,7 @@ public class DataManagement
         switch (connectionType)
         {
             case cOnLine:
-                connection.getCategories();
+                connection.getCategories(showEmptyFeeds);
             break;
             case cGetData:
             break;
@@ -265,7 +265,7 @@ public class DataManagement
         switch (connectionType)
         {
             case cGetData:
-                connection.getCategories();
+                connection.getCategories(showEmptyFeeds);
             break;
             case cOnLine:
                 connection.getHomePage("20");
