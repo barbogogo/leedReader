@@ -12,7 +12,13 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
@@ -90,7 +96,15 @@ public class APIConnection
         dataContext = lDataContext;
 
         // create connection object
-        httpClient = new DefaultHttpClient();
+        SchemeRegistry schemeRegistry = new SchemeRegistry();
+        schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+        schemeRegistry.register(new Scheme("https", SSLSocketFactory.getSocketFactory(), 443));
+
+        HttpParams httpParameters = new BasicHttpParams();
+        
+        ClientConnectionManager ccm = new ThreadSafeClientConnManager(httpParameters, schemeRegistry);
+
+        httpClient = new DefaultHttpClient(ccm, httpParameters);
 
         mVersion = "unknown";
         try
