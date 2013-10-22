@@ -167,7 +167,7 @@ public class APIConnection
     public void getCategories(String mShowEmptyFeeds)
     {
         typeRequest = cFolder;
-        if(mShowEmptyFeeds.equals("0"))
+        if (mShowEmptyFeeds.equals("0"))
             new ServerConnection().execute(leedURL + "/json.php?option=getUnreadFolders");
         else
             new ServerConnection().execute(leedURL + "/json.php?option=getFolders");

@@ -266,6 +266,8 @@ public class LeedReader extends Activity
     public void updateCategories(final ArrayList<Folder> folders)
     {
         mDrawerList.setAdapter(new MenuAdapter(this, folders, dataManagement.getShowEmptyFeeds()));
+        
+        
     }
 
     public void getFeed(Flux feed)
@@ -278,7 +280,7 @@ public class LeedReader extends Activity
         mDrawerLayout.closeDrawer(mDrawerList);
         posNavigation = cpFeed;
     }
-    
+
     public Flux getFeed(String feed)
     {
         return dataManagement.getFeed(feed);
@@ -632,12 +634,15 @@ public class LeedReader extends Activity
     public String styleHtml()
     {
         String style =
-                "<style type='text/css'>" + "body {}" + "h1 {color: %23f16529; font-size:14px;}"
+                "<style type='text/css'>"
+                        + "body {}"
+                        + "h1 {color: %23f16529; font-size:14px;}"
                         + "h1 a {text-decoration:none; color: %23f16529;}"
                         + "article {color: black; font-size:14px; line-height:150%25;}"
                         + "header {color: %23555555; font-size: 10px;}"
                         + "hr {color: %23f16529; background-color: %23f16529; height: 1px;}"
-                        + "img {max-width:100%25;height:auto;}" + "iframe {max-width:100%25;height:auto;}"
+                        + "img {max-width:100%25;height:auto;}"
+                        + "iframe {max-width:100%25;height:auto;}"
                         + ".imageTitle {padding: 2px;font-size:10px;background-color: %23ffffe5;border: solid 1px black;width:100%25;}"
                         + "</style>";
 

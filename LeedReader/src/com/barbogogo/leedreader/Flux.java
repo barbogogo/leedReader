@@ -118,7 +118,7 @@ public class Flux
     public void addReadArticle()
     {
         nbNoRead--;
-        if(nbNoRead < 0)
+        if (nbNoRead < 0)
             nbNoRead = 0;
     }
 

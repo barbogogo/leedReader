@@ -118,12 +118,14 @@ public class WebviewAdapter extends PagerAdapter
         while (matches2.find())
         {
             String link = "";
-            if(matches2.group(2).startsWith("//"))
+            if (matches2.group(2).startsWith("//"))
                 link = "http:" + matches2.group(2);
             else
                 link = matches2.group(2);
-            
-            String replace = "<iframe " + matches2.group(1)+"src=\""+link+"\""+ matches2.group(3)+"></iframe>";
+
+            String replace =
+                    "<iframe " + matches2.group(1) + "src=\"" + link + "\"" + matches2.group(3)
+                            + "></iframe>";
             replace += "<a onClick=\"showAndroidToast('" + link + "')\">";
             replace += "Ouvrir en externe</a>";
 

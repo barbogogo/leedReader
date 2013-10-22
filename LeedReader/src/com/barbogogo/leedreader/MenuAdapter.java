@@ -58,7 +58,8 @@ public class MenuAdapter extends BaseExpandableListAdapter
 
             childViewHolder = new ChildViewHolder();
             childViewHolder.textViewChild = (TextView) convertView.findViewById(R.id.labelChild);
-            childViewHolder.linearLayout = (LinearLayout) convertView.findViewById(R.id.feedNoReadChildLayout);
+            childViewHolder.linearLayout =
+                    (LinearLayout) convertView.findViewById(R.id.feedNoReadChildLayout);
             childViewHolder.textViewNoReadChild = (TextView) convertView.findViewById(R.id.feedNoReadChild);
 
             convertView.setTag(childViewHolder);
@@ -172,8 +173,8 @@ public class MenuAdapter extends BaseExpandableListAdapter
 
     class ChildViewHolder
     {
-        public TextView textViewChild;
-        public TextView textViewNoReadChild;
+        public TextView     textViewChild;
+        public TextView     textViewNoReadChild;
         public LinearLayout linearLayout;
     }
 

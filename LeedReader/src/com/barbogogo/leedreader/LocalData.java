@@ -188,7 +188,7 @@ public class LocalData
         cursor.close();
         return feed;
     }
-    
+
     public Flux getArticlesByFeed(String idFeed)
     {
         Flux feed = new Flux();
@@ -340,15 +340,15 @@ public class LocalData
         args.put(MySQLiteHelper.ARTI_COL_ISFAV, 0);
         database.update(MySQLiteHelper.ARTI_TABLE, args, strFilter, null);
     }
-    
+
     public void setReadFeed(String feedId)
     {
-        String strFilter = MySQLiteHelper.ARTI_COL_IDFEED+"=" + feedId;
+        String strFilter = MySQLiteHelper.ARTI_COL_IDFEED + "=" + feedId;
         ContentValues args = new ContentValues();
         args.put(MySQLiteHelper.ARTI_COL_ISREAD, 1);
         database.update(MySQLiteHelper.ARTI_TABLE, args, strFilter, null);
     }
-    
+
     public void setAllRead()
     {
         ContentValues args = new ContentValues();
