@@ -316,8 +316,9 @@ public class LeedReader extends Activity
                             && mUpdateRequest == false)
                     {
                         mUpdateRequest = true;
-                        mScrollPosition = mListView.getFirstVisiblePosition();
                         mListView.addFooterView(LazyLoadingView);
+                        mListView.setSelection(mListView.getCount() - 1);
+                        mScrollPosition = mListView.getFirstVisiblePosition() + 1;
                         dataManagement.getOffsetFeed(feed, mListView.getCount());
                     }
                 }
