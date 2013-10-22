@@ -266,8 +266,8 @@ public class LeedReader extends Activity
     public void updateCategories(final ArrayList<Folder> folders)
     {
         mDrawerList.setAdapter(new MenuAdapter(this, folders, dataManagement.getShowEmptyFeeds()));
-        
-        
+
+        setModeView(cModeNavigation);
     }
 
     public void getFeed(Flux feed)
@@ -332,8 +332,6 @@ public class LeedReader extends Activity
         mListView.setSelection(mScrollPosition);
 
         dataManagement.getCategories();
-
-        setModeView(cModeNavigation);
 
         mListView.setOnItemClickListener(new OnItemClickListener()
         {
