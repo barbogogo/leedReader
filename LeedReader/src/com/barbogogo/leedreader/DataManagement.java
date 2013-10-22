@@ -19,7 +19,7 @@ public class DataManagement
     private static final int    cSendData          = 3;
 
     private static final String NB_ELEMENT_OFFLINE = "10";
-    private static final String NB_ELEMENT_ONLINE  = "50";
+    private static final String NB_ELEMENT_ONLINE  = "20";
 
     private Context             pContext;
 
