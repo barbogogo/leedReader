@@ -267,7 +267,8 @@ public class LeedReader extends Activity
     {
         mDrawerList.setAdapter(new MenuAdapter(this, folders, dataManagement.getShowEmptyFeeds()));
 
-        setModeView(cModeNavigation);
+        if (modeView == cModePageLoading)
+            setModeView(cModeNavigation);
     }
 
     public void getFeed(Flux feed)
