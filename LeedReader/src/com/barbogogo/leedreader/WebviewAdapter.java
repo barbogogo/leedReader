@@ -161,12 +161,21 @@ public class WebviewAdapter extends PagerAdapter
             found.add(replace);
         }
 
-        String output = fields[0];
+        String output = "";
 
-        for (int i = 1; i < fields.length; i++)
+        if (fields.length > 0)
         {
-            output += found.get(i - 1);
-            output += fields[i];
+            output = fields[0];
+
+            for (int i = 1; i < fields.length; i++)
+            {
+                output += found.get(i - 1);
+                output += fields[i];
+            }
+        }
+        else
+        {
+            output = content;
         }
 
         return output;
