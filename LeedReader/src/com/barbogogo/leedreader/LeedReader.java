@@ -636,7 +636,7 @@ public class LeedReader extends Activity
         String style =
                 "<style type='text/css'>"
                         + "body {}"
-                        + "h1 {color: %23f16529; font-size:14px;}"
+                        + "h1 {color: %23f16529; font-size:14px; line-height: 150%25;}"
                         + "h1 a {text-decoration:none; color: %23f16529;}"
                         + "article {color: black; font-size:14px; line-height:150%25;}"
                         + "header {color: %23555555; font-size: 10px;}"
