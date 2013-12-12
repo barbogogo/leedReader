@@ -95,7 +95,6 @@ public class Utils
         output = output.replaceAll("&Aacute;", "Á");
         output = output.replaceAll("&aacute;", "á");
         output = output.replaceAll("&Agrave;", "À");
-        output = output.replaceAll("&Acirc;", "Â");
         output = output.replaceAll("&agrave;", "à");
         output = output.replaceAll("&Acirc;", "Â");
         output = output.replaceAll("&acirc;", "â");
@@ -180,10 +179,10 @@ public class Utils
         output = output.replaceAll("&frac34;", "¾");
         output = output.replaceAll("&times;", "×");
         output = output.replaceAll("&divide;", "÷");
-        output = output.replaceAll("&alpha;", "a");
+        output = output.replaceAll("&alpha;", "α");
         output = output.replaceAll("&beta;", "ß");
-        output = output.replaceAll("&infin;", "8");
-        output = output.replaceAll("&nbsp;", "");
+        output = output.replaceAll("&infin;", "∞");
+        output = output.replaceAll("&nbsp;", " ");
 
         output = output + "...";
 
