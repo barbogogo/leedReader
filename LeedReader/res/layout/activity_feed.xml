@@ -33,7 +33,7 @@
                 android:layout_weight="289.81"
                 android:text="TextView"
                 android:textColor="#f16529"
-                android:textSize="18px" />
+                android:textSize="20px" />
 
             <TextView
                 android:id="@+id/articleInformation"
@@ -44,7 +44,7 @@
                 android:layout_weight="289.81"
                 android:text="TextView"
                 android:textColor="#555555"
-                android:textSize="10px" />
+                android:textSize="14px" />
 
             <TextView
                 android:id="@+id/articleExtract"
@@ -55,7 +55,7 @@
                 android:layout_weight="289.81"
                 android:text="WebView"
                 android:textColor="#555555"
-                android:textSize="16px" />
+                android:textSize="18px" />
         </LinearLayout>
     <!-- </LinearLayout> -->
 
@@ -72,7 +72,8 @@
             android:layout_height="fill_parent"
             android:layout_gravity="center_vertical|center_horizontal|center"
             android:gravity="right"
-            android:src="@drawable/fav_false" />
+            android:src="@drawable/fav_false"
+            android:layout_marginBottom="10dp" />
 
         <ImageView
             android:id="@+id/readNoRead"
