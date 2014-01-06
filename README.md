@@ -4,7 +4,7 @@ leedReader
 LeedReader est un lecteur de flux [RSS](https://fr.wikipedia.org/wiki/Rss)/[ATOM](https://fr.wikipedia.org/wiki/Atom) pour Android et adapté à l'agrégateur de flux [leed](https://github.com/ldleman/Leed).
 
 - Application : LeedReader
-- Version : 1.3Beta
+- Version : 1.5.1 Beta
 - Auteur : barbogogo (barbogogo@barbogogo.fr)
 - Page du projet : http://www.barbogogo.fr/?page_id=4
 - Licence : [CC by-nc-sa](http://creativecommons.org/licenses/by-nc-sa/2.0/fr/)

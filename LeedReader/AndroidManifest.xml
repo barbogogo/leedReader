@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.leed.reader"
     android:versionCode="1"
-    android:versionName="1.5 Beta" >
+    android:versionName="1.5.1 Beta" >
 
     <uses-sdk
         android:minSdkVersion="14"
