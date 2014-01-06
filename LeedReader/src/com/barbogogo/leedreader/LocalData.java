@@ -175,7 +175,8 @@ public class LocalData
 
         Cursor cursor =
                 database.query(true, MySQLiteHelper.ARTI_TABLE, extractColumns,
-                        MySQLiteHelper.ARTI_COL_IDFEED + "=?", args, null, null, null, null);
+                        MySQLiteHelper.ARTI_COL_IDFEED + "=?", args, null, null,
+                        MySQLiteHelper.ARTI_COL_IDFEED + " DESC", null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast())
