@@ -108,7 +108,7 @@ public class FeedAdapter extends ArrayAdapter<String>
                 setReadArticle(pPosition);
 
                 ((LeedReader) mainContext).setModeView(LeedReader.cModeWebView);
-                WebviewAdapter adapter = new WebviewAdapter(articles);
+                final WebviewAdapter adapter = new WebviewAdapter(articles, dataManagement);
                 ViewPager myPager =
                         (ViewPager) ((LeedReader) mainContext).findViewById(R.id.home_pannels_pager);
 
@@ -119,6 +119,7 @@ public class FeedAdapter extends ArrayAdapter<String>
                     public void onPageSelected(int position)
                     {
                         setReadArticle(position);
+                        adapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -196,8 +197,6 @@ public class FeedAdapter extends ArrayAdapter<String>
 
                 Article article = articles.get(pPosition);
 
-                notifyDataSetChanged();
-
                 if (article.getIsFav() == 0)
                 {
                     article.setFav(1);
@@ -208,6 +207,8 @@ public class FeedAdapter extends ArrayAdapter<String>
                     article.setFav(0);
                     dataManagement.setUnFavArticle(article);
                 }
+                
+                notifyDataSetChanged();
             }
         });
 
