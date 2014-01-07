@@ -82,6 +82,9 @@ public class APIConnection
 
     private String            mVersion;
 
+    private int               pNbAuth       = 0;
+    private int               pNbAuthMax    = 3;
+
     public APIConnection(Context lContext, DataManagement lDataContext)
     {
 
@@ -402,8 +405,15 @@ public class APIConnection
                             serverError = cAuthError;
                         break;
                         case 3: // 3: PHP Error
-                            erreurServeur(msgError, false);
-                            serverError = cPHPError;
+                            if (pNbAuth < pNbAuthMax)
+                            {
+                                init();
+                            }
+                            else
+                            {
+                                erreurServeur(msgError, false);
+                                serverError = cPHPError;
+                            }
                         break;
                         default:
                             serverError = cServerError;
