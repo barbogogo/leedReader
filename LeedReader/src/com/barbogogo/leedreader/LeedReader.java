@@ -208,7 +208,7 @@ public class LeedReader extends Activity
         if (retour == 1)
         {
             NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(this).setSmallIcon(R.drawable.logo)
+                    new NotificationCompat.Builder(this).setSmallIcon(R.drawable.ic_notification)
                             .setContentTitle("LeedReader")
                             .setContentText("La version " + version + " est disponible.");
 
