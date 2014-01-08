@@ -31,6 +31,8 @@
                     android:layout_weight="1"
                     android:orientation="vertical" >
 
+                    <!-- title color defined by the articleTitleColor in the res/values/color.xml file -->
+
                     <TextView
                         android:id="@+id/articleTitle"
                         android:layout_width="fill_parent"

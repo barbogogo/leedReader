@@ -8,8 +8,11 @@ import com.leed.reader.R;
 
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
@@ -72,7 +75,12 @@ public class WebviewAdapter extends PagerAdapter
 
         WebView webView = (WebView) articleView.findViewById(R.id.articleContent);
 
-        titleView.setText(articles.get(position).getTitle());
+        titleView.setText(Html.fromHtml("<a href='" + articles.get(position).getUrlArticle() + "'>"
+                + articles.get(position).getTitle() + "</a>"));
+        titleView.setLinkTextColor(((LeedReader) mainContext).getResources().getColor(
+                R.color.articleTitleColor));
+        titleView.setMovementMethod(LinkMovementMethod.getInstance());
+
         infoView.setText("#" + articles.get(position).getId() + " - " + articles.get(position).getDate()
                 + " - " + articles.get(position).getAuthor() + " - "
                 + ((LeedReader) mainContext).getFeed(articles.get(position).getIdFeed()).getName());
@@ -163,7 +171,7 @@ public class WebviewAdapter extends PagerAdapter
                     article.setFav(0);
                     dataManagement.setUnFavArticle(article);
                 }
-                
+
                 notifyDataSetChanged();
             }
         });

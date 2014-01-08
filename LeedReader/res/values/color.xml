@@ -2,5 +2,6 @@
 <resources>
     
     <color name="btnBackground">#fff</color>
+    <color name="articleTitleColor">#f16529</color>
     
 </resources>
