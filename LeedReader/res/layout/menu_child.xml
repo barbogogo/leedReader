@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/themeBackgroundColor"
     android:orientation="horizontal" >
 
     <TextView
@@ -12,8 +13,8 @@
         android:gravity="left|center_vertical"
         android:paddingLeft="15dp"
         android:text="Child"
-        android:textSize="14dp"
-        android:textColor="#FFF" />
+        android:textColor="@color/menuTextColor"
+        android:textSize="14dp" />
 
     <LinearLayout
         android:id="@+id/feedNoReadChildLayout"
@@ -31,8 +32,8 @@
             android:background="@drawable/menu_group_shape"
             android:gravity="center_horizontal|center_vertical"
             android:text="999"
-            android:textSize="14dp"
-            android:textColor="#FFF" />
+            android:textColor="@color/menuNbArticlesColor"
+            android:textSize="14dp" />
     </LinearLayout>
 
 </LinearLayout>

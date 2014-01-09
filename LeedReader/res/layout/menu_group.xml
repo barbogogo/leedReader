@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@color/themeBackgroundColor"
     android:orientation="horizontal" >
 
     <TextView
@@ -12,8 +13,8 @@
         android:gravity="left|center_vertical"
         android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
         android:text="Group"
-        android:textSize="20dp"
-        android:textColor="#FFF" />
+        android:textColor="@color/menuTextColor"
+        android:textSize="20dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -30,8 +31,8 @@
             android:background="@drawable/menu_group_shape"
             android:gravity="center_horizontal|center_vertical"
             android:text="999"
-            android:textSize="20dp"
-            android:textColor="#FFF" />
+            android:textColor="@color/menuNbArticlesColor"
+            android:textSize="20dp" />
     </LinearLayout>
 
 </LinearLayout>

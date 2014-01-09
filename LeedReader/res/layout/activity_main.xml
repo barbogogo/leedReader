@@ -21,30 +21,30 @@
         android:id="@+id/informationArea"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#FFF"
-        android:textColor="#000" />
+        android:background="@color/informationTextColor"
+        android:textColor="@color/themeBackgroundColor" />
     
     <WebView
         android:id="@+id/serverErrorArea"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#FFF"
-        android:textColor="#000" />
+        android:background="@color/informationTextColor"
+        android:textColor="@color/themeBackgroundColor" />
 
     <Button
         android:id="@+id/buttonParameter"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#000"
+        android:background="@color/themeBackgroundColor"
         android:onClick="btnParameter"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#FFF" />
+        android:textColor="@color/informationTextColor" />
 
     <LinearLayout
         android:id="@+id/loadingLayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#000"
+        android:background="@color/themeBackgroundColor"
         android:gravity="center_horizontal|center_vertical"
         android:orientation="vertical" >
 
@@ -53,17 +53,17 @@
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#000"
+            android:background="@color/themeBackgroundColor"
             android:gravity="center_horizontal|center_vertical" />
 
         <TextView
             android:id="@+id/loadingText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#000"
+            android:background="@color/themeBackgroundColor"
             android:gravity="center_horizontal|center_vertical"
             android:text="@+string/msg_loading"
-            android:textColor="#FFF" />
+            android:textColor="@color/informationTextColor" />
     </LinearLayout>
 
     <!-- Menu -->
@@ -73,7 +73,7 @@
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#000"
+        android:background="@color/themeBackgroundColor"
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"

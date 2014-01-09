@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <color name="btnBackground">#fff</color>
     <color name="articleTitleColor">#f16529</color>
-    
+    <color name="themeBackgroundColor">#EEEEEE</color>
+    <color name="menuTextColor">#333333</color>
+    <color name="menuNbArticlesColor">#EEEEEE</color>
+    <color name="informationTextColor">#333333</color>
+
 </resources>

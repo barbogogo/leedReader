@@ -2,20 +2,20 @@
 
     <item
         android:id="@+id/action_settings"
-        android:icon="@drawable/action_settings"
+        android:icon="@drawable/ic_action_settings"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
         android:title="@string/action_settings"/>
     <item
         android:id="@+id/action_share"
         android:actionProviderClass="android.widget.ShareActionProvider"
-        android:icon="@drawable/action_share"
+        android:icon="@drawable/ic_action_share"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
         android:title="@string/action_share"/>
     <item
         android:id="@+id/action_reload"
-        android:icon="@drawable/action_reload"
+        android:icon="@drawable/ic_action_refresh"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
         android:title="@string/action_reload"/>
