@@ -140,6 +140,8 @@ public class Utils
         output = output.replaceAll("&otilde;", "õ");
         output = output.replaceAll("&Oslash;", "Ø");
         output = output.replaceAll("&oslash;", "ø");
+        output = output.replaceAll("&oelig;", "œ");
+        output = output.replaceAll("&OElig;", "Œ");
         output = output.replaceAll("&szlig;", "ß");
         output = output.replaceAll("&Thorn;", "Þ");
         output = output.replaceAll("&thorn;", "þ");
