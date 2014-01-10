@@ -82,7 +82,8 @@ public class WebviewAdapter extends PagerAdapter
         titleView.setMovementMethod(LinkMovementMethod.getInstance());
 
         infoView.setText("#" + articles.get(position).getId() + " - " + articles.get(position).getDate()
-                + " - " + articles.get(position).getAuthor() + " - " + articles.get(position).getNameFeed());
+                + " - " + articles.get(position).getAuthor() + " (" + articles.get(position).getNameFeed()
+                + ")");
 
         WebSettings settings = webView.getSettings();
         settings.setUseWideViewPort(false);
