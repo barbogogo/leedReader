@@ -33,7 +33,7 @@
                 android:layout_weight="289.81"
                 android:text="TextView"
                 android:textColor="#f16529"
-                android:textSize="20px" />
+                android:textSize="22px" />
 
             <TextView
                 android:id="@+id/articleInformation"
@@ -44,7 +44,7 @@
                 android:layout_weight="289.81"
                 android:text="TextView"
                 android:textColor="#555555"
-                android:textSize="14px" />
+                android:textSize="18px" />
 
             <TextView
                 android:id="@+id/articleExtract"
@@ -55,7 +55,7 @@
                 android:layout_weight="289.81"
                 android:text="WebView"
                 android:textColor="#555555"
-                android:textSize="18px" />
+                android:textSize="20px" />
         </LinearLayout>
     <!-- </LinearLayout> -->
 
