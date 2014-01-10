@@ -470,6 +470,8 @@ public class APIConnection
                                     article.setFav(postalCodesItem.getInt("favorite"));
                                     article.setContent(postalCodesItem.getString("content"));
                                     article.setIdFeed(postalCodesItem.getString("idFeed"));
+                                    article.setNameFeed(postalCodesItem.getString("nameFeed"));
+                                    article.setUrlFeed(postalCodesItem.getString("urlFeed"));
 
                                     pFeed.addArticle(article);
                                 }

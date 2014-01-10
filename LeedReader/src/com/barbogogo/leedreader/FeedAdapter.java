@@ -64,7 +64,8 @@ public class FeedAdapter extends ArrayAdapter<String>
         int isFav = articles.get(position).getIsFav();
 
         titleView.setText(articles.get(position).getTitle());
-        infoView.setText(articles.get(position).getDate() + " par " + articles.get(position).getAuthor());
+        infoView.setText(articles.get(position).getDate() + " par " + articles.get(position).getAuthor()
+                + " (" + articles.get(position).getNameFeed() + ")");
         extractView.setText(Utils.extractArticle(articles.get(position).getContent(), 20));
         // imageView.setImageBitmap(Utils.extractImage(mainContext,
         // articles.get(position).getContent()));
@@ -207,7 +208,7 @@ public class FeedAdapter extends ArrayAdapter<String>
                     article.setFav(0);
                     dataManagement.setUnFavArticle(article);
                 }
-                
+
                 notifyDataSetChanged();
             }
         });

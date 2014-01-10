@@ -12,6 +12,8 @@ public class Article
     private String author;
     private String urlArticle;
     private String idFeed;
+    private String nameFeed;
+    private String urlFeed;
 
     Article(String pId)
     {
@@ -112,5 +114,25 @@ public class Article
     public String getIdFeed()
     {
         return idFeed;
+    }
+
+    public void setNameFeed(String lNameFeed)
+    {
+        nameFeed = lNameFeed;
+    }
+
+    public String getNameFeed()
+    {
+        return nameFeed;
+    }
+
+    public void setUrlFeed(String lUrlFeed)
+    {
+        urlFeed = lUrlFeed;
+    }
+
+    public String getUrlFeed()
+    {
+        return urlFeed;
     }
 }
