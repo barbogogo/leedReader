@@ -143,8 +143,7 @@ public class FeedAdapter extends ArrayAdapter<String>
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, articles.get(position).getTitle());
-                shareIntent.putExtra(Intent.EXTRA_TEXT, articles.get(position).getTitle() + " - "
-                        + articles.get(position).getUrlArticle());
+                shareIntent.putExtra(Intent.EXTRA_TEXT, articles.get(position).getUrlArticle());
                 ((LeedReader) mainContext).doShare(shareIntent);
 
                 if (articles.get(position).getIsRead() == 0)
