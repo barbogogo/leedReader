@@ -74,5 +74,6 @@
     <string name="msg_feed_read">Êtes-vous sûr de vouloir mettre le flux comme lu ?</string>
     <string name="msg_function_unavailable">Fonction non disponible pour cet élément</string>
     <string name="msg_empty_feed">Ce flux ne contient pas d\'articles.</string>
+    <string name="widget_loading">Chargement…</string>
 
 </resources>

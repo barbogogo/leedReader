@@ -3,6 +3,10 @@ package com.barbogogo.leedreader;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.leed.reader.R;
 
 import android.app.Activity;
@@ -90,6 +94,9 @@ public class LeedReader extends Activity
 
     private View                  LazyLoadingView;
 
+    private Flux                  pFeed            = null;
+    private boolean               ouvParWidget     = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -154,8 +161,68 @@ public class LeedReader extends Activity
 
         dataManagement = new DataManagement(context);
 
-        checkVersion();
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
 
+        String data = "";
+
+        ouvParWidget = false;
+
+        if (extras != null)
+        {
+            Log.d("LeedReader", "Demarrage de LeedReader depuis le widget");
+            data = extras.getString("feed");
+
+            Log.d("LeedReader", "-" + data);
+
+            if (data != null)
+            {
+                Log.d("LeedReader", "Creation du flux pour affichage");
+                ouvParWidget = true;
+
+                JSONObject jsonObject;
+                try
+                {
+                    jsonObject = new JSONObject(data);
+
+                    JSONArray articlesItems = new JSONArray(jsonObject.getString("articles"));
+
+                    pFeed = new Flux();
+                    
+                    for (int i = 0; i < articlesItems.length(); i++)
+                    {
+                        JSONObject postalCodesItem = articlesItems.getJSONObject(i);
+
+                        Article article = new Article(postalCodesItem.getString("id"));
+
+                        if (postalCodesItem.getInt("id") > 0)
+                        {
+                            Log.d("LeedReader", "Titre:" + postalCodesItem.getString("title"));
+
+                            article.setTitle(postalCodesItem.getString("title"));
+                            article.setDate(postalCodesItem.getString("date"));
+                            article.setAuthor(postalCodesItem.getString("author"));
+                            article.setUrlArticle(postalCodesItem.getString("urlArticle"));
+                            article.setFav(postalCodesItem.getInt("favorite"));
+                            article.setContent(postalCodesItem.getString("content"));
+                            article.setIdFeed(postalCodesItem.getString("idFeed"));
+                            article.setNameFeed(postalCodesItem.getString("nameFeed"));
+                            article.setUrlFeed(postalCodesItem.getString("urlFeed"));
+
+                            pFeed.addArticle(article);
+                        }
+                    }
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                    Log.e("LeedReader", e.getMessage());
+                }
+
+            }
+        }
+
+        checkVersion();
     }
 
     public void setPosNavigation(int pos)
@@ -287,8 +354,21 @@ public class LeedReader extends Activity
         return dataManagement.getFeed(feed);
     }
 
-    public void updateFeed(final Flux feed)
+    public void updateFeed(final Flux lFeed)
     {
+        Flux feedSelect = null;
+
+        if (ouvParWidget == true)
+        {
+            feedSelect = pFeed;
+            ouvParWidget = false;
+        }
+        else
+        {
+            feedSelect = lFeed;
+        }
+
+        final Flux feed = feedSelect;
 
         if (feed.getNbArticles() == 0)
             Toast.makeText(context, getResources().getString(R.string.msg_empty_feed), Toast.LENGTH_LONG)

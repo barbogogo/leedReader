@@ -74,5 +74,6 @@
     <string name="msg_feed_read">Are you sure to set the feed as read?</string>
     <string name="msg_function_unavailable">Function unavailable for this item</string>
     <string name="msg_empty_feed">This feed is empty.</string>
+    <string name="widget_loading">Loading…</string>
 
 </resources>

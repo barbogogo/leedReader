@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Un bête rectangle aux bords arrondis, avec un dégradé en fond et un bord blanc -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+	android:shape="rectangle">
+ 
+	<corners android:radius="7dp" />
+	<stroke android:width="2dp" android:color="#ffffff" />
+	<gradient android:angle="270" android:startColor="#cc333333"
+		android:endColor="#cc000000" />
+</shape>
