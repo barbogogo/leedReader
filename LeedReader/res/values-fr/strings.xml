@@ -39,7 +39,7 @@
     <string name="setting_authentication">Mode d\'authentification</string>
     <string name="setting_authentication_summary">Permet de modifier le mode de connexion de l\'application vers l\'API pour l\'authentification</string>
     <string name="setting_connection_mode_digest">Mode digest (permet une authentification sécurisée, nécessite mod_headers sur le serveur)</string>
-    <string name="setting_connection_mode_basic">Mode basic (le mot de passe n\'est pas transmis en clair)</string>
+    <string name="setting_connection_mode_basic">Mode basic (la clé de l'API n\'est pas transmis en clair)</string>
 
     <string-array name="authentication_mode_array">
         <item>@string/setting_connection_mode_digest</item>

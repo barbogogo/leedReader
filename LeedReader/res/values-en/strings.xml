@@ -39,7 +39,7 @@
     <string name="setting_authentication">Authentication mode</string>
     <string name="setting_authentication_summary">Permit to change the application connection mode to the API for the authentication</string>
     <string name="setting_connection_mode_digest">Digest mode (permit a secure authentication, need mod_headers installed on the server)</string>
-    <string name="setting_connection_mode_basic">Basic mode (the hashed password is sent to the API)</string>
+    <string name="setting_connection_mode_basic">Basic mode (the hashed API's key is sent to the API)</string>
 
     <string-array name="authentication_mode_array">
         <item>@string/setting_connection_mode_digest</item>
