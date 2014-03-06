@@ -20,10 +20,10 @@
     <string name="setting_server_link_summary">Adresse racine du site Leed</string>
     <string name="setting_username">Identifiant</string>
     <string name="setting_username_summary">Identifiant du compte Leed</string>
-    <string name="setting_password">Mot de passe</string>
-    <string name="setting_password_summary">Mot de passe du compte Leed</string>
-    <string name="setting_password_summary_given">Mot de passe du compte Leed enregistré</string>
-    <string name="setting_password_summary_notgiven">Pas de mot de passe enregistré</string>
+    <string name="setting_password">Clé API</string>
+    <string name="setting_password_summary">Clé de l'API</string>
+    <string name="setting_password_summary_given">Clé API enregistrée</string>
+    <string name="setting_password_summary_notgiven">Pas ce clé API enregistrée</string>
     <string name="setting_connection_mode">Mode de connexion</string>
     <string name="setting_connection">Mode de connexion</string>
     <string name="setting_connection_summary">Permet de modifier le mode de connexion de l\'application</string>

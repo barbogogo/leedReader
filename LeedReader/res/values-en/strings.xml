@@ -20,10 +20,10 @@
     <string name="setting_server_link_summary">Leed website address</string>
     <string name="setting_username">Login</string>
     <string name="setting_username_summary">Leed account login</string>
-    <string name="setting_password">Password</string>
-    <string name="setting_password_summary">Leed account password</string>
-    <string name="setting_password_summary_given">Leed account password saved</string>
-    <string name="setting_password_summary_notgiven">No saved password</string>
+    <string name="setting_password">Key</string>
+    <string name="setting_password_summary">API's Key</string>
+    <string name="setting_password_summary_given">API'S key saved</string>
+    <string name="setting_password_summary_notgiven">No API's key saved</string>
     <string name="setting_connection_mode">Connexion mode</string>
     <string name="setting_connection">Connexion mode</string>
     <string name="setting_connection_summary">Permit to change the application connection mode</string>
