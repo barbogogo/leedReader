@@ -16,34 +16,34 @@
             android:id="@+id/articleTitle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10px"
-            android:layout_marginRight="10px"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="289.81"
             android:text="TextView"
             android:textColor="#f16529"
-            android:textSize="20px" />
+            android:textSize="15dp" />
 
         <TextView
             android:id="@+id/articleInformation"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10px"
-            android:layout_marginRight="10px"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="289.81"
             android:text="TextView"
             android:textColor="#555555"
-            android:textSize="14px" />
+            android:textSize="10dp" />
 
         <TextView
             android:id="@+id/articleExtract"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10px"
-            android:layout_marginRight="10px"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="289.81"
             android:text="WebView"
             android:textColor="#555555"
-            android:textSize="18px" />
+            android:textSize="14dp" />
     </LinearLayout>
 
     <LinearLayout

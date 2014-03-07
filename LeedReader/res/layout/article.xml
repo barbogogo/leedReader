@@ -37,23 +37,23 @@
                         android:id="@+id/articleTitle"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10px"
-                        android:layout_marginRight="10px"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:layout_weight="289.81"
                         android:text="TextView"
                         android:textColor="#f16529"
-                        android:textSize="30px" />
+                        android:textSize="18dp" />
 
                     <TextView
                         android:id="@+id/articleInformation"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10px"
-                        android:layout_marginRight="10px"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:layout_weight="289.81"
                         android:text="TextView"
                         android:textColor="#999999"
-                        android:textSize="20px" />
+                        android:textSize="12dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -85,12 +85,12 @@
                 android:id="@+id/articleContent"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10px"
-                android:layout_marginRight="10px"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="3000"
                 android:text="WebView"
                 android:textColor="#555555"
-                android:textSize="18px" />
+                android:textSize="18dp" />
         </LinearLayout>
     </ScrollView>
 

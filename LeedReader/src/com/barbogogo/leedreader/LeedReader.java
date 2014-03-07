@@ -636,14 +636,14 @@ public class LeedReader extends Activity
         String style =
                 "<style type='text/css'>"
                         + "body {}"
-                        + "h1 {color: %23f16529; font-size:14px; line-height: 150%25;}"
+                        + "h1 {color: %23f16529; font-size:14dp; line-height: 150%25;}"
                         + "h1 a {text-decoration:none; color: %23f16529;}"
-                        + "article {color: black; font-size:14px; line-height:150%25;}"
-                        + "header {color: %23555555; font-size: 10px;}"
-                        + "hr {color: %23f16529; background-color: %23f16529; height: 1px;}"
+                        + "article {color: black; font-size:14dp; line-height:150%25;}"
+                        + "header {color: %23555555; font-size: 10dp;}"
+                        + "hr {color: %23f16529; background-color: %23f16529; height: 1dp;}"
                         + "img {max-width:100%25;height:auto;}"
                         + "iframe {max-width:100%25;height:auto;}"
-                        + ".imageTitle {padding: 2px;font-size:10px;background-color: %23ffffe5;border: solid 1px black;width:100%25;}"
+                        + ".imageTitle {padding: 2dp;font-size:10dp;background-color: %23ffffe5;border: solid 1px black;width:100%25;}"
                         + "</style>";
 
         return style;
