@@ -21,7 +21,7 @@
     <string name="setting_username">Identifiant</string>
     <string name="setting_username_summary">Identifiant du compte Leed</string>
     <string name="setting_password">Clé API</string>
-    <string name="setting_password_summary">Clé de l'API</string>
+    <string name="setting_password_summary">Clé de l\'API</string>
     <string name="setting_password_summary_given">Clé API enregistrée</string>
     <string name="setting_password_summary_notgiven">Pas ce clé API enregistrée</string>
     <string name="setting_connection_mode">Mode de connexion</string>
@@ -39,7 +39,7 @@
     <string name="setting_authentication">Mode d\'authentification</string>
     <string name="setting_authentication_summary">Permet de modifier le mode de connexion de l\'application vers l\'API pour l\'authentification</string>
     <string name="setting_connection_mode_digest">Mode digest (permet une authentification sécurisée, nécessite mod_headers sur le serveur)</string>
-    <string name="setting_connection_mode_basic">Mode basic (la clé de l'API n\'est pas transmis en clair)</string>
+    <string name="setting_connection_mode_basic">Mode basic (la clé de l\'API n\'est pas transmis en clair)</string>
 
     <string-array name="authentication_mode_array">
         <item>@string/setting_connection_mode_digest</item>
